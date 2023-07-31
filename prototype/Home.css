@@ -1,22 +1,9 @@
 
 
-.carousel-item {
-    height: 100%;
-    /*width: 100%;*/
-    /*min-width: 50%;*/
-    /*min-height: 350px;*/
-    background: no-repeat center center scroll;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-
 :root {
     --font-default: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --font-primary: "Montserrat", sans-serif;
-    --font-secondary: "Poppins", sans-serif;
+    --font-primary: "Times New Roman", Times New Roman;
+    --font-secondary: "Times New Roman", Times New Roman;
 }
 
 /* Colors */
@@ -55,7 +42,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: var(--font-primary);
+    font-family :"Times New Roman"
 }
 
 /*--------------------------------------------------------------
@@ -111,6 +98,10 @@ section {
 @media (min-width: 1280px) {
     .navbar {
         padding: 0;
+    }
+
+    .fa-sharp fa-solid fa-bag-shopping {
+        padding-left: 2rem !important;
     }
 
     .navbar ul {
@@ -378,25 +369,10 @@ section {
         z-index: 9996;
     }
 }
-
-
-/*carousel*/
-
-.carousel-containers {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-
-.airport .airport-img .airport-contend{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
-
 @media (min-width: 1400px){
     .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-        min-width: 1450px !important;
+        min-width:
+                1223px !important;
     }
 }
 
@@ -404,9 +380,10 @@ section {
 @media (min-width: 1400px){
 
     .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-        max-width: 1450px !important;
+        max-width: 1223px !important;
     }
 }
+
 
 
 /*--------------------------------------------------------------
@@ -414,9 +391,10 @@ section {
 --------------------------------------------------------------*/
 .footer {
     font-size: 14px;
-    background-color: #1f1f24;
+    background-color: whitesmoke;
     padding: 50px 0;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(50, 45, 45, 0.7);
+    margin-top: 2rem;
 }
 
 .footer .icon {
@@ -430,7 +408,7 @@ section {
     font-weight: bold;
     position: relative;
     padding-bottom: 5px;
-    color: #fff;
+    color: rgba(50, 45, 45, 0.7);
 }
 
 .footer .footer-links {
@@ -454,14 +432,14 @@ section {
 }
 
 .footer .footer-links ul a {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(50, 45, 45, 0.7);
     transition: 0.3s;
     display: inline-block;
     line-height: 1;
 }
 
 .footer .footer-links ul a:hover {
-    color: #fff;
+    color: rgba(50, 45, 45, 0.7);
 }
 
 .footer .social-links a {
@@ -473,13 +451,13 @@ section {
     border-radius: 50%;
     border: 1px solid rgba(255, 255, 255, 0.2);
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(50, 45, 45, 0.7);
     margin-right: 10px;
     transition: 0.3s;
 }
 
 .footer .social-links a:hover {
-    color: #fff;
+    color: rgba(50, 45, 45, 0.7);
     border-color: #fff;
 }
 
@@ -498,4 +476,7 @@ section {
 .footer .credits a {
     color: #fff;
 }
+
+
+
 
