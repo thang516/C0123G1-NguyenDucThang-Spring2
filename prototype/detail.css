@@ -1,0 +1,39 @@
+.containers{
+    background-color: #f6f1eb;
+    padding: 30px 80px;
+}
+
+.content{
+    display: flex;
+    gap: 10px;
+    width: calc(100vw - 350px - 160px - 60px);
+}
+
+.content-left {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+.content-left .content-img img{
+    width: 500px;
+    height: 500px;
+}
+.content-left .content-img{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+.containers .content-right{
+    display: flex;
+    flex-direction: column;
+    padding: 17px 15px;
+    position: fixed;
+    top: 30px;
+    width: 350px;
+    background-color: #fffcf7;
+    right: 60px;
+}
+
+.content-right .body-right {
+    height: 3rem;
+}
