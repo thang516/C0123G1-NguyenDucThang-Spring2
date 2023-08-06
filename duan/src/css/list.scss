@@ -1,0 +1,42 @@
+/*carousel*/
+
+.carousel-containers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 5px 38px;
+}
+
+
+.airport .airport-img .airport-contend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 1400px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    max-width: 1465px !important;
+  }
+}
+
+
+.fa-solid fa-chevron-left,
+.fa-solid fa-angle-right {
+  background-color: #996060;
+}
+
+.toggle-header {
+  display: flex;
+  padding: 10px 40px;
+  justify-content: space-between;
+  height: 55px;
+  align-items: center;
+  .menu {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    align-items: center;
+    flex: 1;
+    gap: 40px;
+  }
+}

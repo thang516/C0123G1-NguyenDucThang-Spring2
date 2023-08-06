@@ -1,22 +1,42 @@
-import React from "react"
-import "../css/list.css"
+import React, {useEffect, useState} from "react"
+import "../css/list.scss"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { IconButton } from '@chakra-ui/react'
-import { LeftCircleTwoTone } from '@ant-design/icons';
-import { RightCircleTwoTone } from '@ant-design/icons';
+import {IconButton} from '@chakra-ui/react'
+import {LeftCircleTwoTone} from '@ant-design/icons';
+import {RightCircleTwoTone} from '@ant-design/icons';
+import {useNavigate} from "react-router";
+import * as service from "../service/ProductService"
+
+
 export function List() {
+
+    const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
+    const [page, setPage] = useState(0);
+
+    const getAllProducts = async () => {
+        const res = await service.getAll(page);
+        setProducts(res.content);
+        setTotalPages(res.totalPages);
+    }
+
+    useEffect(() => {
+        getAllProducts();
+    }, [page])
+    if (!products) {
+        return null;
+    }
+    const paginate = (page) => {
+        setPage(page)
+    }
+
 
     return (
         <>
 
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "10px  40px",
-                    justifyContent: "space-between"
-                }}>
-                <div style={{justifyContent: "inherit", display: "flex"}}>
+            <div className={'toggle-header'}>
+                <div className={'menu'}>
                     <div className="dropdown">
                         <button
                             style={{backgroundColor: "white", border: "none"}}
@@ -164,7 +184,7 @@ export function List() {
                         <button
                             style={{backgroundColor: "white", border: "none"}}
                             className=" dropdown-toggle"
-                            type="button"     data-bs-toggle="dropdown"    aria-expanded="false" >
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Price
                         </button>
                         <ul className="dropdown-menu dropdown-menu-dark">
@@ -197,37 +217,27 @@ export function List() {
                 <div>
 
 
-
-                    <div>
-                        <form className="d-flex" role="search">
-                            <input
-                                className="form-control me-2"
-                                type="search"
-                                placeholder="Search"
-                                aria-label="Search"
-                            />
-                            <a type="submit">
-                                <i className="fa-sharp fa-solid fa-magnifying-glass"/>
-                            </a>
-                            {/*<IconButton aria-label='Search database' icon={<SearchIcon />} />*/}
-                        </form>
-                    </div>
-
-
-
-
-
-
+                    {/*<div>*/}
+                    {/*    <form className="d-flex" role="search">*/}
+                    {/*        <input*/}
+                    {/*            className="form-control me-2"*/}
+                    {/*            type="search"*/}
+                    {/*            placeholder="Search"*/}
+                    {/*            aria-label="Search"*/}
+                    {/*        />*/}
+                    {/*        <a type="submit">*/}
+                    {/*            <i className="fa-sharp fa-solid fa-magnifying-glass"/>*/}
+                    {/*        </a>*/}
+                    {/*        /!*<IconButton aria-label='Search database' icon={<SearchIcon />} />*!/*/}
+                    {/*    </form>*/}
+                    {/*</div>*/}
 
 
                     <div className="dropdown">
                         <button
                             style={{backgroundColor: "white", border: "none"}}
                             className=" dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
+                            type="button"    data-bs-toggle="dropdown"     aria-expanded="false"    >
                             Sort
                         </button>
                         <ul className="dropdown-menu dropdown-menu-dark">
@@ -258,131 +268,95 @@ export function List() {
                     </div>
                 </div>
             </div>
-            
+
+            <div className="carousel-containers" >
 
 
-
-
-            <div className="carousel-containers" style={{padding: " 20px 50px"}}>
-                <div style={{height: "100%", width: "100%", position: "relative"}} id="carouselExample"
-                     className="carousel slide">
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/look-at-mi-swim-trunks--358100H601-worn-3-0-0-800-800_g.jpg"
-                                className="d-block w-100" alt="..."/>
+            {
+                products && products.map((p,index) => (
+                    <div style={{height: "100%", width: "100%", position: "relative"}} id={`carouselExampleFade-${index}`}
+                         className="carousel slide carousel-fade">
+                        <div className="carousel-inner">
+                            <div key={p.id}  className="carousel-item active">
+                                <img
+                                    src={p.images.imgOne}
+                                    className="d-block w-100" alt="..."/>
+                            </div>
+                            <div className="carousel-item">
+                                <img
+                                    src={p.images.imgTwo}
+                                    className="d-block w-100" alt="..."/>
+                            </div>
+                            <div className="carousel-item">
+                                <img
+                                    src={p.images.imgThree}
+                                    className="d-block w-100" alt="..."/>
+                            </div>
                         </div>
-                        <div className="carousel-item">
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/look-at-mi-swim-trunks--358100H601-worn-4-0-0-800-800_g.jpg"
-                                className="d-block w-100" alt="..."/>
+                        <button className="carousel-control-prev" type="button"
+                                data-bs-target={`#carouselExampleFade-${index}`}
+                                data-bs-slide="prev">
+                            <i style={{fontSize: " xx-large"}} className="fa-solid fa-chevron-left"/>
+                            <span className="visually-hidden">Previous</span>
+                        </button>
+                        <button className="carousel-control-next" type="button"
+                                data-bs-target={`#carouselExampleFade-${index}`}
+                                data-bs-slide="next">
+                            <i style={{fontSize: "xx-large"}} className="fa-solid fa-angle-right"/>
+                            <span className="visually-hidden">Next</span>
+                        </button>
+                        <div>
+                            <span>{p.nameProduct}</span>
                         </div>
-                        <div className="carousel-item">
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/look-at-mi-swim-trunks--358100H601-worn-5-0-0-800-800_g.jpg"
-                                className="d-block w-100" alt="..."/>
+                        <div>
+                            <span>{p.price}</span>
                         </div>
+                    </div>
+                ))}
+            </div>
 
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                            data-bs-slide="prev">
-                        <i style={{fontSize: "xx-large"}} className="fa-solid fa-chevron-left"/>
-                        <span className="visually-hidden">Previous</span>
-                        {/*<LeftCircleTwoTone />*/}
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                            data-bs-slide="next">
-                        <i style={{fontSize: "xx-large"}} className="fa-solid fa-angle-right"/>
-                        <span className="visually-hidden">Next</span>
-                        {/*<RightCircleTwoTone  />*/}
-                    </button>
 
-                    <div>
-                        <span> Swim trunks with bicolor detail</span>
-                    </div>
-                    <div>
-                        <span>$700</span>
-                    </div>
+
+
+
+            {
+                <div className="d-flex col-12 justify-content-end">
+                    <nav aria-label="...">
+                        <ul className="pagination">
+                            <li hidden={page === 0} className="page-item ">
+                                <button className="page-link" tabIndex={-1}
+                                        onClick={() => paginate(page - 1)}>
+                                    Trước
+                                </button>
+                            </li>
+
+
+                            {
+                                Array.from({length: totalPages}, (a, index) => index).map((page) => (
+                                    <li className="page-item">
+                                        <button className={page === page ? "page-link active" : "page-link"}
+                                                key={page}
+                                                onClick={() => paginate(page)}>
+                                            {page + 1}
+                                        </button>
+                                    </li>
+                                ))
+                            }
+
+                            <li hidden={page + 1 === totalPages}
+                                className="page-item">
+                                <button className="page-link" tabIndex={-1}
+                                        onClick={() => paginate(page + 1)}>
+                                    Sau
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-
-
-                <div style={{height: "100%", width: "100%", position: "relative"}} id="carouselExampleFade"
-                     className="carousel slide carousel-fade">
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/pince-moi-swim-trunks--358100H50R-worn-1-0-0-800-800_g.jpg"
-                                className="d-block w-100" alt="..."/>
-                        </div>
-                        <div className="carousel-item">
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/pince-moi-swim-trunks--358100H50R-worn-3-0-0-800-800_g.jpg"
-                                className="d-block w-100" alt="..."/>
-                        </div>
-                        <div className="carousel-item">
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/pince-moi-swim-trunks--358100H50R-worn-4-0-0-800-800_g.jpg"
-                                className="d-block w-100" alt="..."/>
-                        </div>
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
-                            data-bs-slide="prev">
-                        <i style={{fontSize: " xx-large"}} className="fa-solid fa-chevron-left"/>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
-                            data-bs-slide="next">
-                        <i style={{fontSize: "xx-large"}} className="fa-solid fa-angle-right"/>
-                        <span className="visually-hidden">Next</span>
-                    </button>
-                    <div>
-                        <span>"Look at Mi" swim trunks</span>
-                    </div>
-                    <div>
-                        <span>$620</span>
-                    </div>
-
-                </div>
-
-                <div style={{height: "100%", width: "100%", position: "relative"}} id="carouselExampleFade"
-                     className="carousel slide carousel-fade">
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/pince-moi-swim-trunks--358100H50R-worn-1-0-0-800-800_g.jpg"
-                                className="d-block w-100" alt="..."/>
-                        </div>
-                        <div className="carousel-item">
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/pince-moi-swim-trunks--358100H50R-worn-3-0-0-800-800_g.jpg"
-                                className="d-block w-100" alt="..."/>
-                        </div>
-                        <div className="carousel-item">
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/pince-moi-swim-trunks--358100H50R-worn-4-0-0-800-800_g.jpg"
-                                className="d-block w-100" alt="..."/>
-                        </div>
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
-                            data-bs-slide="prev">
-                        <i style={{fontSize: " xx-large"}} className="fa-solid fa-chevron-left"/>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
-                            data-bs-slide="next">
-                        <i style={{fontSize: "xx-large"}} className="fa-solid fa-angle-right"/>
-                        <span className="visually-hidden">Next</span>
-                    </button>
-                    <div>
-                        <span>"Look at Mi" swim trunks</span>
-                    </div>
-                    <div>
-                        <span>$620</span>
-                    </div>
-                </div>
-                </div>
+            }
 
 
         </>
+
     )
 }

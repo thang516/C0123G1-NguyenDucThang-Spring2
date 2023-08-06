@@ -1,0 +1,129 @@
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  background-color: #f6f1eb ;
+  padding-top: 2rem !important;
+  .card-left {
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+    width: 50%;
+    background-color: #fffcf7;
+    .quantity {
+      border-bottom: 1px solid black;
+      padding: 15px;
+    }
+    .calculator {
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      border-top: 0.5px solid black;
+      align-items: center;
+      &.first {
+        border-top: none;
+      }
+      .title {
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.input {
+  width: 30px;
+  height: 30px;
+  color: black;
+  font-weight: 600;
+  outline: none;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border: 1px solid #c4d0cb;
+
+
+}
+
+.plus,
+.minus {
+  width: 26px;
+  height: 30px;
+  color: black;
+  font-weight: 600;
+  border: 1px solid #c7d7ce;
+}
+
+.back-icon {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+}
+
+.back-icon__row {
+  height: 10px;
+  width: 30px;
+  display: flex;
+}
+
+.back-icon__elem {
+  height: 8px;
+  width: 8px;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  background: black;
+  border-radius: 38%;
+}
+
+.card-right {
+  width: 30%;
+  background-color: #fffcf7;
+
+  .description {
+    background-color:  #fffcf7;
+    padding: 10px;
+    margin-bottom: 10px;
+    h4 {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid black;
+    }
+  }
+
+  .customer-service {
+    background-color:  #fffcf7;
+    padding: 10px;
+    h4 {
+      border-bottom: 1px solid black;
+      padding-top: 10px;
+    }
+  }
+}
+
+
+.methods {
+  display: flex;
+  padding-top: 2rem;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+
+  .method {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 80px;
+
+    p {
+      margin: 0 !important;
+      text-align: center;
+      //padding: 10px 3px;
+    }
+  }
+}
+
+.payments {
+  display: flex;
+  gap: 15px;
+  padding-top: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}

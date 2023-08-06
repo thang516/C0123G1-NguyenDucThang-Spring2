@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../css/detail.css"
-
+import * as service from "../service/ProductService"
 import {
     Box,
     Accordion,
@@ -13,6 +13,22 @@ import {
 import {useNavigate} from "react-router";
 
 export function Detail() {
+    const [orderDetail,setOrderDetail] = useState([]);
+
+    const getAll = async () => {
+        const res = await service.getAllOrdersDetail();
+        setOrderDetail(res);
+    }
+
+  useEffect(() => {
+      getAll();
+  },[])
+
+        if(!orderDetail){
+            return null
+        }
+
+
     const list = ['list1', 'list2', 'list3'];
     const navigate = useNavigate();
     const [currentColor, setCurrentColor] = useState(0);
@@ -27,6 +43,15 @@ export function Detail() {
             {/*        <BreadcrumbLink href='/detail'>Detail</BreadcrumbLink>*/}
             {/*    </BreadcrumbItem>*/}
             {/*</Breadcrumb>*/}
+
+            {
+                orderDetail && orderDetail.map((p) => (
+
+
+
+
+                ))
+            }
 
             <div className="containers">
                 <div className="content">

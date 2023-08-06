@@ -30,7 +30,7 @@ export function Home() {
             {/*        <BreadcrumbLink href='#'>Breadcrumb</BreadcrumbLink>*/}
             {/*    </BreadcrumbItem>*/}
             {/*</Breadcrumb>*/}
-
+            <marquee behavior="scroll" direction="right" >Thắng Trai Hàn</marquee>
                 <div style={{ justifyContent: "center", textAlign: "center" }}>
                     <h3 style={{ paddingTop: "2rem" }}> SUSPENDED TIME</h3>
                 </div>
@@ -367,7 +367,6 @@ export function Home() {
                         </div>
                     </div>
                 </div>
-
 
 
         </>
