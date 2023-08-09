@@ -1,26 +1,37 @@
 import React, {useEffect, useState} from "react";
 import "../css/cards.scss"
 import {CardItem} from "./CardItem/CardItem";
+import * as service from "../service/ProductService";
 
-const list = [
-    {
-        quantity: 1
-    },
-    {
-        quantity: 1
-    },
-    {
-        quantity: 1
-    },
-];
 
 export function Cards() {
-    const [quantity, setQuantity] = useState(0);
+
+    const username = localStorage.getItem('username');
+
+    const [shopping, setShopping] = useState([]);
+    const [total,setTotal] = useState();
+    const getAllShopping = async () => {
+        const res = await service.getAllShopping(username);
+        setShopping(res)
+
+
+    }
+
+    const calculate = async (id,index) => {
+        await  service.calculate(id,index);
+        getAllShopping();
+    }
 
     useEffect(() => {
-        const sum = list.reduce((sum, current) => (sum + current.quantity), 0);
-        setQuantity(sum)
-    }, [list]);
+        getAllShopping();
+    }, [])
+
+    const [quantity, setQuantity] = useState(0);
+
+    // useEffect(() => {
+    //     const sum = list.reduce((sum, current) => (sum + current.quantity), 0);
+    //     setQuantity(sum)
+    // }, [list]);
 
     return (
         <>
@@ -31,9 +42,63 @@ export function Cards() {
                         {`You have ${quantity} items in your cart.`}
                     </h4>
 
+                    {/*{*/}
+                    {/*    list.map((item,index) => <CardItem key={index} totalQuantity={item.quantity} setQuantity={setQuantity}/>)*/}
+                    {/*}*/}
+                    {/*<CardItem/>*/}
+
+
                     {
-                        list.map((item,index) => <CardItem key={index} totalQuantity={item.quantity} setQuantity={setQuantity}/>)
+                        shopping && shopping.map((s) => (
+
+
+                            <div key={s.id} className={'card-item-container'}>
+
+                                <div className={'card-item-left'}>
+                                    <img
+                                        src={s.img}
+                                        alt=""/>
+                                </div>
+                                <div className={'card-item-right'}>
+                                    <div className={'title'}>
+                                        <p>{s.products.nameProduct}</p>
+                                        <button><i className="fa-sharp fa-light fa-x fa-lg"></i></button>
+                                    </div>
+
+
+                                    <div className={'money'}>
+                                        <div className="detail">
+                                            <span>Color: {s.products.colors.nameColor}</span>
+                                            <span>Ref. H0009481 01LCW | H0008671J37</span>
+                                        </div>
+                                        {/*<div className={'box'}>*/}
+                                        {/*    <button disabled={currentQuantity === 1} type="button" className="minus"*/}
+                                        {/*            onClick={() => handlePlusMinus(-1)}><span>-</span></button>*/}
+                                        {/*    <span>{currentQuantity}</span>*/}
+                                        {/*    <button type="button" value="+" className="plus" onClick={() => handlePlusMinus(1)}>*/}
+                                        {/*        <span>+</span></button>*/}
+                                        {/*</div>*/}
+
+                                        <div className={'box'}>
+                                            <button  type="button" className="minus"
+                                                     onClick={() => calculate(s.id,0)}><span>-</span></button>
+                                            <span>{s.amount}</span>
+                                            <button type="button" value="+" className="plus"  onClick={() => calculate(s.id,1)}>
+                                                <span>+</span></button>
+                                        </div>
+                                        <div className={'price'}>
+                                            <span>${s.price}</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        ))
                     }
+
+
                     <div className={'calculator first'}>
                         <div className={'title'}>
                             Subtual

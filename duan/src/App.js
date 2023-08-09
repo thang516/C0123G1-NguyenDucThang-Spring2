@@ -23,6 +23,7 @@ function App() {
                 <Route path="/cards" element={<Cards/>}/>
                 <Route path="/list" element={<List/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/detail/:id" element={<Detail/>}/>
                 {/*<Route path="/test" element={<LoginNew/>}/>*/}
 
 

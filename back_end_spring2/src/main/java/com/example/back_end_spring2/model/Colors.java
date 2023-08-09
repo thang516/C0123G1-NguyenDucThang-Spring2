@@ -12,12 +12,13 @@ public class Colors {
     @Column(name = "name_color",nullable = false,unique = true,columnDefinition = "VARCHAR(50)")
     private String nameColor;
 
+
+    public Colors() {
+    }
+
     public Colors(Integer id, String nameColor) {
         this.id = id;
         this.nameColor = nameColor;
-    }
-
-    public Colors() {
     }
 
     public Integer getId() {

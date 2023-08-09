@@ -375,11 +375,24 @@ section {
     }
 }
 
-.user-login {
+.dropdown .user-login {
     background-color: white !important;
     color: black !important;
 }
-.user-content  i a    {
+.dropdown .user-login {
+    right: 0;
+    left: auto !important;
+}
+.dropdown .user-login li a {
+    justify-content: flex-start;
+}
+.dropdown .user-content{
+    gap : 20px;
+    font-weight: 600;
+    font-size: 18px !important;
+}
+
+.user-content      {
     color: black !important;
 }
 .font-a-header {

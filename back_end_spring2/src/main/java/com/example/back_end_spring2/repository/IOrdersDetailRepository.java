@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface IOrdersDetailRepository extends JpaRepository<OrderDetail,Integer> {
 
-    @Query(value = "SELECT * FROM order_detail od WHERE od.is_delete = false",nativeQuery = true)
-    List<OrderDetail> getAllOrdersDetail();
+
 }

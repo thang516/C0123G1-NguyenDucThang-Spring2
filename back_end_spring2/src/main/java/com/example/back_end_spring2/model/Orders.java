@@ -20,13 +20,23 @@ public class Orders {
     @CreatedDate
     private LocalDateTime createDate;
 
-    public Orders(Integer id, Customers customers, LocalDateTime createDate) {
+    @Column(name = "total_amount")
+    private Double totalAmount ;
+
+    public Orders() {
+    }
+
+    public Orders(Integer id, Customers customers, LocalDateTime createDate, Double totalAmount) {
         this.id = id;
         this.customers = customers;
         this.createDate = createDate;
+        this.totalAmount = totalAmount;
     }
 
-    public Orders() {
+    public Orders(Customers customers, LocalDateTime createDate, Double totalAmount) {
+        this.customers = customers;
+        this.createDate = createDate;
+        this.totalAmount = totalAmount;
     }
 
     public Integer getId() {
@@ -51,5 +61,13 @@ public class Orders {
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }

@@ -1,7 +1,10 @@
 package com.example.back_end_spring2.service;
 
+import com.example.back_end_spring2.DTO.IProductDTO;
+import com.example.back_end_spring2.DTO.ProductDTO;
 import com.example.back_end_spring2.model.Products;
 import com.example.back_end_spring2.repository.IProductRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +16,52 @@ public class ProductService implements IProductService{
     @Autowired
     private IProductRepository productRepository ;
 
+
+
     @Override
-    public Page<Products> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public ProductDTO findByIdProduct(Integer id) {
+        Products product = productRepository.findByProduct(id);
+        ProductDTO productDTO = new ProductDTO();
+        BeanUtils.copyProperties(product, productDTO);
+        return productDTO;
     }
+
+    @Override
+    public Page<IProductDTO> getAllProducts(Pageable pageable, String sortBy, double from, double to, String color, String typeProduct, String nameProduct) {
+        Page<IProductDTO> iProductDTOS = productRepository.getProducts(pageable, from, to,"%" + color + "%" ,"%" + typeProduct + "%" ,"%" + nameProduct + "%");
+
+        return iProductDTOS ;
+    }
+
+    @Override
+    public double getMaxPrice() {
+        return productRepository.getMaxPrice();
+    }
+
+    @Override
+    public Products getProduct(Integer id) {
+        return productRepository.findById(id).get();
+    }
+
+    @Override
+    public void delete(Integer id) {
+        productRepository.deleteById(id);
+    }
+
+//    public static Page<IProductDTO> convertDTO(Page<IProductDTO> iProductDTOS) {
+//
+//
+//
+//        return iProductDTOS.map(iProductDTO -> {
+////            ProductDTO productDTO = new ProductDTO();
+////            productDTO.setNameProduct(iProductDTO.getNameProduct());
+////            productDTO.setPrice(iProductDTO.getPrice());
+////            productDTO.setStockQuantity(iProductDTO.getStockQuantity());
+////            productDTO.setDescription(iProductDTO.getDescription());
+////            productDTO.setImages(iProductDTO.getImages());
+//            return IProductDTO;
+//        });
+//
+//    }
+
 }

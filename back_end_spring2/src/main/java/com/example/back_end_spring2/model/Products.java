@@ -4,6 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Products {
@@ -13,31 +14,31 @@ public class Products {
     private Integer id;
 
 
+    @Column(name = "name_product", nullable = false)
     private String nameProduct;
-
+    @Column(nullable = false)
     private Double price;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String description;
 
-    private String description ;
+    @Column(nullable = false, name = "stock_quantity")
+
+    private Integer stockQuantity;
 
 
-    @Column(name = "create_time" ,nullable = false,unique = true,columnDefinition = "DATETIME DEFAULT now()")
+    @Column(name = "create_time", nullable = false, unique = true, columnDefinition = "DATETIME DEFAULT now()")
     @CreatedDate
     private LocalDateTime createDate;
 
-    @Column(name = "update_time" ,nullable = false,unique = true,columnDefinition = "DATETIME DEFAULT now()")
+    @Column(name = "update_time", nullable = false, unique = true, columnDefinition = "DATETIME DEFAULT now()")
     @CreatedDate
     private LocalDateTime updateTime;
 
     @Column(columnDefinition = "BIT DEFAULT 0", updatable = true)
     private boolean isDelete;
-
-    @ManyToOne
-    @JoinColumn
-    private Images images;
-
-    @ManyToOne
-    @JoinColumn
-    private Colors colors;
+//
+//    @OneToMany
+//    private List<Images> images;
 
     @ManyToOne
     @JoinColumn
@@ -47,35 +48,43 @@ public class Products {
     @JoinColumn
     private ProductType productType;
 
+    @ManyToOne
+    @JoinColumn
+    private Colors colors;
 
-    public Products(Integer id, String nameProduct, Double price, String description, LocalDateTime createDate, LocalDateTime updateTime, boolean isDelete, Images images, Colors colors, Sizes sizes, ProductType productType) {
-        this.id = id;
-        this.nameProduct = nameProduct;
-        this.price = price;
-        this.description = description;
-        this.createDate = createDate;
-        this.updateTime = updateTime;
-        this.isDelete = isDelete;
-        this.images = images;
-        this.colors = colors;
-        this.sizes = sizes;
-        this.productType = productType;
+    @Column(columnDefinition = "TEXT")
+       private String img ;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public Products() {
     }
 
-    public Products(String nameProduct, Double price, String description, LocalDateTime createDate, LocalDateTime updateTime, boolean isDelete, Images images, Colors colors, Sizes sizes, ProductType productType) {
+    public Products(Integer id, String nameProduct, Double price, String description, Integer stockQuantity, LocalDateTime createDate, LocalDateTime updateTime, boolean isDelete, Sizes sizes, ProductType productType) {
+        this.id = id;
         this.nameProduct = nameProduct;
         this.price = price;
         this.description = description;
+        this.stockQuantity = stockQuantity;
         this.createDate = createDate;
         this.updateTime = updateTime;
         this.isDelete = isDelete;
-        this.images = images;
-        this.colors = colors;
         this.sizes = sizes;
         this.productType = productType;
+    }
+
+    public Colors getColors() {
+        return colors;
+    }
+
+    public void setColors(Colors colors) {
+        this.colors = colors;
     }
 
     public Integer getId() {
@@ -110,6 +119,14 @@ public class Products {
         this.description = description;
     }
 
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -134,22 +151,6 @@ public class Products {
         isDelete = delete;
     }
 
-    public Images getImages() {
-        return images;
-    }
-
-    public void setImages(Images images) {
-        this.images = images;
-    }
-
-    public Colors getColors() {
-        return colors;
-    }
-
-    public void setColors(Colors colors) {
-        this.colors = colors;
-    }
-
     public Sizes getSizes() {
         return sizes;
     }
@@ -165,4 +166,5 @@ public class Products {
     public void setProductType(ProductType productType) {
         this.productType = productType;
     }
+
 }

@@ -6,12 +6,14 @@ import {SideBar} from "./SideBar";
 import { Link, NavLink } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
 export function Header() {
 
     const [isLogin, setIsLogin] = useState();
     const token = localStorage.getItem('token');
     const currentUserName = localStorage.getItem('username');
+    const currentRole = localStorage.getItem('role');
 
     // const [decodedToken, setDecodedToken] = useState("");
     const [username, setUsername] = useState(currentUserName);
@@ -97,35 +99,39 @@ export function Header() {
                                     {isLogin ?
                                         (
                                             <>
-
-
-
                                             <div className="dropdown">
                                                 <button
-                                                    style={{backgroundColor: "white",color:"black !importance"}}
-                                                    className=" dropdown-toggle"
-                                                    type="button"    data-bs-toggle="dropdown"     aria-expanded="false"    >
-                                                    <i className="fa-solid fa-user"></i>
+                                                    style={{backgroundColor: "white",color:"black !importance",display:"flex",}}
+                                                    className=" "     aria-expanded="false"
+                                                    type="button"  >
+                                                    <div style={{backgroundColor:"whiteSmoke",height:"35px",width:"35px",borderRadius:"50px"}}>
+                                                        <i className="fa-regular fa-circle-user fa-xl"></i>
+                                                    </div>
+                                                    <i className="fa-solid fa-caret-up fa-rotate-180"></i>
                                                 </button>
+
                                                 <ul className="user-login dropdown-menu dropdown-menu-dark">
                                                     <li>
                                                         <a className="user-content dropdown-item active" href="#">
-                                                            <i className="fa-solid fa-user"></i>
+                                                            <i style={{fontSize:"20px"}} className="fa-solid fa-user-tie"></i>
                                                             {username}
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a className=" user-content dropdown-item" href="#">
-
-                                                            Account
-                                                        </a>
+                                                        {
+                                                           currentRole == "ADMIN" ?
+                                                               (  <Link to="/nav/info-store" className="dropdown-item "
+                                                                        style={{ color: "black",fontSize:"18px",gap:"16px"}}><i
+                                                                   style={{fontSize:"16px"}}     className="fa-solid fa-list-check"/>Manage store</Link>)
+                                                           : ''
+                                                        }
                                                     </li>
                                                     <li>
                                                         <a className=" user-content dropdown-item" href="#">
 
                                                             <a className="dropdown-item " onClick={() => handlerLogout()}
-                                                               style={{ color: "black",fontSize:"18px" }}>
-                                                                <i className="fa-solid fa-right-from-bracket"></i>Logout</a>
+                                                               style={{ color: "black",fontSize:"18px",gap:"20px",padding:"0px" }}>
+                                                                <i style={{fontSize:"20px"}}  className="fa-solid fa-right-from-bracket"></i>Logout</a>
                                                         </a>
                                                     </li>
 

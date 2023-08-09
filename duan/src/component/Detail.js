@@ -2,6 +2,9 @@ import React, {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../css/detail.css"
 import * as service from "../service/ProductService"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
     Box,
     Accordion,
@@ -10,196 +13,200 @@ import {
     AccordionPanel,
     AccordionIcon, Breadcrumb, BreadcrumbItem, BreadcrumbLink,
 } from '@chakra-ui/react'
-import {useNavigate} from "react-router";
+import {useNavigate, useParams} from "react-router";
+
 
 export function Detail() {
-    const [orderDetail,setOrderDetail] = useState([]);
+    const navigate = useNavigate();
+    const [product, setProduct] = useState();
+    const [currentColor, setCurrentColor] = useState(0);
+    const [img, setImg] = useState([]);
+    const [imgSel, setImgSel] = useState('');
+    // const [imgMain,setImgMain] =useState();
+    const param = useParams();
 
-    const getAll = async () => {
-        const res = await service.getAllOrdersDetail();
-        setOrderDetail(res);
-    }
-
-  useEffect(() => {
-      getAll();
-  },[])
-
-        if(!orderDetail){
-            return null
+    const addToCart = async (products,amount) => {
+        try {
+            await service.addToCart(products,amount)
+            toast.success(`Add ${amount} successfully ${product.nameProduct} products add to your card `)
+        }catch (e) {
+            toast.error(e);
         }
 
+    }
 
-    const list = ['list1', 'list2', 'list3'];
-    const navigate = useNavigate();
-    const [currentColor, setCurrentColor] = useState(0);
+    const detailProduct = async  () => {
+        const res = await  service.detailProduct(param.id);
+        setProduct(res[0].product);
+        // setImgMain(res[0].imgURL);
+        setImg(res);
+        setImgSel(res[0].imgURL)
+
+    }
+
+
+
+    const getAllImg = async () => {
+        const res = await service.getAllImg();
+        setImg(res);
+    }
+
+    useEffect(() => {
+        detailProduct()
+    }, [])
+
+    if (!product) {
+        return null
+    }
+
+
     return (
         <>
-            {/*<Breadcrumb>*/}
-            {/*    <BreadcrumbItem>*/}
-            {/*        <BreadcrumbLink href='/'>Home</BreadcrumbLink>*/}
-            {/*    </BreadcrumbItem>*/}
+        <div className="containers">
+            <div className="content">
+                <div className="content-left">
 
-            {/*    <BreadcrumbItem>*/}
-            {/*        <BreadcrumbLink href='/detail'>Detail</BreadcrumbLink>*/}
-            {/*    </BreadcrumbItem>*/}
-            {/*</Breadcrumb>*/}
+                    <div className="content-select">
+                      <div>
+                          {
+                              img.map((im,index) => (
+                                  <img onClick={()=>setImgSel(im.imgURL)} key={index}   src={im.imgURL}  alt=""/>
+                              ))
+                          }
+                      </div>
 
-            {
-                orderDetail && orderDetail.map((p) => (
+                    </div>
+                    <div style={{padding :"0 40px"}}>
+                        <img  src={imgSel} alt=""/>
+                    </div>
 
 
 
+                </div>
 
-                ))
-            }
+            <div className='main-content'>
+                <div className='description'>
+                    <h4>The story behind</h4>
+                    <p>Bath linen is
+                        making its
+                        comeback this
+                        season! Philippe Mouquet originally came up with the "Stairs" design for a tie
+                        motif
+                        in
+                        the
+                        Spring-Summer
+                        2010 collection. The design showcases adjoining Hs, climbing upwards like
+                        stairs.
+                        Featured
+                        in
+                        various
+                        different sizes, the design introduces two new colorways: Griotte and
+                        Safran.</p>
+                </div>
+                <div>
+                </div>
 
-            <div className="containers">
-                <div className="content">
-                    <div className="content-left">
-                        <div className="content-select">
-                            <div>
-                                <img
-                                    src="https://assets.hermes.com/is/image/hermesproduct/stairs-hand-towel--103190M%2003-flat-wm-1-0-0-130-130_g.jpg"
-                                    alt=""/>
+                <div className="css-im" style={{marginRight: "2.5rem"}}>
+                    <h4 style={{marginBottom: "-4rem", marginTop: "2rem"}}>The Perfect Partner</h4>
+                    <div style={{display: "flex", marginTop: " 5rem", gap: "1rem"}}>
+                        <div className="card"
+                             style={{width: "100%", border: "none", backgroundColor: " #f6f1eb"}}>
+                            <img
+                                src="https://assets.hermes.com/is/image/hermesproduct/010124P_front_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
+                                className="card-img-top" alt="..."/>
+                            <div style={{paddingTop: "0.5rem"}}>
+                                Iskender highball glass
                             </div>
-                            <div>
-                                <img
-                                    src="https://assets.hermes.com/is/image/hermesproduct/stairs-hand-towel--103190M%2003-folded-wm-4-0-0-130-130_g.jpg    "
-                                    alt=""/>
-                            </div>
-                            <div>
-                                <img
-                                    src="https://assets.hermes.com/is/image/hermesproduct/stairs-hand-towel--103190M%2003-worn-9-0-0-130-130_g.jpg"
-                                    alt=""/>
-                            </div>
+                            <div>$590</div>
+
                         </div>
-
-                        <div className="content-img">
-                            {/*{list[currentColor]}*/}
-                                <img
-                                    src="https://assets.hermes.com/is/image/hermesproduct/stairs-hand-towel--103190M%2003-folded-wm-4-0-0-800-800_g.jpg"
-                                    alt=""/>
+                        <div className="card"
+                             style={{width: "100%", border: "none", backgroundColor: "#f6f1eb"}}>
+                            <img
+                                src="https://assets.hermes.com/is/image/hermesproduct/311602M%2001_wornsquare_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
+                                className="card-img-top" alt="..."/>
+                            <div style={{paddingTop: "0.5rem"}}>
+                                La Source de Pegase ashtray
                             </div>
+                            <div>$660</div>
                         </div>
-                        <div className='main-content'>
-                            <div className='description'>
-                                <h4>The story behind</h4>
-                                <p>Bath linen is
-                                    making its
-                                    comeback this
-                                    season! Philippe Mouquet originally came up with the "Stairs" design for a tie motif
-                                    in
-                                    the
-                                    Spring-Summer
-                                    2010 collection. The design showcases adjoining Hs, climbing upwards like stairs.
-                                    Featured
-                                    in
-                                    various
-                                    different sizes, the design introduces two new colorways: Griotte and Safran.</p>
+                        <div className="card"
+                             style={{width: "100%", border: "none", backgroundColor: "#f6f1eb"}}>
+                            <img
+                                src="https://assets.hermes.com/is/image/hermesproduct/800618E%2001_worn_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
+                                className="card-img-top" alt="..."/>
+                            <div style={{paddingTop: "0.5rem"}}>
+                                Reversible dog mat
                             </div>
-                            <div>
+                            <div>$1,100</div>
+                        </div>
+                        <div className="card"
+                             style={{width: "100%", border: "none", backgroundColor: "#f6f1eb"}}>
+                            <img
+                                src="https://assets.hermes.com/is/image/hermesproduct/3H3700D8AT_worn_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
+                                className="card-img-top" alt="..."/>
+
+                            <div style={{paddingTop: "0.5rem"}}>
+                                Briana swimsuit
                             </div>
+                            <div>$590</div>
+                        </div>
+                    </div>
 
-                            <div className="css-im" style={{marginRight: "2.5rem"}}>
-                                <h4 style={{marginBottom: "-4rem", marginTop: "2rem"}}>The Perfect Partner</h4>
-                                <div style={{display: "flex", marginTop: " 5rem", gap: "1rem"}}>
-                                    <div className="card"
-                                         style={{width: "100%", border: "none", backgroundColor: " #f6f1eb"}}>
-                                        <img
-                                            src="https://assets.hermes.com/is/image/hermesproduct/010124P_front_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
-                                            className="card-img-top" alt="..."/>
-                                        <div style={{paddingTop: "0.5rem"}}>
-                                            Iskender highball glass
-                                        </div>
-                                        <div>$590</div>
 
-                                    </div>
-                                    <div className="card"
-                                         style={{width: "100%", border: "none", backgroundColor: "#f6f1eb"}}>
-                                        <img
-                                            src="https://assets.hermes.com/is/image/hermesproduct/311602M%2001_wornsquare_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
-                                            className="card-img-top" alt="..."/>
-                                        <div style={{paddingTop: "0.5rem"}}>
-                                            La Source de Pegase ashtray
-                                        </div>
-                                        <div>$660</div>
-                                    </div>
-                                    <div className="card"
-                                         style={{width: "100%", border: "none", backgroundColor: "#f6f1eb"}}>
-                                        <img
-                                            src="https://assets.hermes.com/is/image/hermesproduct/800618E%2001_worn_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
-                                            className="card-img-top" alt="..."/>
-                                        <div style={{paddingTop: "0.5rem"}}>
-                                            Reversible dog mat
-                                        </div>
-                                        <div>$1,100</div>
-                                    </div>
-                                    <div className="card"
-                                         style={{width: "100%", border: "none", backgroundColor: "#f6f1eb"}}>
-                                        <img
-                                            src="https://assets.hermes.com/is/image/hermesproduct/3H3700D8AT_worn_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
-                                            className="card-img-top" alt="..."/>
-
-                                        <div style={{paddingTop: "0.5rem"}}>
-                                            Briana swimsuit
-                                        </div>
-                                        <div>$590</div>
-                                    </div>
+                    <div>
+                        <h4 style={{marginBottom: "-4rem", marginTop: "2rem"}}>Keep exploring</h4>
+                        <div style={{display: "flex", marginTop: "5rem", gap: " 1rem"}}>
+                            <div className="card"
+                                 style={{width: " 25%", border: " none", backgroundColor: "#f6f1eb"}}>
+                                <img
+                                    src="https://assets.hermes.com/is/image/hermesproduct/103192M%2003_flat_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
+                                    className="card-img-top" alt="..."/>
+                                <div style={{paddingTop: "0.5rem"}}>
+                                    Stairs bath towel
                                 </div>
-
-
-                                <div>
-                                    <h4 style={{marginBottom: "-4rem", marginTop: "2rem"}}>Keep exploring</h4>
-                                    <div style={{display: "flex", marginTop: "5rem", gap: " 1rem"}}>
-                                        <div className="card"
-                                             style={{width: " 25%", border: " none", backgroundColor: "#f6f1eb"}}>
-                                            <img
-                                                src="https://assets.hermes.com/is/image/hermesproduct/103192M%2003_flat_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
-                                                className="card-img-top" alt="..."/>
-                                            <div style={{paddingTop: "0.5rem"}}>
-                                                Stairs bath towel
-                                            </div>
-                                            <div>$340</div>
-                                        </div>
-                                        <div className="card"
-                                             style={{width: " 25%", border: " none", backgroundColor: "#f6f1eb"}}>
-                                            <img
-                                                src="https://assets.hermes.com/is/image/hermesproduct/103192M%2003_flat_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
-                                                className="card-img-top" alt="..."/>
-                                            <div style={{paddingTop: "0.5rem"}}>
-                                                Stairs washcloth
-                                            </div>
-                                            <div>$70</div>
-                                        </div>
-                                        <div className="card"
-                                             style={{width: " 25%", border: " none", backgroundColor: "#f6f1eb"}}>
-                                            <img
-                                                src="https://assets.hermes.com/is/image/hermesproduct/103191M%2003_flat_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
-                                                className="card-img-top" alt="..."/>
-                                            <div style={{paddingTop: "0.5rem"}}>
-                                                Stairs towel
-                                            </div>
-                                            <div>$170</div>
-                                        </div>
-                                    </div>
+                                <div>$340</div>
+                            </div>
+                            <div className="card"
+                                 style={{width: " 25%", border: " none", backgroundColor: "#f6f1eb"}}>
+                                <img
+                                    src="https://assets.hermes.com/is/image/hermesproduct/103192M%2003_flat_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
+                                    className="card-img-top" alt="..."/>
+                                <div style={{paddingTop: "0.5rem"}}>
+                                    Stairs washcloth
                                 </div>
-
+                                <div>$70</div>
+                            </div>
+                            <div className="card"
+                                 style={{width: " 25%", border: " none", backgroundColor: "#f6f1eb"}}>
+                                <img
+                                    src="https://assets.hermes.com/is/image/hermesproduct/103191M%2003_flat_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"
+                                    className="card-img-top" alt="..."/>
+                                <div style={{paddingTop: "0.5rem"}}>
+                                    Stairs towel
+                                </div>
+                                <div>$170</div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="content-right">
-                        <div className="body-right">
-                            <h4>Stairs hand towel</h4>
+                </div>
+            </div>
+        </div>
 
+
+                    <div className="content-right">
+                        <div  className="body-right">
+                            <h4>{product.nameProduct}</h4>
                             <div>
-                                $80
+                                ${product.price}
                             </div>
                         </div>
+
                         <div style={{marginTop: "2rem"}}>
                             <div style={{display: "flex", justifyContent: "space-between"}}>
                                 <div>
-                                    color
+                                    {product.colors.nameColor}
                                 </div>
                                 <div>
                                     color
@@ -231,6 +238,7 @@ export function Detail() {
                                         />
                                     </div>
 
+
                                     <div className={`choose-color ${currentColor == 2 ? 'active' : ''}`}>
                                         <button
                                             style={{
@@ -247,19 +255,16 @@ export function Detail() {
                             </div>
 
                             <div style={{justifyContent: "center", textAlign: "center"}}>
-                                <button style={{marginTop: "2rem"}} className="btn btn-dark">Add to card
-                                </button>
+                                <button  onClick={() => addToCart(product.id,1)} style={{marginTop: "2rem"}} className="btn btn-dark">Add to card</button>
                             </div>
                             <div style={{paddingTop: "2rem"}}>
-                                <p>Hand towel in sheared terry cloth</p>
-
-                                <p>- 100% cotton</p>
-                                <p>Made in France</p>
-                                <p>Measures 15.7" x 23.6"</p>
+                               <p>{product.description}</p>
                             </div>
                             <div>
                             </div>
+
                         </div>
+
 
                         <Accordion defaultIndex={[0]} allowMultiple>
                             <AccordionItem>
@@ -352,19 +357,23 @@ export function Detail() {
                                     </AccordionButton>
                                 </h2>
                                 <AccordionPanel pb={4}>
-                                    Your purchases are delivered in an orange box tied with a Bolduc ribbon, with the
-                                    exception of fragrances, makeup and beauty products, books, certain equestrian and
+                                    Your purchases are delivered in an orange box tied with a Bolduc ribbon, with
+                                    the
+                                    exception of fragrances, makeup and beauty products, books, certain equestrian
+                                    and
                                     bulky items.
-                                    During checkout, you can include a card with a personalized message and a priceless
+                                    During checkout, you can include a card with a personalized message and a
+                                    priceless
                                     invoice.
-                                    A customer can exchange a gift. For more details, please contact Customer Service.
+                                    A customer can exchange a gift. For more details, please contact Customer
+                                    Service.
                                 </AccordionPanel>
                             </AccordionItem>
                         </Accordion>
                     </div>
-                </div>
 
-            </>
-            )
 
-            }
+        </div>
+
+</>
+)}

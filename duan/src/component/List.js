@@ -6,6 +6,9 @@ import {LeftCircleTwoTone} from '@ant-design/icons';
 import {RightCircleTwoTone} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import * as service from "../service/ProductService"
+import {getAll} from "../service/ProductService";
+import {Link} from "react-router-dom";
+import {log10} from "chart.js/helpers";
 
 
 export function List() {
@@ -15,15 +18,32 @@ export function List() {
     const [totalPages, setTotalPages] = useState(0);
     const [page, setPage] = useState(0);
 
+    const [sortBy, setSortBy] = useState('');
+    const [price, setPrice] = useState('');
+    const [color, setColor] = useState('');
+    const [typeProduct, setTypeProduct] = useState('');
+    const [nameProduct, setNameProduct] = useState('');
+
     const getAllProducts = async () => {
-        const res = await service.getAll(page);
-        setProducts(res.content);
+        const res = await service.getAll(page, sortBy, price, color, typeProduct, nameProduct);
+        // setProducts(res.content);
         setTotalPages(res.totalPages);
+        setPage(prevState => prevState + 1)
+        setProducts([...products, ...res.content])
     }
+
+
+    const getAllImg = async () => {
+        const res = await service.getAllImg();
+        // setImg(res);
+    }
+
 
     useEffect(() => {
         getAllProducts();
-    }, [page])
+        getAllImg()
+    }, [])
+
     if (!products) {
         return null;
     }
@@ -237,7 +257,7 @@ export function List() {
                         <button
                             style={{backgroundColor: "white", border: "none"}}
                             className=" dropdown-toggle"
-                            type="button"    data-bs-toggle="dropdown"     aria-expanded="false"    >
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Sort
                         </button>
                         <ul className="dropdown-menu dropdown-menu-dark">
@@ -269,91 +289,65 @@ export function List() {
                 </div>
             </div>
 
-            <div className="carousel-containers" >
+            <div className="carousel-containers">
 
 
-            {
-                products && products.map((p,index) => (
-                    <div style={{height: "100%", width: "100%", position: "relative"}} id={`carouselExampleFade-${index}`}
-                         className="carousel slide carousel-fade">
-                        <div className="carousel-inner">
-                            <div key={p.id}  className="carousel-item active">
-                                <img
-                                    src={p.images.imgOne}
-                                    className="d-block w-100" alt="..."/>
+                {
+                    products && products.map((p, index) => (
+                        // <div key={p.id} style={{height: "100%", width: "100%", position: "relative"}}
+                        //      id={`carouselExampleFade-${index}`}
+                        //      className="carousel slide carousel-fade">
+                        //     <div className="carousel-inner">
+                        //         {
+                        //             img && img.map((item, i) => (
+                        //                 <div key={p.id} className={`carousel-item ${i == 0 ? 'active' : ''}`}>
+                        //                     <img key={item.id} src={item.imgURL} className="d-block w-100" alt="..."/>
+                        //                 </div>
+                        //             ))
+                        //         }
+                        //     </div>
+                        //     <button className="carousel-control-prev" type="button"
+                        //             data-bs-target={`#carouselExampleFade-${index}`}
+                        //             data-bs-slide="prev">
+                        //         <i style={{fontSize: " xx-large"}} className="fa-solid fa-chevron-left"/>
+                        //         <span className="visually-hidden">Previous</span>
+                        //     </button>
+                        //     <button className="carousel-control-next" type="button"
+                        //             data-bs-target={`#carouselExampleFade-${index}`}
+                        //             data-bs-slide="next">
+                        //         <i style={{fontSize: "xx-large"}} className="fa-solid fa-angle-right"/>
+                        //         <span className="visually-hidden">Next</span>
+                        //     </button>
+                        //     <div>
+                        //         <span>{p.nameProduct}</span>
+                        //     </div>
+                        //     <div>
+                        //         <span>${p.price}</span>
+                        //     </div>
+                        // </div>
+
+                        <div key={p.id} className="card">
+
+                            <div className="card-img-top">
+                                <Link to={`/detail/${p.id}/`}>
+                                    <img src={p.images}/>
+
+                                </Link>
                             </div>
-                            <div className="carousel-item">
-                                <img
-                                    src={p.images.imgTwo}
-                                    className="d-block w-100" alt="..."/>
-                            </div>
-                            <div className="carousel-item">
-                                <img
-                                    src={p.images.imgThree}
-                                    className="d-block w-100" alt="..."/>
+                            <div className="card-body">
+                                <p className="card-text">
+                                    {p.nameProduct}
+                                </p>
+                                <p>${p.price}</p>
                             </div>
                         </div>
-                        <button className="carousel-control-prev" type="button"
-                                data-bs-target={`#carouselExampleFade-${index}`}
-                                data-bs-slide="prev">
-                            <i style={{fontSize: " xx-large"}} className="fa-solid fa-chevron-left"/>
-                            <span className="visually-hidden">Previous</span>
-                        </button>
-                        <button className="carousel-control-next" type="button"
-                                data-bs-target={`#carouselExampleFade-${index}`}
-                                data-bs-slide="next">
-                            <i style={{fontSize: "xx-large"}} className="fa-solid fa-angle-right"/>
-                            <span className="visually-hidden">Next</span>
-                        </button>
-                        <div>
-                            <span>{p.nameProduct}</span>
-                        </div>
-                        <div>
-                            <span>{p.price}</span>
-                        </div>
-                    </div>
-                ))}
+                    ))}
             </div>
-
-
-
-
-
-            {
-                <div className="d-flex col-12 justify-content-end">
-                    <nav aria-label="...">
-                        <ul className="pagination">
-                            <li hidden={page === 0} className="page-item ">
-                                <button className="page-link" tabIndex={-1}
-                                        onClick={() => paginate(page - 1)}>
-                                    Trước
-                                </button>
-                            </li>
-
-
-                            {
-                                Array.from({length: totalPages}, (a, index) => index).map((page) => (
-                                    <li className="page-item">
-                                        <button className={page === page ? "page-link active" : "page-link"}
-                                                key={page}
-                                                onClick={() => paginate(page)}>
-                                            {page + 1}
-                                        </button>
-                                    </li>
-                                ))
-                            }
-
-                            <li hidden={page + 1 === totalPages}
-                                className="page-item">
-                                <button className="page-link" tabIndex={-1}
-                                        onClick={() => paginate(page + 1)}>
-                                    Sau
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            }
+            <div style={{textAlign: "center"}}>
+                <button onClick={() => getAllProducts(page)}
+                        style={{backgroundColor: "whiteSmoke", fontSize: "20px"}}>Load more
+                </button>
+            </div>
 
 
         </>
