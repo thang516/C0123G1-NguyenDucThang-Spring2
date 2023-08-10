@@ -7,9 +7,11 @@ import com.example.back_end_spring2.model.Products;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface IProductRepository extends JpaRepository<Products, Integer> {
@@ -66,4 +68,23 @@ public interface IProductRepository extends JpaRepository<Products, Integer> {
             "            WHERE is_delete = FALSE\n" +
             "              AND  products.stock_quantity > 0", nativeQuery = true)
     double getMaxPrice();
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE product p SET p.is_delete = true where p.id  = :id ",nativeQuery = true)
+    void deleteByIdShopping(@Param("id") Integer id);
+
+    @Query(value = "SELECT p.id as id ,\n" +
+            "        p.name_product as nameProduct,\n" +
+            "        p.price as price,\n" +
+            "    p.description as description,\n" +
+            "    i.img_url as images\n" +
+            "FROM products p\n" +
+            "                     INNER JOIN images i on p.id = i.product_id\n" +
+            "\n" +
+            "                      WHERE p.is_delete = false AND i.id in (select min(i.id)\n" +
+            "                                                             from images i\n" +
+            "                                                             group by i.product_id)\n" +
+            "                      ORDER BY p.price DESC  LIMIT 4" ,nativeQuery = true)
+    List<IProductDTO> findNewProduct();
 }

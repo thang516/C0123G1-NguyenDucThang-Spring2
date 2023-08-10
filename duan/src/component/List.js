@@ -8,7 +8,7 @@ import {useNavigate} from "react-router";
 import * as service from "../service/ProductService"
 import {getAll} from "../service/ProductService";
 import {Link} from "react-router-dom";
-import {log10} from "chart.js/helpers";
+
 
 
 export function List() {

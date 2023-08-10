@@ -69,7 +69,7 @@ export function Header() {
                         <a onClick={() => navigate("/")} className="logo d-flex align-items-center">
                             <div className="pnj">
                                 <img
-                                    src="anh/logo.png"
+                                    src="/anh/logo.png"
                                     style={{
                                         textAlign: "center",
                                         alignItems: "center",
@@ -120,7 +120,7 @@ export function Header() {
                                                     <li>
                                                         {
                                                            currentRole == "ADMIN" ?
-                                                               (  <Link to="/nav/info-store" className="dropdown-item "
+                                                               (  <Link to="/nav/manager" className="dropdown-item "
                                                                         style={{ color: "black",fontSize:"18px",gap:"16px"}}><i
                                                                    style={{fontSize:"16px"}}     className="fa-solid fa-list-check"/>Manage store</Link>)
                                                            : ''
@@ -149,11 +149,12 @@ export function Header() {
                                         )
                                     }
                                 </li>
-                                <li className={'responsive-cart'}>
-                                    <i
-                                        style={{margin: "0 0.5rem"}}
-                                        className="fa-sharp fa-solid fa-bag-shopping"
-                                    />
+                                <li  style={{display:"flex",gap:"5px"}} className={'responsive-cart'}>
+
+                                    <div>
+                                        <i className="fa-sharp fa-solid fa-bag-shopping" />
+                                        <sup>5</sup>
+                                    </div>
                                     Cart
                                 </li>
 

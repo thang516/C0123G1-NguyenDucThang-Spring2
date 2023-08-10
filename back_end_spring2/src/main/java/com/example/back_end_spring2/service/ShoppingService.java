@@ -54,4 +54,10 @@ public class ShoppingService implements IShoppingService{
         }
     }
 
+    @Override
+    public void deleteC(Integer id) {
+        shoppingRepository.deleteById(id);
+    }
+
+
 }

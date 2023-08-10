@@ -6,6 +6,8 @@ import com.example.back_end_spring2.model.Products;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface IProductService {
 
     ProductDTO findByIdProduct(Integer id);
@@ -16,5 +18,6 @@ public interface IProductService {
 
     Products getProduct(Integer id);
 
-    void delete(Integer id);
+
+    List<IProductDTO> findNewProduct();
 }

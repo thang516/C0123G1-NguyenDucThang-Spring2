@@ -11,6 +11,7 @@ import {List} from "./component/List";
 import {Header} from "./component/Header";
 import {Footer} from "./component/Footer";
 import {Login} from "./component/login/Login";
+import {CustomerList} from "./component/CustomerList";
 // import {LoginNew} from "./component/loginNew/LoginNew";
 
 function App() {
@@ -25,11 +26,14 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/detail/:id" element={<Detail/>}/>
                 {/*<Route path="/test" element={<LoginNew/>}/>*/}
-
-
                 <Route path="/detail" element={<Detail/>}/>
+                <Route path="/nav/manager" element={<CustomerList/>}/>
 
             </Routes>
+
+
+
+
             <Footer/>
         </ChakraProvider>
 

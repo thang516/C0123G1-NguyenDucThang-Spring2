@@ -12,4 +12,6 @@ public interface IShoppingService {
     void setCart(Integer index, Integer id);
 
     void createCart(Customers customers, Products products, Integer amount);
+
+    void deleteC(Integer id);
 }

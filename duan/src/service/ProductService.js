@@ -1,5 +1,35 @@
 import axios from "axios";
 
+export async function productNew() {
+    try{
+        const  result = await axios.get(`http://localhost:8080/api/products/new-product`)
+        return  result.data
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+
+export async function getAllCustomer(page) {
+    try{
+       const  result = await axios.get(`http://localhost:8080/api/customers?page=${page}`)
+        return  result.data
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+
+export async function deleteById(id) {
+    try{
+        await axios.delete("http://localhost:8080/api/shopping/delete/"+id)
+
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+
 const username = localStorage.getItem('username');
 
 export async function addToCart(products, amount) {

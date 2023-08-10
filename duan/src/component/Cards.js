@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import "../css/cards.scss"
 import {CardItem} from "./CardItem/CardItem";
 import * as service from "../service/ProductService";
+import sweat from "sweetalert2";
 
 
 export function Cards() {
@@ -33,6 +34,29 @@ export function Cards() {
     //     setQuantity(sum)
     // }, [list]);
 
+    const deleteById = async (id) => {
+        await  service.deleteById(id)
+        sweat.fire({
+            icon: "success",
+            title: "SUCCESSFULLY",
+            timer: "2000"
+        })
+        getAllShopping()
+    }
+
+    function deleteShopping(id,nameProduct) {
+        sweat.fire({
+            icon: "warning",
+            title: `Do you want to delete ${nameProduct} ?`,
+            showCancelButton: true,
+            confirmButtonText: "OK"
+        }).then(async (isDelete) => {
+            if(isDelete.isConfirmed){
+                deleteById(id)
+            }
+        })
+    }
+
     return (
         <>
 
@@ -61,8 +85,8 @@ export function Cards() {
                                 </div>
                                 <div className={'card-item-right'}>
                                     <div className={'title'}>
-                                        <p>{s.products.nameProduct}</p>
-                                        <button><i className="fa-sharp fa-light fa-x fa-lg"></i></button>
+                                        <p>{s.products.nameProduct}{s.id}</p>
+                                        <button onClick={() => deleteShopping(s.id,s.products.nameProduct)}><i className="fa-sharp fa-light fa-x fa-lg"></i></button>
                                     </div>
 
 
@@ -99,16 +123,16 @@ export function Cards() {
                     }
 
 
-                    <div className={'calculator first'}>
-                        <div className={'title'}>
-                            Subtual
-                        </div>
-                        <div>
-                            $
-                        </div>
-                    </div>
+                    {/*<div className={'calculator first'}>*/}
+                    {/*    <div className={'title'}>*/}
+                    {/*        Subtual*/}
+                    {/*    </div>*/}
+                    {/*    <div>*/}
+                    {/*        $*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
-                    <div className={'calculator'}>
+                    <div className={'calculator first'}>
                         <div className={'description'}>
                             <span className={'title'}>Shipping</span>
                             <div>Shipping costs will be calculated during checkout</div>
@@ -125,16 +149,17 @@ export function Cards() {
                     </div>
 
                     <div className={'calculator'}>
-                        <span>Total</span>
+                        <span>TOTAL</span>
                         <span>1234</span>
                     </div>
              <div>
-                 <div style={{textAlign: "center", justifyContent: "center", alignItems: "center"}}>
-                     <div>
-                         <button style={{width: "15rem",backgroundColor:"#444444"}} className="btn btn-dark">CheckOut</button>
-                     </div>
-                 </div>
+
              </div>
+                    <div style={{textAlign: "center", justifyContent: "center", alignItems: "center"}}>
+                        {/*<div>*/}
+                        <button style={{width: "15rem",backgroundColor:"#444444"}} className="btn btn-dark">CheckOut</button>
+                        {/*</div>*/}
+                    </div>
                 </div>
 
                 <div className={'card-right'}>

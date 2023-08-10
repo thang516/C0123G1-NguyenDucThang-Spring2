@@ -60,13 +60,13 @@ public class ShoppingController {
         }
     }
 
+
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id ){
-        try{
-            productService.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<List<ShoppingCards>> delete(@PathVariable Integer id ){
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        shoppingService.deleteC(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService implements IProductService{
 
@@ -44,24 +46,9 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public void delete(Integer id) {
-        productRepository.deleteById(id);
+    public List<IProductDTO> findNewProduct() {
+        return productRepository.findNewProduct();
     }
 
-//    public static Page<IProductDTO> convertDTO(Page<IProductDTO> iProductDTOS) {
-//
-//
-//
-//        return iProductDTOS.map(iProductDTO -> {
-////            ProductDTO productDTO = new ProductDTO();
-////            productDTO.setNameProduct(iProductDTO.getNameProduct());
-////            productDTO.setPrice(iProductDTO.getPrice());
-////            productDTO.setStockQuantity(iProductDTO.getStockQuantity());
-////            productDTO.setDescription(iProductDTO.getDescription());
-////            productDTO.setImages(iProductDTO.getImages());
-//            return IProductDTO;
-//        });
-//
-//    }
 
 }

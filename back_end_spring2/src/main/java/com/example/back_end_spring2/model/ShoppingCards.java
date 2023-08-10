@@ -22,13 +22,25 @@ public class ShoppingCards {
     @ManyToOne
     @JoinColumn
     private Customers customers ;
+    
+    @Column(columnDefinition = "BIT DEFAULT 0", updatable = true)
+    private boolean isDelete;
 
-    public ShoppingCards(Integer id, Integer amount, Double price, Products products, Customers customers) {
+    public ShoppingCards(Integer id, Integer amount, Double price, Products products, Customers customers, boolean isDelete) {
         this.id = id;
         this.amount = amount;
         this.price = price;
         this.products = products;
         this.customers = customers;
+        this.isDelete = isDelete;
+    }
+
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean delete) {
+        isDelete = delete;
     }
 
     public ShoppingCards() {
