@@ -40,7 +40,7 @@ export function CardItem() {
 
                         <div className={'card-item-left'}>
                             <img
-                                src={s.img}
+                                src={s.products.img}
                                 alt=""/>
                         </div>
                         <div className={'card-item-right'}>

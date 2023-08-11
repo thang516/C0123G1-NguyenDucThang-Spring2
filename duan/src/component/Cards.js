@@ -3,18 +3,34 @@ import "../css/cards.scss"
 import {CardItem} from "./CardItem/CardItem";
 import * as service from "../service/ProductService";
 import sweat from "sweetalert2";
+import {useFashion} from "../contexts/FashionContext";
 
 
 export function Cards() {
 
-    const username = localStorage.getItem('username');
 
+
+
+
+
+
+
+    const {quantityCard, setQuantityCard} = useFashion();
+    const username = localStorage.getItem('username');
     const [shopping, setShopping] = useState([]);
-    const [total,setTotal] = useState();
+    const [totalPrice,setTotalPrice] = useState();
     const getAllShopping = async () => {
         const res = await service.getAllShopping(username);
         setShopping(res)
+        const total = res.reduce((sum, current) => {
+            return sum + current.amount
+        },0);
+        setQuantityCard(total);
 
+        setTotalPrice(0);
+        await  res.map( async(v,index) => {
+            await setTotalPrice( prev => prev + v.price)
+        })
 
     }
 
@@ -27,7 +43,7 @@ export function Cards() {
         getAllShopping();
     }, [])
 
-    const [quantity, setQuantity] = useState(0);
+
 
     // useEffect(() => {
     //     const sum = list.reduce((sum, current) => (sum + current.quantity), 0);
@@ -43,6 +59,16 @@ export function Cards() {
         })
         getAllShopping()
     }
+
+    // const setAmountCart = async (val,id,amounts) => {
+    //     if(amounts > 1 || val == 1 ){
+    //         await  service.updateAmountCart(val,id);
+    //
+    //     }
+    //     getAllShopping();
+    //
+    // }
+
 
     function deleteShopping(id,nameProduct) {
         sweat.fire({
@@ -63,7 +89,7 @@ export function Cards() {
             <div className={'card-container'}>
                 <div className={'card-left'}>
                     <h4 className={'quantity'}>
-                        {`You have ${quantity} items in your cart.`}
+                        {`You have ${quantityCard} items in your cart.`}
                     </h4>
 
                     {/*{*/}
@@ -80,7 +106,7 @@ export function Cards() {
 
                                 <div className={'card-item-left'}>
                                     <img
-                                        src={s.img}
+                                        src={s.products.img}
                                         alt=""/>
                                 </div>
                                 <div className={'card-item-right'}>
@@ -93,7 +119,7 @@ export function Cards() {
                                     <div className={'money'}>
                                         <div className="detail">
                                             <span>Color: {s.products.colors.nameColor}</span>
-                                            <span>Ref. H0009481 01LCW | H0008671J37</span>
+                                            {/*<span>Ref. H0009481 01LCW | H0008671J37</span>*/}
                                         </div>
                                         {/*<div className={'box'}>*/}
                                         {/*    <button disabled={currentQuantity === 1} type="button" className="minus"*/}
@@ -104,7 +130,7 @@ export function Cards() {
                                         {/*</div>*/}
 
                                         <div className={'box'}>
-                                            <button  type="button" className="minus"
+                                            <button disabled={s.amount === 1} type="button" className="minus"
                                                      onClick={() => calculate(s.id,0)}><span>-</span></button>
                                             <span>{s.amount}</span>
                                             <button type="button" value="+" className="plus"  onClick={() => calculate(s.id,1)}>
@@ -148,16 +174,18 @@ export function Cards() {
                         <span>-</span>
                     </div>
 
-                    <div className={'calculator'}>
+                    <div  className={'calculator'}>
                         <span>TOTAL</span>
-                        <span>1234</span>
+                        <span>${totalPrice}</span>
                     </div>
-             <div>
+             <div style={{    height:" 10px",
+                 width: "100%",
+                 background: "#f6f1eb"}}>
 
              </div>
-                    <div style={{textAlign: "center", justifyContent: "center", alignItems: "center"}}>
+                    <div style={{textAlign: "center", justifyContent: "center", alignItems: "center",height:"5rem"}}>
                         {/*<div>*/}
-                        <button style={{width: "15rem",backgroundColor:"#444444"}} className="btn btn-dark">CheckOut</button>
+                        <button style={{width: "15rem",backgroundColor:"#444444",margin:"20px"}} className="btn btn-dark">CheckOut</button>
                         {/*</div>*/}
                     </div>
                 </div>

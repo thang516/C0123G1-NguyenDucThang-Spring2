@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 
 public interface ICustomerRepository extends JpaRepository<Customers,Integer> {
 
-    Customers getCustomersByUsers_Username(String username);
 
 
     @Query(value ="SELECT * FROM customers c WHERE  c.is_delete = false",nativeQuery = true)
@@ -26,4 +25,8 @@ public interface ICustomerRepository extends JpaRepository<Customers,Integer> {
 
     @Query(value = "INSERT INTO customers(name ,address, phone, users_id, email) VALUES (:name,:address,:phone,:user_id,:email)",nativeQuery = true)
     void saveProduct(@Param("name") String name,@Param("address") String address,@Param("phone") String phone,@Param("user_id") Integer user_id,@Param("email") String email);
+
+    @Query(value = "SELECT c.* FROM customers c\n" +
+            "    INNER  JOIN users u on c.users_id = u.id WHERE u.username = :username AND c.is_delete = false",nativeQuery = true)
+    Customers getCustomersByUser(@Param("username") String username);
 }

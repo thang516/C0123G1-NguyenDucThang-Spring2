@@ -3,6 +3,7 @@ package com.example.back_end_spring2.repository;
 
 import com.example.back_end_spring2.DTO.IProductDTO;
 import com.example.back_end_spring2.model.Images;
+import com.example.back_end_spring2.model.ProductType;
 import com.example.back_end_spring2.model.Products;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -87,4 +88,8 @@ public interface IProductRepository extends JpaRepository<Products, Integer> {
             "                                                             group by i.product_id)\n" +
             "                      ORDER BY p.price DESC  LIMIT 4" ,nativeQuery = true)
     List<IProductDTO> findNewProduct();
+
+    @Query(value = "SELECT * FROM products p INNER JOIN product_type pt on p.product_type_id = pt.id\n" +
+            "where pt.id = 4 LIMIT 4",nativeQuery = true)
+    List<Products> findProductType();
 }

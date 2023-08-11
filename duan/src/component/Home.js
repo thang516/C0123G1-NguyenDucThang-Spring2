@@ -1,8 +1,9 @@
 
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../css/home.css"
+import * as service from "../service/ProductService"
 import {useNavigate} from "react-router";
 // import {
 //     Breadcrumb,
@@ -15,6 +16,22 @@ import {useNavigate} from "react-router";
 
 export function Home() {
     const navigate = useNavigate();
+    const [product,setProduct] = useState();
+
+    const getAllProductByType = async  () => {
+        const  res = await service.getAllProductByType();
+        setProduct(res);
+        console.log(res)
+    }
+
+    useEffect(() => {
+        getAllProductByType();
+    },[])
+    if(!product){
+        return null
+    }
+
+
     return(
         <>
             {/*<Breadcrumb>*/}
@@ -60,7 +77,7 @@ export function Home() {
             </div>
             <div  style={{ textAlign: "center", paddingBottom: "2rem" }}>
                 <div className="content-p">
-                    <a style={{ color: "black" }} href="">
+                    <a style={{ color: "black" ,    textDecoration: "underline"}} href="">
                         Discover the collection
                     </a>
                 </div>
@@ -92,54 +109,53 @@ export function Home() {
                          display: "grid",
                          gridTemplateColumns: "repeat(2, 0.5fr)",
                          gap: "2rem",
-                         paddingRight: "8rem"
-                     }}
-                >
-                    <div style={{ width: "90%" }}>
-                        <img
-                            src="https://assets.hermes.com/is/image/hermesproduct/1106258+B1_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <div>Domino set</div>
-                        <div>$4,350</div>
-                    </div>
-                    <div style={{ width: "90%" }}>
-                        <img
-                            src="https://assets.hermes.com/is/image/hermesproduct/1062208+52_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <div>  Openwork bracelet GM</div>
-                        <div>$370</div>
-                    </div>
-                    <div style={{ width: "90%" }}>
-                        <img
-                            src="https://assets.hermes.com/is/image/hermesproduct/1109078+92_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <div>Photo album GM</div>
-                        <div>$1,350</div>
-                    </div>
-                    <div style={{ width: "90%" }}>
-                        <img
-                            src="https://assets.hermes.com/is/image/hermesproduct/1071338+92_set?a=a&size=3000,3000&extend=300,300,300,300&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <div>Limited edition magnolia charm</div>
-                        <div>$570</div>
-                    </div>
+                         paddingRight: "8rem"  }} >
+
+
+                        {
+                            product && product.map((v) =>(
+                                <div key={v.id} style={{ width: "90%" }}>
+                                <img
+                                    src={v.img}
+                                    className="card-img-top"
+                                    alt="..."/>
+                            <div>{v.nameProduct}</div>
+                            <div>{v.price}</div>
+                                </div>
+
+                            ))
+                        }
+
+
+                {/*    <div style={{ width: "90%" }}>*/}
+                {/*        <img*/}
+                {/*            src="https://assets.hermes.com/is/image/hermesproduct/1062208+52_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                {/*            className="card-img-top"*/}
+                {/*            alt="..."*/}
+                {/*        />*/}
+                {/*        <div>  Openwork bracelet GM</div>*/}
+                {/*        <div>$370</div>*/}
+                {/*    </div>*/}
+                {/*    <div style={{ width: "90%" }}>*/}
+                {/*        <img*/}
+                {/*            src="https://assets.hermes.com/is/image/hermesproduct/1109078+92_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                {/*            className="card-img-top"*/}
+                {/*            alt="..."*/}
+                {/*        />*/}
+                {/*        <div>Photo album GM</div>*/}
+                {/*        <div>$1,350</div>*/}
+                {/*    </div>*/}
+                {/*    <div style={{ width: "90%" }}>*/}
+                {/*        <img*/}
+                {/*            src="https://assets.hermes.com/is/image/hermesproduct/1071338+92_set?a=a&size=3000,3000&extend=300,300,300,300&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                {/*            className="card-img-top"*/}
+                {/*            alt="..."*/}
+                {/*        />*/}
+                {/*        <div>Limited edition magnolia charm</div>*/}
+                {/*        <div>$570</div>*/}
+                {/*    </div>*/}
                 </div>
             </div>
-
-
-
-
-
-
-
 
 
                 <div   style={{ textAlign: "center", marginTop: "3rem" }}>

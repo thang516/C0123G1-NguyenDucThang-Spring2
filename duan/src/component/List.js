@@ -8,6 +8,7 @@ import {useNavigate} from "react-router";
 import * as service from "../service/ProductService"
 import {getAll} from "../service/ProductService";
 import {Link} from "react-router-dom";
+import {FormattedNumber} from "react-intl";
 
 
 
@@ -338,14 +339,21 @@ export function List() {
                                 <p className="card-text">
                                     {p.nameProduct}
                                 </p>
-                                <p>${p.price}</p>
+                                <p>$
+                                    <FormattedNumber
+                                        value={p?.price}
+                                        currency="USD"
+                                        minimumFractionDigits={0}>
+                                    </FormattedNumber>
+
+                                </p>
                             </div>
                         </div>
                     ))}
             </div>
             <div style={{textAlign: "center"}}>
                 <button onClick={() => getAllProducts(page)}
-                        style={{backgroundColor: "whiteSmoke", fontSize: "20px"}}>Load more
+                        style={{backgroundColor: "whiteSmoke", fontSize: "20px",    border: "1px solid", width: "95%",margin: "20px 0px"}}>Load more
                 </button>
             </div>
 

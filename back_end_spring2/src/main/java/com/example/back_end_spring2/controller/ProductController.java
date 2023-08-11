@@ -4,9 +4,11 @@ package com.example.back_end_spring2.controller;
 import com.example.back_end_spring2.DTO.IProductDTO;
 import com.example.back_end_spring2.DTO.ProductDTO;
 import com.example.back_end_spring2.model.Images;
+import com.example.back_end_spring2.model.ProductType;
 import com.example.back_end_spring2.model.Products;
 import com.example.back_end_spring2.service.IImageService;
 import com.example.back_end_spring2.service.IProductService;
+import com.example.back_end_spring2.service.IProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,8 @@ public class ProductController {
     private IImageService iImageService;
     @Autowired
     private IProductService productService ;
+    @Autowired
+    private IProductTypeService productTypeService ;
 
     @GetMapping("")
     public ResponseEntity<Page<IProductDTO>> getAll (@RequestParam(value = "page",defaultValue = "0") Integer page,
@@ -125,5 +129,14 @@ public class ProductController {
         }
             return new ResponseEntity<>(products,HttpStatus.OK);
     }
+    @GetMapping("/type")
+    public ResponseEntity<List<Products>> getProductType(){
+        List<Products> productDTOS = productService.findProductType();
+        if(productDTOS.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productDTOS,HttpStatus.OK);
+    }
+
 
 }

@@ -19,7 +19,7 @@ public class ShoppingService implements IShoppingService{
     private IShoppingRepository shoppingRepository ;
     @Override
     public List<ShoppingCards> getShoppingCart(Integer id) {
-        return shoppingRepository.findAllByCustomers_Id(id);
+        return shoppingRepository.findAllByCustomers(id);
     }
 
     @Override
@@ -58,6 +58,7 @@ public class ShoppingService implements IShoppingService{
     public void deleteC(Integer id) {
         shoppingRepository.deleteById(id);
     }
+
 
 
 }

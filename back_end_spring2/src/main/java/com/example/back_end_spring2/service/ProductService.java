@@ -2,6 +2,7 @@ package com.example.back_end_spring2.service;
 
 import com.example.back_end_spring2.DTO.IProductDTO;
 import com.example.back_end_spring2.DTO.ProductDTO;
+import com.example.back_end_spring2.model.ProductType;
 import com.example.back_end_spring2.model.Products;
 import com.example.back_end_spring2.repository.IProductRepository;
 import org.springframework.beans.BeanUtils;
@@ -48,6 +49,11 @@ public class ProductService implements IProductService{
     @Override
     public List<IProductDTO> findNewProduct() {
         return productRepository.findNewProduct();
+    }
+
+    @Override
+    public List<Products> findProductType() {
+        return productRepository.findProductType();
     }
 
 

@@ -12,9 +12,10 @@ import java.util.List;
 @Repository
 public interface IShoppingRepository extends JpaRepository<ShoppingCards,Integer> {
 
-    List<ShoppingCards> findAllByCustomers_Id(Integer id);
-
 
     @Query(value = "SELECT * FROM shopping_cards sp WHERE sp.customers_id = :customer_id AND sp.products_id= :product_id",nativeQuery = true)
     ShoppingCards getToCart(@Param("customer_id") Integer customer_id,@Param("product_id") Integer product_id);
+
+    @Query(value = "SELECT sp.* FROM shopping_cards sp  INNER  JOIN customers c on sp.customers_id = c.id WHERE sp.customers_id = :id",nativeQuery = true)
+    List<ShoppingCards> findAllByCustomers(@Param("id") Integer id);
 }

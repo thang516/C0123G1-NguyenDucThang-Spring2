@@ -7,9 +7,10 @@ import { Link, NavLink } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
-export function Header() {
+import {useFashion} from "../contexts/FashionContext";
 
+export function Header() {
+    const {quantityCard, setQuantityCard} = useFashion();
     const [isLogin, setIsLogin] = useState();
     const token = localStorage.getItem('token');
     const currentUserName = localStorage.getItem('username');
@@ -56,8 +57,6 @@ export function Header() {
     const navigate = useNavigate();
     return (
         <>
-
-
             <header id="header" className="header d-flex align-items-center">
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
                     <div className="col-md-4">
@@ -153,7 +152,7 @@ export function Header() {
 
                                     <div>
                                         <i className="fa-sharp fa-solid fa-bag-shopping" />
-                                        <sup>5</sup>
+                                        {quantityCard > 0 && <sup>{quantityCard}</sup>}
                                     </div>
                                     Cart
                                 </li>

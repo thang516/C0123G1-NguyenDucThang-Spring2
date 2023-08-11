@@ -63,7 +63,6 @@ export function CustomerList() {
 
     return (
 
-
         <>
             <div style={{textAlign:"center"}}>
                 <h1>Customer list</h1>

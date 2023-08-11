@@ -1,5 +1,17 @@
 import axios from "axios";
 
+
+
+export async function getAllProductByType() {
+    try{
+        const  result = await axios.get(`http://localhost:8080/api/products/type`)
+        return  result.data
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+
 export async function productNew() {
     try{
         const  result = await axios.get(`http://localhost:8080/api/products/new-product`)
@@ -29,15 +41,30 @@ export async function deleteById(id) {
     }
 }
 
-
-const username = localStorage.getItem('username');
-
 export async function addToCart(products, amount) {
-    try{
-      return   await axios.post(`http://localhost:8080/api/shopping/create/${username}/${products}/${amount}`);
+    const token = localStorage.getItem('token')
+    const newValue = {
+        products : products,
+        amount :amount
+    }
 
-    }catch (e) {
-        console.log(e)
+    const id = products.id;
+
+    if(token!== null){
+        try {
+            const result = await axios.post(`http://localhost:8080/api/shopping/create/${id}/${amount}` ,"",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
+            return result.data
+        } catch (error) {
+            console.log(error)
+        }
+    }else {
+        const res = await axios.post("http://localhost:8080/api/shopping", newValue,
+            {withCredentials: true})
     }
 
 }
@@ -54,14 +81,20 @@ export async function calculate(id, index) {
 }
 
 
-export async function getAllShopping(username) {
-    try{
-        const  res = await axios.get(`http://localhost:8080/api/shopping/${username}`);
-        return res.data;
-    }catch (e) {
-        console.log(e)
-    }
+export async function getAllShopping() {
 
+    const token = localStorage.getItem('token')
+    try {
+        const result = await axios.get(`http://localhost:8080/api/shopping`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+        return result.data
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 

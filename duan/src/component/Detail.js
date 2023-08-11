@@ -14,26 +14,31 @@ import {
     AccordionIcon, Breadcrumb, BreadcrumbItem, BreadcrumbLink,
 } from '@chakra-ui/react'
 import {useNavigate, useParams} from "react-router";
+import {useFashion} from "../contexts/FashionContext";
+import {FormattedNumber} from "react-intl";
 
 
 export function Detail() {
+    const  { setQuantityCard } = useFashion();
     const navigate = useNavigate();
     const [product, setProduct] = useState();
     const [productNew, setProductNew] = useState();
     const [descriptions, setDescription] = useState([]);
     const [currentColor, setCurrentColor] = useState(0);
     const [img, setImg] = useState([]);
-    const [imgSel, setImgSel] = useState('');
+ const [imgSel, setImgSel] = useState('');
     // const [imgMain,setImgMain] =useState();
     const param = useParams();
 
     const addToCart = async (products, amount) => {
         try {
-            await service.addToCart(products, amount)
-            toast.success(`Add ${amount} successfully ${product.nameProduct} products add to your card `)
+            await service.addToCart(products, amount).then(() => setQuantityCard(prev => prev + 1))
+            toast.success(` This item has been added to the cart `  )
+
         } catch (e) {
             toast.error(e);
         }
+
 
     }
 
@@ -50,9 +55,7 @@ export function Detail() {
         setImgSel(res[0].imgURL)
 
         await setDescription(res[0].product.description.split("."))
-        // console.log(res)
-        // console.log(res[0].product.description)
-        // console.log(res[0].product.description.split("."))
+
     }
 
 
@@ -70,6 +73,10 @@ export function Detail() {
         return null
     }
 
+    const handleAddCard = () => {
+        addToCart(product, 1);
+    }
+    console.log(product)
 
     return (
         <>
@@ -118,54 +125,7 @@ export function Detail() {
 
                             <h4 className="text-center" style={{marginTop:"3%"}}>The Perfect Partner</h4>
 
-                        <div className="css-im  d-flex " style={{marginRight: "2.5rem",marginTop:"-5%"}} >
-                            {/*<h4 style={{marginBottom: "-4rem", marginTop: "2rem"}}>The Perfect Partner</h4>*/}
-                            {/*<div style={{display: "flex", marginTop: " 5rem", gap: "1rem"}}>*/}
-                            {/*    <div className="card"*/}
-                            {/*         style={{width: "100%", border: "none", backgroundColor: " #f6f1eb"}}>*/}
-                            {/*        <img*/}
-                            {/*            src="https://assets.hermes.com/is/image/hermesproduct/010124P_front_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"*/}
-                            {/*            className="card-img-top" alt="..."/>*/}
-                            {/*        <div style={{paddingTop: "0.5rem"}}>*/}
-                            {/*            Iskender highball glass*/}
-                            {/*        </div>*/}
-                            {/*        <div>$590</div>*/}
-
-                            {/*    </div>*/}
-                            {/*    <div className="card"*/}
-                            {/*         style={{width: "100%", border: "none", backgroundColor: "#f6f1eb"}}>*/}
-                            {/*        <img*/}
-                            {/*            src="https://assets.hermes.com/is/image/hermesproduct/311602M%2001_wornsquare_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"*/}
-                            {/*            className="card-img-top" alt="..."/>*/}
-                            {/*        <div style={{paddingTop: "0.5rem"}}>*/}
-                            {/*            La Source de Pegase ashtray*/}
-                            {/*        </div>*/}
-                            {/*        <div>$660</div>*/}
-                            {/*    </div>*/}
-                            {/*    <div className="card"*/}
-                            {/*         style={{width: "100%", border: "none", backgroundColor: "#f6f1eb"}}>*/}
-                            {/*        <img*/}
-                            {/*            src="https://assets.hermes.com/is/image/hermesproduct/800618E%2001_worn_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"*/}
-                            {/*            className="card-img-top" alt="..."/>*/}
-                            {/*        <div style={{paddingTop: "0.5rem"}}>*/}
-                            {/*            Reversible dog mat*/}
-                            {/*        </div>*/}
-                            {/*        <div>$1,100</div>*/}
-                            {/*    </div>*/}
-                            {/*    <div className="card"*/}
-                            {/*         style={{width: "100%", border: "none", backgroundColor: "#f6f1eb"}}>*/}
-                            {/*        <img*/}
-                            {/*            src="https://assets.hermes.com/is/image/hermesproduct/3H3700D8AT_worn_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"*/}
-                            {/*            className="card-img-top" alt="..."/>*/}
-
-                            {/*        <div style={{paddingTop: "0.5rem"}}>*/}
-                            {/*            Briana swimsuit*/}
-                            {/*        </div>*/}
-                            {/*        <div>$590</div>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-
-                            {/*style={{marginBottom: "-4rem", marginTop: "2rem"}}*/}
+                        <div className="css-im  d-flex " style={{marginRight: "2.5rem",marginTop:"-5%",gap:"20px"}} >
 
                             {
                                 productNew && productNew.map((p)=>(
@@ -180,6 +140,12 @@ export function Detail() {
                                     {p.nameProduct}
                                 </div>
                                 <div>{p.price}</div>
+
+                                    <FormattedNumber
+                                        value={p?.price}
+                                        currency="USD"
+                                        minimumFractionDigits={0}>
+                                    </FormattedNumber>
 
                                 </div>
                                 </div>
@@ -243,11 +209,12 @@ export function Detail() {
                     <div style={{marginTop: "2rem"}}>
                         <div style={{display: "flex", justifyContent: "space-between"}}>
                             <div>
-                                {product.colors.nameColor}
-                            </div>
-                            <div>
                                 color
                             </div>
+                            <div>
+                                {product.colors.nameColor}
+                            </div>
+
                         </div>
 
 
@@ -292,13 +259,12 @@ export function Detail() {
                         </div>
 
                         <div style={{justifyContent: "center", textAlign: "center"}}>
-                            <button onClick={() => addToCart(product.id, 1)} style={{marginTop: "2rem"}}
+                            <button onClick={handleAddCard} style={{marginTop: "2rem"}}
                                     className="btn btn-dark">Add to card
                             </button>
                         </div>
                         <div style={{paddingTop: "2rem"}}>
                             {descriptions.map((value, index) =>
-
                                 <p key={index}><i style={{fontSize : "8px",margin:"0 2px"}} className="fa-sharp fa-solid fa-circle fa-flip-horizontal fa-2xs"></i>{value}</p>
                             )}
                         </div>
