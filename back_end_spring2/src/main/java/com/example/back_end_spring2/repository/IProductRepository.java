@@ -92,4 +92,23 @@ public interface IProductRepository extends JpaRepository<Products, Integer> {
     @Query(value = "SELECT * FROM products p INNER JOIN product_type pt on p.product_type_id = pt.id\n" +
             "where pt.id = 4 LIMIT 4",nativeQuery = true)
     List<Products> findProductType();
+    @Query(value = "SELECT * FROM products p\n" +
+            "                  INNER JOIN product_type pt ON p.product_type_id = pt.id\n" +
+            "WHERE pt.id = 2\n" +
+            "ORDER BY RAND()\n" +
+            "LIMIT 4;",nativeQuery = true)
+    List<Products> findProduct();
+    @Query(value = "SELECT\n" +
+            "        p.*,i.*,c.*\n" +
+            "FROM products p\n" +
+            "         INNER JOIN colors c on c.id = p.colors_id\n" +
+            "         INNER JOIN product_type pt on p.product_type_id = pt.id\n" +
+            "         INNER JOIN images i on p.id = i.product_id\n" +
+            "WHERE p.is_delete = FALSE\n" +
+            "\n" +
+            "  AND p.name_product LIKE :nameProduct\n" +
+            "  AND i.id IN (select min(i.id)\n" +
+            "               from images i\n" +
+            "               group by i.product_id)",nativeQuery = true)
+    List<Products> findColor(@Param("nameProduct") String nameProduct);
 }

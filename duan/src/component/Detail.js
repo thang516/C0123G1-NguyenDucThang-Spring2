@@ -23,6 +23,32 @@ export function Detail() {
     const navigate = useNavigate();
     const [product, setProduct] = useState();
     const [productNew, setProductNew] = useState();
+    const [productColor, setProductColor] = useState();
+
+    // const colors = [
+    //     { name: 'red', hex: '#FF0000' },
+    //     { name: 'green', hex: '#00FF00' },
+    //     { name: 'blue', hex: '#0000FF' },
+    //     { name: 'yellow', hex: '#FFFF00' },
+    //     { name: 'black', hex: '#000000' },
+    //     { name: 'white', hex: '#FFFFFF' },
+    //     { name: 'purple', hex: '#800080' },
+    //     { name: 'pink', hex: '#FFC0CB' },
+    //     { name: 'orange', hex: '#FFA500' },
+    // ];
+
+    const colors = {
+        red: '#FF0000',
+        green: '#00FF00',
+        blue: '#0000FF',
+        yellow: '#FFFF00',
+        black: '#000000',
+        white: '#FFFFFF',
+        purple: '#800080',
+        pink: '#FFC0CB',
+        orange: '#FFA500',
+    };
+
     const [descriptions, setDescription] = useState([]);
     const [currentColor, setCurrentColor] = useState(0);
     const [img, setImg] = useState([]);
@@ -55,15 +81,17 @@ export function Detail() {
         setImgSel(res[0].imgURL)
 
         await setDescription(res[0].product.description.split("."))
-
+        colorInProduct(res[0].product.nameProduct);
     }
 
-
-
+    const colorInProduct = async (nameProduct) => {
+        const res = await  service.getColor(nameProduct);
+        setProductColor(res)
+    }
 
     useEffect(() => {
-        detailProduct()
-        getProductNew()
+        detailProduct();
+        getProductNew();
     }, [])
 
     if (!product) {
@@ -76,7 +104,10 @@ export function Detail() {
     const handleAddCard = () => {
         addToCart(product, 1);
     }
-    console.log(product)
+
+
+
+
 
     return (
         <>
@@ -153,46 +184,6 @@ export function Detail() {
                                 ))
                             }
 
-
-
-
-
-                    {/*        <div>*/}
-                    {/*            <h4 style={{marginBottom: "-4rem", marginTop: "2rem"}}>Keep exploring</h4>*/}
-                    {/*            <div style={{display: "flex", marginTop: "5rem", gap: " 1rem"}}>*/}
-                    {/*                <div className="card"*/}
-                    {/*                     style={{width: " 25%", border: " none", backgroundColor: "#f6f1eb"}}>*/}
-                    {/*                    <img*/}
-                    {/*                        src="https://assets.hermes.com/is/image/hermesproduct/103192M%2003_flat_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"*/}
-                    {/*                        className="card-img-top" alt="..."/>*/}
-                    {/*                    <div style={{paddingTop: "0.5rem"}}>*/}
-                    {/*                        Stairs bath towel*/}
-                    {/*                    </div>*/}
-                    {/*                    <div>$340</div>*/}
-                    {/*                </div>*/}
-                    {/*                <div className="card"*/}
-                    {/*                     style={{width: " 25%", border: " none", backgroundColor: "#f6f1eb"}}>*/}
-                    {/*                    <img*/}
-                    {/*                        src="https://assets.hermes.com/is/image/hermesproduct/103192M%2003_flat_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"*/}
-                    {/*                        className="card-img-top" alt="..."/>*/}
-                    {/*                    <div style={{paddingTop: "0.5rem"}}>*/}
-                    {/*                        Stairs washcloth*/}
-                    {/*                    </div>*/}
-                    {/*                    <div>$70</div>*/}
-                    {/*                </div>*/}
-                    {/*                <div className="card"*/}
-                    {/*                     style={{width: " 25%", border: " none", backgroundColor: "#f6f1eb"}}>*/}
-                    {/*                    <img*/}
-                    {/*                        src="https://assets.hermes.com/is/image/hermesproduct/103191M%2003_flat_wm_1?size=3000%2C3000&extend=0%2C0%2C0%2C0&align=0%2C0&$product_item_grid_g$&wid=400&hei=400"*/}
-                    {/*                        className="card-img-top" alt="..."/>*/}
-                    {/*                    <div style={{paddingTop: "0.5rem"}}>*/}
-                    {/*                        Stairs towel*/}
-                    {/*                    </div>*/}
-                    {/*                    <div>$170</div>*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-
                         </div>
                     </div>
                 </div>
@@ -220,43 +211,53 @@ export function Detail() {
 
                         <div style={{display: "flex", justifyContent: "center"}}>
                             <div className="color-click">
-                                <div className={`choose-color ${currentColor == 0 ? 'active' : ''}`}>
-                                    <button
-                                        style={{
-                                            backgroundColor: "#d2756c",
-                                            height: "2.5rem",
-                                            width: "2.5rem",
-                                        }}
-                                        onClick={() => setCurrentColor(0)}
-                                    />
-                                </div>
-
-                                <div className={`choose-color ${currentColor == 1 ? 'active' : ''}`}>
-                                    <button
-                                        style={{
-                                            backgroundColor: "#d2756c",
-                                            height: "2.5rem",
-                                            width: "2.5rem",
-                                        }}
-                                        onClick={() => setCurrentColor(1)}
-                                    />
-                                </div>
 
 
-                                <div className={`choose-color ${currentColor == 2 ? 'active' : ''}`}>
-                                    <button
-                                        style={{
-                                            backgroundColor: "#d2756c",
-                                            height: "2.5rem",
-                                            width: "2.5rem",
-                                        }}
-                                        onClick={() => setCurrentColor(2)}
-                                    />
+                                {
+                                    productColor && productColor.map((cl) =>(
+
+                                <div key={cl.id}  className={`choose-color `}>
+
+                                            <button
+                                                    style={{ backgroundColor: colors[cl.colors.nameColor],  height: "2.5rem",  width: "2.5rem",  }}
+                                                // onClick={() => colorInProduct(product.nameProduct)}
+                                            />
+                                            <div>{cl.colors.nameColor}</div>
+
                                 </div>
+
+                                    ))
+                                }
+
+
+                                {/*<div className={`choose-color ${currentColor == 1 ? 'active' : ''}`}>*/}
+                                {/*    <button*/}
+                                {/*        style={{*/}
+                                {/*            backgroundColor: "#d2756c",*/}
+                                {/*            height: "2.5rem",*/}
+                                {/*            width: "2.5rem",*/}
+                                {/*        }}*/}
+                                {/*        onClick={() => setCurrentColor(1)}*/}
+                                {/*    />*/}
+                                {/*</div>*/}
+
+
+                                {/*<div className={`choose-color ${currentColor == 2 ? 'active' : ''}`}>*/}
+                                {/*    <button*/}
+                                {/*        style={{*/}
+                                {/*            backgroundColor: "#d2756c",*/}
+                                {/*            height: "2.5rem",*/}
+                                {/*            width: "2.5rem",*/}
+                                {/*        }}*/}
+                                {/*        onClick={() => setCurrentColor(2)}*/}
+                                {/*    />*/}
+                                {/*</div>*/}
 
 
                             </div>
-                        </div>
+
+
+                                    </div>
 
                         <div style={{justifyContent: "center", textAlign: "center"}}>
                             <button onClick={handleAddCard} style={{marginTop: "2rem"}}

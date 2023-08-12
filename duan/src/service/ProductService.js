@@ -1,5 +1,23 @@
 import axios from "axios";
 
+export async function getColor(nameProduct) {
+    try{
+        const  result = await axios.get(`http://localhost:8080/api/products/color/${nameProduct}`)
+        return  result.data
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+
+export async function getProductHat() {
+    try{
+        const  result = await axios.get(`http://localhost:8080/api/products/products`)
+        return  result.data
+    }catch (e) {
+        console.log(e)
+    }
+}
 
 
 export async function getAllProductByType() {
@@ -32,17 +50,34 @@ export async function getAllCustomer(page) {
 }
 
 
-export async function deleteById(id) {
-    try{
-        await axios.delete("http://localhost:8080/api/shopping/delete/"+id)
+export async function deleteById(id,productId) {
+    const token = localStorage.getItem('token')
+    try {
+        if (token != null){
+            const res = await axios.delete("http://localhost:8080/api/shopping/delete/"+id,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
 
-    }catch (e) {
+                    }
+                })
+            return res.data
+        }
+        else {
+            const res = await axios.delete("http://localhost:8080/api/shopping/remove/"+productId ,
+                {withCredentials: true})
+            return res.data
+        }
+
+    } catch (e) {
         console.log(e)
     }
+
 }
 
 export async function addToCart(products, amount) {
     const token = localStorage.getItem('token')
+
     const newValue = {
         products : products,
         amount :amount
@@ -70,33 +105,56 @@ export async function addToCart(products, amount) {
 }
 
 
-export async function calculate(id, index) {
-    try{
-      await axios.patch(`http://localhost:8080/api/shopping/${index}/${id}`);
+export async function calculate(id, index,productId) {
 
-    }catch (e) {
-        console.log(e)
+    const token = localStorage.getItem('token')
+
+    if(token!== null){
+        try {
+            const result = await axios.patch(`http://localhost:8080/api/shopping/${index}/${id}` ,"",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
+            return result.data
+        } catch (error) {
+            console.log(error)
+        }
+    }else {
+        const res = await axios.patch(`http://localhost:8080/api/shopping/${index}/${productId}`, "",
+            {withCredentials: true})
     }
+
 
 }
 
 
 export async function getAllShopping() {
-
     const token = localStorage.getItem('token')
-    try {
-        const result = await axios.get(`http://localhost:8080/api/shopping`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-        return result.data
-    } catch (error) {
-        console.log(error)
-    }
-}
 
+    try {
+        if (token != null){
+            const res = await axios.get("http://localhost:8080/api/shopping",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+
+                    }
+                })
+            return res.data
+        }
+        else {
+            const res = await axios.get("http://localhost:8080/api/shopping/list-session",
+                {withCredentials: true})
+            return res.data
+        }
+
+    } catch (e) {
+        console.log(e)
+    }
+
+}
 
 export async function detailProduct(id) {
     try{

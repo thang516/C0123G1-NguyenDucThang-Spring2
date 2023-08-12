@@ -24,4 +24,8 @@ public interface IProductService {
 
 
     List<Products> findProductType();
+
+    List<Products> findProducts();
+
+    List<Products> findColor(String nameProduct);
 }

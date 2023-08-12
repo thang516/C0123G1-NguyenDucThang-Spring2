@@ -43,11 +43,13 @@ export function List() {
     useEffect(() => {
         getAllProducts();
         getAllImg()
+
     }, [])
 
     if (!products) {
         return null;
     }
+
     const paginate = (page) => {
         setPage(page)
     }

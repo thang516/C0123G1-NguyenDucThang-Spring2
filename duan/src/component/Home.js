@@ -5,16 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "../css/home.css"
 import * as service from "../service/ProductService"
 import {useNavigate} from "react-router";
-// import {
-//     Breadcrumb,
-//     BreadcrumbItem,
-//     BreadcrumbLink,
-//     BreadcrumbSeparator,
-// } from '@chakra-ui/react'
-//
+import Link from "@mui/material/Link";
+import {AccordionPanel} from "@chakra-ui/react";
+import NavLink from "react-bootstrap/NavLink";
 
 
 export function Home() {
+    const [productHat, setProductsHat] = useState([]);
     const navigate = useNavigate();
     const [product,setProduct] = useState();
 
@@ -24,29 +21,28 @@ export function Home() {
         console.log(res)
     }
 
+    const getAllProductHat = async () => {
+        const res = await  service.getProductHat();
+        setProductsHat(res);
+        console.log(res)
+    }
+
+
     useEffect(() => {
         getAllProductByType();
+        getAllProductHat();
     },[])
     if(!product){
+        return null
+    }
+    if(!productHat){
         return null
     }
 
 
     return(
         <>
-            {/*<Breadcrumb>*/}
-            {/*    <BreadcrumbItem>*/}
-            {/*        <BreadcrumbLink href='/'>Home</BreadcrumbLink>*/}
-            {/*    </BreadcrumbItem>*/}
 
-            {/*    <BreadcrumbItem>*/}
-            {/*        <BreadcrumbLink href='#'>Docs</BreadcrumbLink>*/}
-            {/*    </BreadcrumbItem>*/}
-
-            {/*    <BreadcrumbItem isCurrentPage>*/}
-            {/*        <BreadcrumbLink href='#'>Breadcrumb</BreadcrumbLink>*/}
-            {/*    </BreadcrumbItem>*/}
-            {/*</Breadcrumb>*/}
             {/*<marquee behavior="scroll" direction="right" >Thắng Trai Hàn</marquee>*/}
                 <div style={{ justifyContent: "center", textAlign: "center" }}>
                     <h3 style={{ paddingTop: "2rem" }}> SUSPENDED TIME</h3>
@@ -91,10 +87,10 @@ export function Home() {
                 }}  >
 
                 {/*<video  className="content-vie-left"  style={{*/}
-                {/*   */}
+
                 {/*}} autoPlay loop muted playsInline="playsinline" preload="metadata">*/}
                 {/*    <source*/}
-                {/*        src="/anh/video.mp4"*/}
+                {/*        src="https://assets.hermes.com/is/content/hermesedito/169_ECOM_LAPIN_MOVIE-AVS.m3u8"*/}
                 {/*        type="video/mp4"*/}
                 {/*    />*/}
                 {/*</video>*/}
@@ -115,14 +111,13 @@ export function Home() {
                         {
                             product && product.map((v) =>(
                                 <div key={v.id} style={{ width: "90%" }}>
-                                <img
-                                    src={v.img}
-                                    className="card-img-top"
-                                    alt="..."/>
-                            <div>{v.nameProduct}</div>
-                            <div>{v.price}</div>
-                                </div>
 
+                                    <div onClick={() => navigate(`/detail/${v.id}`)}>
+                                        <img src={v.img}  className="card-img-top" />
+                                    </div>
+                                    <div>{v.nameProduct}</div>
+                                    <div>{v.price}</div>
+                                </div>
                             ))
                         }
 
@@ -345,42 +340,57 @@ export function Home() {
                             paddingRight: "8rem"
                         }}
                     >
-                        <div style={{ width: "90%" }}>
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/231031N+FV_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <div>Arizona hat</div>
-                            <div>$870</div>
-                        </div>
-                        <div style={{ width: "90%" }}>
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/079065CAAA_set?a=a&size=3000,3000&extend=300,300,300,300&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <div>Orange Bag charm</div>
-                            <div>$480</div>
-                        </div>
-                        <div style={{ width: "90%" }}>
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/400210M+03_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <div>Oseraie Color round tray</div>
-                            <div>$2,475</div>
-                        </div>
-                        <div style={{ width: "90%" }}>
-                            <img
-                                src="https://assets.hermes.com/is/image/hermesproduct/046031P_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <div>Soleil d’Hermès mug n°1</div>
-                            <div>$210</div>
-                        </div>
+                        {
+                            productHat && productHat.map((pa) => (
+
+                                <div key={pa.id} style={{ width: "90%" }}>
+                                    <div onClick={() => navigate(`/detail/${pa.id}`)}>
+                                        <img src={pa.img}  className="card-img-top" />
+                                    </div>
+                                    <div>{pa.nameProduct}</div>
+                                    <div>${pa.price}</div>
+                                </div>
+                            ))
+                        }
+
+
+
+                        {/*<div style={{ width: "90%" }}>*/}
+                        {/*    <img*/}
+                        {/*        src="https://assets.hermes.com/is/image/hermesproduct/231031N+FV_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                        {/*        className="card-img-top"*/}
+                        {/*        alt="..."*/}
+                        {/*    />*/}
+                        {/*    <div>Arizona hat</div>*/}
+                        {/*    <div>$870</div>*/}
+                        {/*</div>*/}
+                        {/*<div style={{ width: "90%" }}>*/}
+                        {/*    <img*/}
+                        {/*        src="https://assets.hermes.com/is/image/hermesproduct/079065CAAA_set?a=a&size=3000,3000&extend=300,300,300,300&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                        {/*        className="card-img-top"*/}
+                        {/*        alt="..."*/}
+                        {/*    />*/}
+                        {/*    <div>Orange Bag charm</div>*/}
+                        {/*    <div>$480</div>*/}
+                        {/*</div>*/}
+                        {/*<div style={{ width: "90%" }}>*/}
+                        {/*    <img*/}
+                        {/*        src="https://assets.hermes.com/is/image/hermesproduct/400210M+03_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                        {/*        className="card-img-top"*/}
+                        {/*        alt="..."*/}
+                        {/*    />*/}
+                        {/*    <div>Oseraie Color round tray</div>*/}
+                        {/*    <div>$2,475</div>*/}
+                        {/*</div>*/}
+                        {/*<div style={{ width: "90%" }}>*/}
+                        {/*    <img*/}
+                        {/*        src="https://assets.hermes.com/is/image/hermesproduct/046031P_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                        {/*        className="card-img-top"*/}
+                        {/*        alt="..."*/}
+                        {/*    />*/}
+                        {/*    <div>Soleil d’Hermès mug n°1</div>*/}
+                        {/*    <div>$210</div>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
 

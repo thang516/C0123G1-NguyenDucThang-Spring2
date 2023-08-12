@@ -40,23 +40,48 @@ public class ShoppingController {
 
 
     @GetMapping("")
-    public ResponseEntity<List<ShoppingCards>> getCard(HttpServletRequest httpServletRequest){
+    public ResponseEntity<List<ShoppingCards>> getCard(HttpServletRequest httpServletRequest) {
         String header = httpServletRequest.getHeader("Authorization");
         String token = header.substring(7);
-        String username  =  jwtTokenUtil.getUsernameFromToken(token);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
 
         Customers customers = customerService.getCustomer(username);
-        if(customers == null){
+        if (customers == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(shoppingService.getShoppingCart(customers.getId()),HttpStatus.OK);
+        return new ResponseEntity<>(shoppingService.getShoppingCart(customers.getId()), HttpStatus.OK);
     }
+
     @PatchMapping("/{index}/{id}")
-    public ResponseEntity<?> setCart(@PathVariable Integer index,@PathVariable Integer id){
+    public ResponseEntity<?> setCart(@PathVariable Integer index, @PathVariable Integer id, HttpServletRequest httpServletRequest) {
+        List<ShoppingCards> cardsList = new ArrayList<>();
+        HttpSession session = httpServletRequest.getSession();
         try {
-            shoppingService.setCart(index,id);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication.getPrincipal().equals("anonymousUser")) {
+                cardsList = (List<ShoppingCards>) session.getAttribute("cart");
+                for (int i = 0; i < cardsList.size(); i++) {
+                    if (cardsList.get(i).getProducts().getId() == id) {
+                        if (index == 0) {
+                            cardsList.get(i).setPrice(cardsList.get(i).getProducts().getPrice() * (cardsList.get(i).getAmount() - 1));
+                            cardsList.get(i).setAmount(cardsList.get(i).getAmount() - 1);
+
+                        } else {
+                            cardsList.get(i).setPrice(cardsList.get(i).getProducts().getPrice() * (cardsList.get(i).getAmount() + 1));
+                            cardsList.get(i).setAmount(cardsList.get(i).getAmount() + 1);
+
+                        }
+                    }
+                }
+                session.setAttribute("cart", cardsList);
+                return new ResponseEntity<>(session.getAttribute("cart"), HttpStatus.OK);
+
+            }
+
+
+            shoppingService.setCart(index, id);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -64,24 +89,24 @@ public class ShoppingController {
 
 
     @PostMapping("/create/{id}/{amount}")
-    public ResponseEntity<?> createCart(@PathVariable Integer id,@PathVariable Integer amount,HttpServletRequest httpServletRequest){
+    public ResponseEntity<?> createCart(@PathVariable Integer id, @PathVariable Integer amount, HttpServletRequest httpServletRequest) {
 
         String header = httpServletRequest.getHeader("Authorization");
         String token = header.substring(7);
-        String username  =  jwtTokenUtil.getUsernameFromToken(token);
-        try{
-            Products products =productService.getProduct(id);
-                Customers customers = customerService.getCustomer(username);
-            shoppingService.createCart(customers,products,amount);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        try {
+            Products products = productService.getProduct(id);
+            Customers customers = customerService.getCustomer(username);
+            shoppingService.createCart(customers, products, amount);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<List<ShoppingCards>> delete(@PathVariable Integer id ){
+    public ResponseEntity<List<ShoppingCards>> delete(@PathVariable Integer id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -99,13 +124,12 @@ public class ShoppingController {
             for (int i = 0; i < cardsList.size(); i++) {
                 if (shoppingCards.getProducts().getId() == cardsList.get(i).getProducts().getId()) {
                     cardsList.get(i).setAmount(cardsList.get(i).getAmount() + shoppingCards.getAmount());
+                    cardsList.get(i).setPrice(cardsList.get(i).getPrice() + shoppingCards.getProducts().getPrice());
                     count++;
                 }
             }
             if (count == 0) {
-                cardsList.add(shoppingCards);
-            } else {
-                session.setAttribute("cart", cardsList);
+                shoppingCards.setPrice(shoppingCards.getProducts().getPrice() * shoppingCards.getAmount());
                 cardsList.add(shoppingCards);
             }
 
@@ -115,15 +139,32 @@ public class ShoppingController {
     }
 
 
-    @GetMapping("/session-card")
+    @GetMapping("/list-session")
     public ResponseEntity<?> getAllCard(HttpServletRequest httpServletRequest) {
-        List<ShoppingCards> cardsList = new ArrayList<>();
-        HttpSession session = httpServletRequest.getSession();
-
-        session.setAttribute("cart", cardsList);
-        return new ResponseEntity<>(session.getAttribute("cart"), HttpStatus.OK);
+        HttpSession httpSession = httpServletRequest.getSession();
+        return new ResponseEntity<>(httpSession.getAttribute("cart"), HttpStatus.OK);
     }
 
+    @DeleteMapping("/remove/{idP}")
+    public ResponseEntity<?> deleteCart(@PathVariable Integer idP, HttpServletRequest httpServletRequest) {
+        HttpSession httpSession = httpServletRequest.getSession();
+        List<ShoppingCards> cardsList = (List<ShoppingCards>) httpSession.getAttribute("cart");
+
+        if (cardsList != null) {
+            for (int i = 0; i < cardsList.size(); i++) {
+                if (cardsList.get(i).getProducts().getId() == idP) {
+                    cardsList.remove(cardsList.get(i));
+                    break;
+                }
+            }
+
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        httpSession.setAttribute("cart", cardsList);
+
+        return new ResponseEntity<>(httpSession.getAttribute("cart"), HttpStatus.OK);
+    }
 
 
 

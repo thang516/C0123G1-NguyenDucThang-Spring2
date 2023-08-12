@@ -129,9 +129,28 @@ public class ProductController {
         }
             return new ResponseEntity<>(products,HttpStatus.OK);
     }
+
+    @GetMapping("/products")
+    public ResponseEntity<List<Products>> products(){
+        List<Products> products = productService.findProducts();
+        if(products.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(products,HttpStatus.OK);
+    }
+
     @GetMapping("/type")
     public ResponseEntity<List<Products>> getProductType(){
         List<Products> productDTOS = productService.findProductType();
+        if(productDTOS.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productDTOS,HttpStatus.OK);
+    }
+
+    @GetMapping("/color/{nameProduct}")
+    public ResponseEntity<List<Products>> getColor(@PathVariable String nameProduct){
+        List<Products> productDTOS = productService.findColor(nameProduct);
         if(productDTOS.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

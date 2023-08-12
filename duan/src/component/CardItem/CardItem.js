@@ -14,8 +14,8 @@ export function CardItem() {
         setShopping(res)
     }
 
-    const calculate = async (id,index) => {
-         await  service.calculate(id,index);
+    const calculate = async (id,index,productId) => {
+         await  service.calculate(id,index,productId);
         getAllShopping();
     }
 

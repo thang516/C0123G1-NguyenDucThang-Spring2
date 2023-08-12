@@ -8,13 +8,6 @@ import {useFashion} from "../contexts/FashionContext";
 
 export function Cards() {
 
-
-
-
-
-
-
-
     const {quantityCard, setQuantityCard} = useFashion();
     const username = localStorage.getItem('username');
     const [shopping, setShopping] = useState([]);
@@ -34,8 +27,8 @@ export function Cards() {
 
     }
 
-    const calculate = async (id,index) => {
-        await  service.calculate(id,index);
+    const calculate = async (id,index,productId) => {
+        await  service.calculate(id,index,productId);
         getAllShopping();
     }
 
@@ -50,8 +43,8 @@ export function Cards() {
     //     setQuantity(sum)
     // }, [list]);
 
-    const deleteById = async (id) => {
-        await  service.deleteById(id)
+    const deleteById = async (id,productId) => {
+        await  service.deleteById(id,productId)
         sweat.fire({
             icon: "success",
             title: "SUCCESSFULLY",
@@ -70,7 +63,7 @@ export function Cards() {
     // }
 
 
-    function deleteShopping(id,nameProduct) {
+    function deleteShopping(id,nameProduct,productId) {
         sweat.fire({
             icon: "warning",
             title: `Do you want to delete ${nameProduct} ?`,
@@ -78,7 +71,7 @@ export function Cards() {
             confirmButtonText: "OK"
         }).then(async (isDelete) => {
             if(isDelete.isConfirmed){
-                deleteById(id)
+                deleteById(id,productId)
             }
         })
     }
@@ -91,11 +84,6 @@ export function Cards() {
                     <h4 className={'quantity'}>
                         {`You have ${quantityCard} items in your cart.`}
                     </h4>
-
-                    {/*{*/}
-                    {/*    list.map((item,index) => <CardItem key={index} totalQuantity={item.quantity} setQuantity={setQuantity}/>)*/}
-                    {/*}*/}
-                    {/*<CardItem/>*/}
 
 
                     {
@@ -112,13 +100,14 @@ export function Cards() {
                                 <div className={'card-item-right'}>
                                     <div className={'title'}>
                                         <p>{s.products.nameProduct}{s.id}</p>
-                                        <button onClick={() => deleteShopping(s.id,s.products.nameProduct)}><i className="fa-sharp fa-light fa-x fa-lg"></i></button>
+                                        <button onClick={() => deleteShopping(s.id,s.products.nameProduct,s.products.id)}><i className="fa-sharp fa-light fa-x fa-lg"></i></button>
                                     </div>
 
 
                                     <div className={'money'}>
                                         <div className="detail">
                                             <span>Color: {s.products.colors.nameColor}</span>
+
                                             {/*<span>Ref. H0009481 01LCW | H0008671J37</span>*/}
                                         </div>
                                         {/*<div className={'box'}>*/}
@@ -131,9 +120,9 @@ export function Cards() {
 
                                         <div className={'box'}>
                                             <button disabled={s.amount === 1} type="button" className="minus"
-                                                     onClick={() => calculate(s.id,0)}><span>-</span></button>
+                                                     onClick={() => calculate(s.id,0,s.products.id)}><span>-</span></button>
                                             <span>{s.amount}</span>
-                                            <button type="button" value="+" className="plus"  onClick={() => calculate(s.id,1)}>
+                                            <button type="button" value="+" className="plus"  onClick={() => calculate(s.id,1,s.products.id)}>
                                                 <span>+</span></button>
                                         </div>
                                         <div className={'price'}>

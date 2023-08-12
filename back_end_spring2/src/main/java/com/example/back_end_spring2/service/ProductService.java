@@ -56,5 +56,15 @@ public class ProductService implements IProductService{
         return productRepository.findProductType();
     }
 
+    @Override
+    public List<Products> findProducts() {
+        return productRepository.findProduct();
+    }
+
+    @Override
+    public List<Products> findColor(String nameProduct) {
+        return productRepository.findColor(nameProduct);
+    }
+
 
 }
