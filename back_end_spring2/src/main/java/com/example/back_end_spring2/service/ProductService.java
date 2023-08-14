@@ -1,5 +1,6 @@
 package com.example.back_end_spring2.service;
 
+import com.example.back_end_spring2.DTO.IImageDTO;
 import com.example.back_end_spring2.DTO.IProductDTO;
 import com.example.back_end_spring2.DTO.ProductDTO;
 import com.example.back_end_spring2.model.ProductType;
@@ -31,7 +32,7 @@ public class ProductService implements IProductService{
 
     @Override
     public Page<IProductDTO> getAllProducts(Pageable pageable, String sortBy, double from, double to, String color, String typeProduct, String nameProduct) {
-        Page<IProductDTO> iProductDTOS = productRepository.getProducts(pageable, from, to,"%" + color + "%" ,"%" + typeProduct + "%" ,"%" + nameProduct + "%");
+        Page<IProductDTO> iProductDTOS = productRepository.getProducts(pageable, from, to,"%" + color + "%" ,"%" + nameProduct + "%","%" + typeProduct + "%" );
 
         return iProductDTOS ;
     }
@@ -62,8 +63,14 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public List<Products> findColor(String nameProduct) {
+    public List<IImageDTO> findColor(String nameProduct) {
         return productRepository.findColor(nameProduct);
+    }
+
+    @Override
+    public Page<IProductDTO> findAllProductByOther(Pageable pageable, String typeProduct, String nameProduct) {
+        Page<IProductDTO> productss = productRepository.findAllProductByOther(pageable,"%" + nameProduct + "%","%" + typeProduct + "%" );
+        return productss ;
     }
 
 

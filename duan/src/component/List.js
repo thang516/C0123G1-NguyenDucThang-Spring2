@@ -16,10 +16,9 @@ export function List() {
 
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [totalPages, setTotalPages] = useState(0);
     const [page, setPage] = useState(0);
 
-    const [sortBy, setSortBy] = useState('');
+    const [sortBy, setSortBy] = useState('highToLow');
     const [price, setPrice] = useState('');
     const [color, setColor] = useState('');
     const [typeProduct, setTypeProduct] = useState('');
@@ -27,24 +26,26 @@ export function List() {
 
     const getAllProducts = async () => {
         const res = await service.getAll(page, sortBy, price, color, typeProduct, nameProduct);
-        // setProducts(res.content);
-        setTotalPages(res.totalPages);
-        setPage(prevState => prevState + 1)
-        setProducts([...products, ...res.content])
+            setProducts([...products, ...res.content])
     }
 
 
-    const getAllImg = async () => {
-        const res = await service.getAllImg();
-        // setImg(res);
-    }
+
+
+    useEffect(() => {
+        const getAllProduct= async () => {
+            const res = await service.getAll(page, sortBy, price, color, typeProduct, nameProduct);
+            setProducts(res.content)
+        }
+        getAllProduct();
+    }, [sortBy,price,color,typeProduct])
+
 
 
     useEffect(() => {
         getAllProducts();
-        getAllImg()
 
-    }, [])
+    }, [page])
 
     if (!products) {
         return null;
@@ -67,138 +68,132 @@ export function List() {
                             type="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            Category
+                            Type Product
                         </button>
                         <ul className="dropdown-menu dropdown-menu-light ">
                             <li>
-                                <a className="dropdown-item active" href="#">
-                                    Action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Another action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Something else here
-                                </a>
+
+
+                                <span onClick={() => setTypeProduct('Bath and beach')} className="dropdown-item active" >
+                                    Bath and beach
+                                </span>
                             </li>
                             <li>
                                 <hr className="dropdown-divider"/>
                             </li>
+
                             <li>
-                                <a className="dropdown-item" href="#">
-                                    Separated link
-                                </a>
+                                <span onClick={() => setTypeProduct('Blankets and pillows')} className="dropdown-item" >
+                                    Blankets and pillows
+                                </span>
+                            </li>
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+
+                            <li>
+                                <span  onClick={() => setTypeProduct('Eclectic clock')}  className="dropdown-item" >
+                                    Eclectic clock
+                                </span>
+                            </li>
+
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+                            <li>
+                                <span  onClick={() => setTypeProduct('Hats and gloves')}  className="dropdown-item" >
+                                    Hats and gloves
+                                </span>
+                            </li>
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+
+                            <li>
+                                <span  onClick={() => setTypeProduct('Ties, bow ties and pocket squares')} className="dropdown-item" >
+                                    Ties, bow ties and pocket squares
+                                </span>
+                            </li>
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+
+                            <li>
+                                <span  onClick={() => setTypeProduct('Silk scarves')} className="dropdown-item" >
+                                    Silk scarves
+                                </span>
                             </li>
                         </ul>
                     </div>
                     <div className="dropdown">
                         <button
-                            style={{backgroundColor: "white", border: "none"}}
-                            className=" dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            Material
-                        </button>
-                        <ul className="dropdown-menu dropdown-menu-light">
-                            <li>
-                                <a className="dropdown-item active" href="#">
-                                    Action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Another action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Something else here
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Separated link
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="dropdown">
-                        <button
-                            style={{backgroundColor: "white", border: "none"}}
-                            className=" dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            Pattern
-                        </button>
-                        <ul className="dropdown-menu dropdown-menu-dark">
-                            <li>
-                                <a className="dropdown-item active" href="#">
-                                    Action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Another action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Something else here
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Separated link
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="dropdown">
-                        <button
-                            style={{backgroundColor: "white", border: "none"}}
-                            className=" dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
+                            style={{backgroundColor: "white", border: "none"}}  className=" dropdown-toggle"  type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false"   >
                             Color
                         </button>
-                        <ul className="dropdown-menu dropdown-menu-dark">
+                        <ul className="dropdown-menu dropdown-menu-light">
+
                             <li>
-                                <a className="dropdown-item active" href="#">
-                                    Action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Another action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Something else here
+                                <a onClick={() => setColor('black')}  className="dropdown-item active" >
+                                    Black
                                 </a>
                             </li>
                             <li>
                                 <hr className="dropdown-divider"/>
                             </li>
                             <li>
-                                <a className="dropdown-item" href="#">
-                                    Separated link
+                                <a  onClick={() => setColor('blue')}  className="dropdown-item" >
+                                   Blue
+                                </a>
+                            </li>
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+                            <li>
+                                <a  onClick={() => setColor('orange')} className="dropdown-item" >
+                                    Orange
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+                            <li>
+                                <a  onClick={() => setColor('pink')}  className="dropdown-item" >
+                                    Pink
+                                </a>
+                            </li>
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+                            <li>
+                                <a  onClick={() => setColor('purple')} className="dropdown-item" >
+                                    Purple
+                                </a>
+                            </li>
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+                            <li>
+                                <a  onClick={() => setColor('yellow')} className="dropdown-item" >
+                                    Yellow
+                                </a>
+                            </li>
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+                            <li>
+                                <a  onClick={() => setColor('white')} className="dropdown-item" >
+                                   White
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr className="dropdown-divider"/>
+                            </li>
+                            <li>
+                                <a onClick={() => setColor('red')} className="dropdown-item" >
+                                    Red
                                 </a>
                             </li>
                         </ul>
@@ -210,30 +205,30 @@ export function List() {
                             type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Price
                         </button>
-                        <ul className="dropdown-menu dropdown-menu-dark">
+                        <ul className="dropdown-menu dropdown-menu-light">
                             <li>
-                                <a className="dropdown-item active" href="#">
-                                    Action
-                                </a>
+                                <span onClick={() => setPrice('0-500')} className="dropdown-item active">
+                                    0$ - 500$
+                                </span>
                             </li>
                             <li>
-                                <a className="dropdown-item" href="#">
-                                    Another action
-                                </a>
+                                <hr className="dropdown-divider"/>
                             </li>
                             <li>
-                                <a className="dropdown-item" href="#">
-                                    Something else here
+                                <a onClick={() => setPrice('500-1000')} className="dropdown-item" >
+                                    500$-1000$
                                 </a>
                             </li>
                             <li>
                                 <hr className="dropdown-divider"/>
                             </li>
                             <li>
-                                <a className="dropdown-item" href="#">
-                                    Separated link
+                                <a onClick={() => setPrice('1001')} className="dropdown-item" >
+                                    1000$
                                 </a>
                             </li>
+
+
                         </ul>
                     </div>
                 </div>
@@ -263,30 +258,21 @@ export function List() {
                             type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Sort
                         </button>
-                        <ul className="dropdown-menu dropdown-menu-dark">
+                        <ul className="dropdown-menu dropdown-menu-light">
                             <li>
-                                <a className="dropdown-item active" href="#">
-                                    Action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Another action
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="#">
-                                    Something else here
-                                </a>
+                                <span onClick={() => setSortBy('lowToHigh')} className="dropdown-item active" >
+                                    Low To High
+                                </span>
                             </li>
                             <li>
                                 <hr className="dropdown-divider"/>
                             </li>
                             <li>
-                                <a className="dropdown-item" href="#">
-                                    Separated link
-                                </a>
+                                <span onClick={() => setSortBy('highToLow')} className="dropdown-item" >
+                                    High To Low
+                                </span>
                             </li>
+
                         </ul>
                     </div>
                 </div>
@@ -354,7 +340,7 @@ export function List() {
                     ))}
             </div>
             <div style={{textAlign: "center"}}>
-                <button onClick={() => getAllProducts(page)}
+                <button onClick={() => setPage(prevState => prevState + 1)}
                         style={{backgroundColor: "whiteSmoke", fontSize: "20px",    border: "1px solid", width: "95%",margin: "20px 0px"}}>Load more
                 </button>
             </div>

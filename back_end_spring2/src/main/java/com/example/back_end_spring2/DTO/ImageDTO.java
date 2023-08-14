@@ -1,44 +1,28 @@
 package com.example.back_end_spring2.DTO;
+
 import com.example.back_end_spring2.model.Images;
+
 import java.util.List;
 
-public class ProductDTO {
+public class ImageDTO {
 
-    private Integer id;
+        private Integer id;
         private String nameProduct;
         private Double price;
         private String description ;
         private List<Images> images ;
         private String colorName;
-    private Integer stockQuantity;
 
-    public ProductDTO(Integer id, String nameProduct, Double price, String description, List<Images> images, Integer stockQuantity,String colorName) {
+    public ImageDTO() {
+    }
+
+    public ImageDTO(Integer id, String nameProduct, Double price, String description, List<Images> images, String colorName) {
         this.id = id;
         this.nameProduct = nameProduct;
         this.price = price;
         this.description = description;
         this.images = images;
-        this.stockQuantity = stockQuantity;
         this.colorName = colorName;
-    }
-
-    public String getColorName() {
-        return colorName;
-    }
-
-    public void setColorName(String colorName) {
-        this.colorName = colorName;
-    }
-
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-
-    public ProductDTO() {
     }
 
     public Integer getId() {
@@ -81,4 +65,11 @@ public class ProductDTO {
         this.images = images;
     }
 
+    public String getColorName() {
+        return colorName;
+    }
+
+    public void setColorName(String colorName) {
+        this.colorName = colorName;
+    }
 }

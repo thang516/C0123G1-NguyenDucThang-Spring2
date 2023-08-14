@@ -1,5 +1,6 @@
 package com.example.back_end_spring2.service;
 
+import com.example.back_end_spring2.DTO.IImageDTO;
 import com.example.back_end_spring2.DTO.IProductDTO;
 import com.example.back_end_spring2.DTO.ProductDTO;
 import com.example.back_end_spring2.model.ProductType;
@@ -27,5 +28,8 @@ public interface IProductService {
 
     List<Products> findProducts();
 
-    List<Products> findColor(String nameProduct);
+    List<IImageDTO> findColor(String nameProduct);
+
+    Page<IProductDTO> findAllProductByOther(Pageable pageable , String typeProduct, String nameProduct);
+
 }

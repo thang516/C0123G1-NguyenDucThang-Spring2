@@ -19,23 +19,13 @@ import {FormattedNumber} from "react-intl";
 
 
 export function Detail() {
-    const  { setQuantityCard } = useFashion();
+    const {setQuantityCard} = useFashion();
     const navigate = useNavigate();
     const [product, setProduct] = useState();
     const [productNew, setProductNew] = useState();
+
     const [productColor, setProductColor] = useState();
 
-    // const colors = [
-    //     { name: 'red', hex: '#FF0000' },
-    //     { name: 'green', hex: '#00FF00' },
-    //     { name: 'blue', hex: '#0000FF' },
-    //     { name: 'yellow', hex: '#FFFF00' },
-    //     { name: 'black', hex: '#000000' },
-    //     { name: 'white', hex: '#FFFFFF' },
-    //     { name: 'purple', hex: '#800080' },
-    //     { name: 'pink', hex: '#FFC0CB' },
-    //     { name: 'orange', hex: '#FFA500' },
-    // ];
 
     const colors = {
         red: '#FF0000',
@@ -52,14 +42,14 @@ export function Detail() {
     const [descriptions, setDescription] = useState([]);
     const [currentColor, setCurrentColor] = useState(0);
     const [img, setImg] = useState([]);
- const [imgSel, setImgSel] = useState('');
+    const [imgSel, setImgSel] = useState('');
     // const [imgMain,setImgMain] =useState();
     const param = useParams();
 
     const addToCart = async (products, amount) => {
         try {
             await service.addToCart(products, amount).then(() => setQuantityCard(prev => prev + 1))
-            toast.success(` This item has been added to the cart `  )
+            toast.success(` This item has been added to the cart `)
 
         } catch (e) {
             toast.error(e);
@@ -68,8 +58,11 @@ export function Detail() {
 
     }
 
+
+
+
     const getProductNew = async () => {
-        const res  = await service.productNew();
+        const res = await service.productNew();
         setProductNew(res)
     }
 
@@ -85,7 +78,7 @@ export function Detail() {
     }
 
     const colorInProduct = async (nameProduct) => {
-        const res = await  service.getColor(nameProduct);
+        const res = await service.getColor(nameProduct);
         setProductColor(res)
     }
 
@@ -106,9 +99,6 @@ export function Detail() {
     }
 
 
-
-
-
     return (
         <>
             <div className="containers">
@@ -122,6 +112,8 @@ export function Detail() {
                                         <img onClick={() => setImgSel(im.imgURL)} key={index} src={im.imgURL} alt=""/>
                                     ))
                                 }
+
+
                             </div>
 
                         </div>
@@ -154,32 +146,32 @@ export function Detail() {
                         <div>
                         </div>
 
-                            <h4 className="text-center" style={{marginTop:"3%"}}>The Perfect Partner</h4>
+                        <h4 className="text-center" style={{marginTop: "3%"}}>The Perfect Partner</h4>
 
-                        <div className="css-im  d-flex " style={{marginRight: "2.5rem",marginTop:"-5%",gap:"20px"}} >
+                        <div className="css-im  d-flex " style={{marginRight: "2.5rem", marginTop: "-5%", gap: "20px"}}>
 
                             {
-                                productNew && productNew.map((p)=>(
+                                productNew && productNew.map((p) => (
 
-                                <div key={p.id} style={{display: "flex", marginTop: " 5rem", gap: "1rem"}}>
-                                <div className="card"
-                                style={{width: "100%", border: "none", backgroundColor: " #f6f1eb"}}>
-                                <img
-                                src={p.images}
-                                className="card-img-top" alt="..."/>
-                                <div style={{paddingTop: "0.5rem"}}>
-                                    {p.nameProduct}
-                                </div>
-                                <div>{p.price}</div>
+                                    <div key={p.id} style={{display: "flex", marginTop: " 5rem", gap: "1rem"}}>
+                                        <div className="card"
+                                             style={{width: "100%", border: "none", backgroundColor: " #f6f1eb"}}>
+                                            <img
+                                                src={p.images}
+                                                className="card-img-top" alt="..."/>
+                                            <div style={{paddingTop: "0.5rem"}}>
+                                                {p.nameProduct}
+                                            </div>
+                                            <div>{p.price}</div>
 
-                                    <FormattedNumber
-                                        value={p?.price}
-                                        currency="USD"
-                                        minimumFractionDigits={0}>
-                                    </FormattedNumber>
+                                            <FormattedNumber
+                                                value={p?.price}
+                                                currency="USD"
+                                                minimumFractionDigits={0}>
+                                            </FormattedNumber>
 
-                                </div>
-                                </div>
+                                        </div>
+                                    </div>
 
                                 ))
                             }
@@ -198,7 +190,7 @@ export function Detail() {
                     </div>
 
                     <div style={{marginTop: "2rem"}}>
-                        <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <div style={{display: "flex", justifyContent: "space-between", margin: "5px 0px"}}>
                             <div>
                                 color
                             </div>
@@ -214,19 +206,27 @@ export function Detail() {
 
 
                                 {
-                                    productColor && productColor.map((cl) =>(
+                                    productColor && productColor
+                                        .filter((cl, index, self) => self.findIndex(c => c.id === cl.id) === index).map((cl,index) => (
+                                            <div key={index} className={`choose-color `}>
 
-                                <div key={cl.id}  className={`choose-color `}>
+                                                <button onClick={() => {
+                                                    const abc = productColor.filter((item) => item.id == cl.id)
+                                                    console.log(abc)
+                                                    setImg(abc)
+                                                    setImgSel(abc[0].imgURL)
+                                                }}
+                                                        style={{
+                                                            backgroundColor: colors[cl.colorName],
+                                                            height: "2.5rem",
+                                                            width: "2.5rem",
+                                                        }}
+                                                    // onClick={() => colorInProduct(product.nameProduct)}
+                                                />
+                                                <div>{cl.colorName}</div>
+                                            </div>
 
-                                            <button
-                                                    style={{ backgroundColor: colors[cl.colors.nameColor],  height: "2.5rem",  width: "2.5rem",  }}
-                                                // onClick={() => colorInProduct(product.nameProduct)}
-                                            />
-                                            <div>{cl.colors.nameColor}</div>
-
-                                </div>
-
-                                    ))
+                                        ))
                                 }
 
 
@@ -257,7 +257,7 @@ export function Detail() {
                             </div>
 
 
-                                    </div>
+                        </div>
 
                         <div style={{justifyContent: "center", textAlign: "center"}}>
                             <button onClick={handleAddCard} style={{marginTop: "2rem"}}
@@ -266,7 +266,9 @@ export function Detail() {
                         </div>
                         <div style={{paddingTop: "2rem"}}>
                             {descriptions.map((value, index) =>
-                                <p key={index}><i style={{fontSize : "8px",margin:"0 2px"}} className="fa-sharp fa-solid fa-circle fa-flip-horizontal fa-2xs"></i>{value}</p>
+                                <p key={index}><i style={{fontSize: "8px", margin: "0 2px"}}
+                                                  className="fa-sharp fa-solid fa-circle fa-flip-horizontal fa-2xs"></i>{value}
+                                </p>
                             )}
                         </div>
                         <div>

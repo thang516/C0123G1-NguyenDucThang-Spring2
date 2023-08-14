@@ -170,16 +170,6 @@ export async function detailProduct(id) {
 
 
 
-export async function getAllImg() {
-    try{
-        const  res = await axios.get(`http://localhost:8080/api/image`);
-        return res.data;
-    }catch (e) {
-        console.log(e)
-    }
-}
-
-
 
 export const  getAll=async (page,sortBy,price,color,typeProduct,nameProduct) =>{
     try{
