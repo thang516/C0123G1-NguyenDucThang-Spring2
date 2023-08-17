@@ -133,13 +133,15 @@ export const  addToCart=async (products, amount) =>{
 }
 
 
-export const   calculate = async (id, index,productId)   =>{
+export const   calculate = async (id, index,productId,idColor)   =>{
+
+
 
     const token = localStorage.getItem('token')
 
     if(token!== null){
         try {
-            const result = await axios.patch(`http://localhost:8080/api/shopping/${index}/${id}` ,"",
+            const result = await axios.patch(`http://localhost:8080/api/shopping/${index}/${id}/${idColor}` ,"",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -151,7 +153,7 @@ export const   calculate = async (id, index,productId)   =>{
         }
     }else {
         try {
-            const res = await axios.patch(`http://localhost:8080/api/shopping/${index}/${productId}`, "",
+            const res = await axios.patch(`http://localhost:8080/api/shopping/${index}/${productId}/${idColor}`, "",
                 {withCredentials: true})
             return res;
         }catch (e) {

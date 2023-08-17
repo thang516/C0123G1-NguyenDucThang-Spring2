@@ -99,7 +99,7 @@ public interface IProductRepository extends JpaRepository<Products, Integer> {
             "LIMIT 4;", nativeQuery = true)
     List<Products> findProduct();
 
-    @Query(value = "SELECT p.id AS id ,p.name_product AS nameProduct ,p.price AS price ,p.description AS description ,i.img_url AS imgURL , c.name_color AS colorName\n" +
+    @Query(value = "SELECT c.id AS idColor,p.id AS id ,p.name_product AS nameProduct ,p.price AS price ,p.description AS description ,i.img_url AS imgURL , c.name_color AS colorName\n" +
             "            FROM products p\n" +
             "                     INNER JOIN colors c on c.id = p.colors_id\n" +
             "                     INNER JOIN images i on p.id = i.product_id\n" +
@@ -134,5 +134,5 @@ public interface IProductRepository extends JpaRepository<Products, Integer> {
     Page<IProductDTO> findAllProductByOther(Pageable pageable, @Param("nameProduct") String nameProduct, @Param("typeProduct") String typeProduct);
 
 
-    void createProductManager(String nameProduct, Double price, String description, Integer stockQuantity, Integer id, String img);
+//    void createProductManager(String nameProduct, Double price, String description, Integer stockQuantity, Integer id, String img);
 }

@@ -24,16 +24,15 @@ public class ShoppingService implements IShoppingService{
     }
 
     @Override
-    public ResponseEntity<?> setCart(Integer index, Integer id) {
+    public ResponseEntity<?> setCart(Integer index, Integer id,Integer idColor) {
       ShoppingCards shoppingCards = shoppingRepository.findById(id).get();
 
-        if (index==0){
+        if (index==0 ){
             shoppingCards.setPrice(shoppingCards.getProducts().getPrice()*(shoppingCards.getAmount()-1));
             shoppingCards.setAmount(shoppingCards.getAmount()-1);
             return new   ResponseEntity<>(shoppingRepository.save(shoppingCards),HttpStatus.OK)   ;
         }else {
-            System.out.println(shoppingCards.getProducts().getStockQuantity());
-            System.out.println( shoppingCards.getAmount());
+
                 if(shoppingCards.getProducts().getStockQuantity() < shoppingCards.getAmount()+1){
                 return new ResponseEntity<>("lõi r" ,HttpStatus.BAD_REQUEST);
             }
@@ -47,8 +46,9 @@ public class ShoppingService implements IShoppingService{
     public ResponseEntity<?> createCart(Customers customers, Products products, Integer amount) {
         ShoppingCards shoppingCards = shoppingRepository.getToCart(customers.getId(),products.getId());
 
-        if(shoppingCards == null){
+        if(shoppingCards == null && shoppingCards.getProducts().getColors().getId()==products.getColors().getId()){
             ShoppingCards shoppingCards1 = new ShoppingCards();
+
             shoppingCards1.setAmount(amount);
             shoppingCards1.setPrice(products.getPrice()*amount);
             shoppingCards1.setCustomers(customers);

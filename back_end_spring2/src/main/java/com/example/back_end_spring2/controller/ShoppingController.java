@@ -52,8 +52,8 @@ public class ShoppingController {
         return new ResponseEntity<>(shoppingService.getShoppingCart(customers.getId()), HttpStatus.OK);
     }
 
-    @PatchMapping("/{index}/{id}")
-    public ResponseEntity<?> setCart(@PathVariable Integer index, @PathVariable Integer id, HttpServletRequest httpServletRequest) {
+    @PatchMapping("/{index}/{id}/{idColor}")
+    public ResponseEntity<?> setCart(@PathVariable Integer index, @PathVariable Integer id,@PathVariable Integer idColor, HttpServletRequest httpServletRequest) {
         List<ShoppingCards> cardsList = new ArrayList<>();
         HttpSession session = httpServletRequest.getSession();
         try {
@@ -61,7 +61,7 @@ public class ShoppingController {
             if (authentication.getPrincipal().equals("anonymousUser")) {
                 cardsList = (List<ShoppingCards>) session.getAttribute("cart");
                 for (int i = 0; i < cardsList.size(); i++) {
-                    if (cardsList.get(i).getProducts().getId() == id) {
+                    if (cardsList.get(i).getProducts().getId() == id&& cardsList.get(i).getProducts().getColors().getId()== idColor) {
 
 
                         if (index == 0) {
@@ -84,7 +84,7 @@ public class ShoppingController {
             }
 
 
-         ResponseEntity<?>  set =  shoppingService.setCart(index, id);
+         ResponseEntity<?>  set =  shoppingService.setCart(index, id,idColor);
             if(set.getStatusCode()== HttpStatus.BAD_REQUEST){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
@@ -130,6 +130,7 @@ public class ShoppingController {
     public ResponseEntity<?> addCartSession(@RequestBody ShoppingCards shoppingCards, HttpServletRequest httpServletRequest) {
         List<ShoppingCards> cardsList = new ArrayList<>();
         HttpSession session = httpServletRequest.getSession();
+        System.out.println(session);
         if (session.getAttribute("cart") != null) {
             cardsList = (List<ShoppingCards>) session.getAttribute("cart");
 
@@ -137,7 +138,7 @@ public class ShoppingController {
 
             for (int i = 0; i < cardsList.size(); i++) {
 
-                if (shoppingCards.getProducts().getId() == cardsList.get(i).getProducts().getId()) {
+                if (shoppingCards.getProducts().getId() == cardsList.get(i).getProducts().getId() && shoppingCards.getProducts().getColors().getId()==cardsList.get(i).getProducts().getColors().getId()) {
                     if(cardsList.get(i).getProducts().getStockQuantity()<shoppingCards.getAmount() + cardsList.get(i).getAmount() ){
                         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                     }
@@ -152,7 +153,11 @@ public class ShoppingController {
                 cardsList.add(shoppingCards);
             }
 
+        }else {
+            cardsList.add(shoppingCards);
+            session.setAttribute("cart",cardsList);
         }
+
         session.setAttribute("cart", cardsList);
         return new ResponseEntity<>(session.getAttribute("cart"), HttpStatus.OK);
     }

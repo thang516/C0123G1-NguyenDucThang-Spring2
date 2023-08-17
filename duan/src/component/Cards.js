@@ -4,7 +4,6 @@ import * as service from "../service/ProductService";
 import sweat from "sweetalert2";
 import {useFashion} from "../contexts/FashionContext";
 import "../component/CardItem/CardItem.scss"
-import Paypal from "./Paypal"
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PayPalButton } from "react-paypal-button-v2";
@@ -25,13 +24,13 @@ export function Cards() {
         await res.map(async (v, index) => {
             await setTotalPrice(prev => prev + v.price)
         })
-
+        console.log(res)
     }
 
-    const calculate = async (id, index, productId) => {
+    const calculate = async (id, index, productId,idColor) => {
 
 
-           const  res = await service.calculate(id, index, productId);
+           const  res = await service.calculate(id, index, productId,idColor);
             getAllShopping();
         if(res?.response?.status === 400){
             toast.error(`The product you purchased is out of stock`)
@@ -94,7 +93,7 @@ export function Cards() {
                                 </div>
                                 <div className={'card-item-right'}>
                                     <div className={'title'}>
-                                        <p>{s.products.nameProduct}{s.id}</p>
+                                        <p>{s.products.nameProduct}</p>
                                         <button
                                             onClick={() => deleteShopping(s.id, s.products.nameProduct, s.products.id)}>
                                             <i className="fa-sharp fa-light fa-x fa-lg"></i></button>
@@ -103,16 +102,16 @@ export function Cards() {
 
                                     <div className={'money'}>
                                         <div className="detail">
-                                            <span>Color: {s.products.colors.nameColor}</span>
+                                            <span>Color: {s.products.colors?.nameColor}</span>
 
                                         </div>
                                         <div className={'box'}>
                                             <button disabled={s.amount === 1} type="button" className="minus"
-                                                    onClick={() => calculate(s.id, 0, s.products.id)}><span>-</span>
+                                                    onClick={() => calculate(s.id, 0, s.products.id,s.products.colors.id)}><span>-</span>
                                             </button>
                                             <span>{s.amount}</span>
                                             <button type="button" value="+" className="plus"
-                                                    onClick={() => calculate(s.id, 1, s.products.id)}>
+                                                    onClick={() => calculate(s.id, 1, s.products.id,s.products.colors.id)}>
                                                 <span>+</span></button>
                                         </div>
                                         <div className={'price'}>
@@ -208,55 +207,74 @@ export function Cards() {
 
                         <div className={'payments'}>
 
-                            <PayPalButton
-                                amount="0.01"
-                                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                                onSuccess={(details, data) => {
-                                    alert("Transaction completed by " + details.payer.name.given_name);
+                            <div>
+
+                                <PayPalButton
+                                    amount={totalPrice}
+                                    // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                    onSuccess={(details, data) => {
+                                        alert("Transaction completed by " + details.payer.name.given_name);
 
 
 
-                                    return fetch("/paypal-transaction-complete", {
-                                        method: "post",
-                                        body: JSON.stringify({
-                                            orderID: data.orderID
-                                        })
-                                    });
-                                }}
-                            />
+                                        return fetch("/paypal-transaction-complete", {
+                                            method: "post",
+                                            body: JSON.stringify({
+                                                orderID: data.orderID
+                                            })
+                                        });
+                                    }}
+                                />
+                                <table align="center">
+                                    <tbody>
+                                    <tr>
+                                        <td align="center"/>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <a
+                                                href="https://www.paypal.com/vn/webapps/mpp/paypal-popup"
+                                                title="How PayPal Works"
+                                                onClick="javascript:window.open('https://www.paypal.com/vn/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"
+                                            >
+                                                <img
+                                                    src="https://www.paypalobjects.com/marketing/web/vn/manage-my-paypal-account/PP-AcceptanceMarkTray-NoDiscover-243x40-optimised.png"
+                                                    alt="Khay đánh dấu chấp nhận PayPal | Lớn"
+                                                />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                            {/*{*/}
-                            {/*    checkout ? (*/}
-                            {/*        <Paypal/>*/}
-                            {/*    ) : (*/}
-                            {/*        <button onClick={() => setCheckout(true)}>Checkout</button>*/}
-                            {/*    )}*/}
 
 
-                            <div>
-                                <i className="fa-brands fa-cc-visa  fa-2xl"/>
-                            </div>
-                            <div>
-                                <i className="fa-brands fa-cc-discover  fa-2xl"/>
-                            </div>
-                            <div>
-                                <i className="fa-brands fa-cc-diners-club  fa-2xl"/>
-                            </div>
-                            <div>
-                                <i className="fa-brands fa-cc-jcb fa-2xl"/>
-                            </div>
-                            <div>
-                                <i className="fa-brands fa-cc-amex fa-2xl"/>
-                            </div>
-                            <div>
-                                <i className="fa-sharp fa-solid fa-money-bill fa-2xl"/>
-                            </div>
-                            <div>
-                                <i className="fa-brands fa-pied-piper-pp fa-2xl"/>
-                            </div>
-                            <div>
-                                <i className="fa-brands fa-cc-mastercard fa-2xl"/>
-                            </div>
+
+                            {/*<div>*/}
+                            {/*    <i className="fa-brands fa-cc-visa  fa-2xl"/>*/}
+                            {/*</div>*/}
+                            {/*<div>*/}
+                            {/*    <i className="fa-brands fa-cc-discover  fa-2xl"/>*/}
+                            {/*</div>*/}
+                            {/*<div>*/}
+                            {/*    <i className="fa-brands fa-cc-diners-club  fa-2xl"/>*/}
+                            {/*</div>*/}
+                            {/*<div>*/}
+                            {/*    <i className="fa-brands fa-cc-jcb fa-2xl"/>*/}
+                            {/*</div>*/}
+                            {/*<div>*/}
+                            {/*    <i className="fa-brands fa-cc-amex fa-2xl"/>*/}
+                            {/*</div>*/}
+                            {/*<div>*/}
+                            {/*    <i className="fa-sharp fa-solid fa-money-bill fa-2xl"/>*/}
+                            {/*</div>*/}
+                            {/*<div>*/}
+                            {/*    <i className="fa-brands fa-pied-piper-pp fa-2xl"/>*/}
+                            {/*</div>*/}
+                            {/*<div>*/}
+                            {/*    <i className="fa-brands fa-cc-mastercard fa-2xl"/>*/}
+                            {/*</div>*/}
 
                         </div>
                     </div>

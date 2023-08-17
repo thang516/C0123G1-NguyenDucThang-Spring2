@@ -7,6 +7,7 @@ import java.util.List;
 public interface IImageDTO {
 
     String getId();
+    String getIdColor();
     String getNameProduct();
     String getPrice();
     String getDescription() ;

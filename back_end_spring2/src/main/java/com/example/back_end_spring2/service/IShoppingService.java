@@ -10,7 +10,7 @@ import java.util.List;
 public interface IShoppingService {
     List<ShoppingCards> getShoppingCart(Integer id);
 
-    ResponseEntity<?> setCart(Integer index, Integer id);
+    ResponseEntity<?> setCart(Integer index, Integer id,Integer idColor);
 
     ResponseEntity<?> createCart(Customers customers, Products products, Integer amount);
 

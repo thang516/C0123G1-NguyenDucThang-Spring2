@@ -48,9 +48,17 @@ export function Detail() {
     const param = useParams();
 
 
-    const addToCart = async (products, amount) => {
+    const addToCart = async (products,amount) => {
 
-           const res = await service.addToCart(productSetColor, amount)
+        products = {
+            ...products ,
+            colors : {
+                id:productSetColor.idColor,
+                nameColor: productSetColor.colorName
+            }
+        }
+
+           const res = await service.addToCart(products, amount)
                // .then(() => setQuantityCard(prev => prev + 1));
             if(res?.response?.status === 400){
                 toast.error(`The product you purchased is out of stock`)
@@ -58,8 +66,6 @@ export function Detail() {
                 toast.success(` This item has been added to the cart `)
 
             }
-
-
 
 
 
@@ -87,7 +93,7 @@ export function Detail() {
     const colorInProduct = async (nameProduct) => {
         const res = await service.getColor(nameProduct);
         setProductColor(res)
-        console.log(productColor)
+
     }
 
     useEffect(() => {
@@ -202,9 +208,9 @@ export function Detail() {
                             <div>
                                 color
                             </div>
-                            <div>
-                                {product.colors.nameColor}
-                            </div>
+                            {/*<div>*/}
+                            {/*    {product.colors.nameColor}*/}
+                            {/*</div>*/}
 
                         </div>
 
@@ -225,6 +231,7 @@ export function Detail() {
                                                     setImg(abc)
                                                     setImgSel(abc[0].imgURL)
                                                     setProductSetColor(abc[0])
+
                                                 }}
                                                         style={{
                                                             backgroundColor: colors[cl.colorName],
@@ -240,28 +247,6 @@ export function Detail() {
                                 }
 
 
-                                {/*<div className={`choose-color ${currentColor == 1 ? 'active' : ''}`}>*/}
-                                {/*    <button*/}
-                                {/*        style={{*/}
-                                {/*            backgroundColor: "#d2756c",*/}
-                                {/*            height: "2.5rem",*/}
-                                {/*            width: "2.5rem",*/}
-                                {/*        }}*/}
-                                {/*        onClick={() => setCurrentColor(1)}*/}
-                                {/*    />*/}
-                                {/*</div>*/}
-
-
-                                {/*<div className={`choose-color ${currentColor == 2 ? 'active' : ''}`}>*/}
-                                {/*    <button*/}
-                                {/*        style={{*/}
-                                {/*            backgroundColor: "#d2756c",*/}
-                                {/*            height: "2.5rem",*/}
-                                {/*            width: "2.5rem",*/}
-                                {/*        }}*/}
-                                {/*        onClick={() => setCurrentColor(2)}*/}
-                                {/*    />*/}
-                                {/*</div>*/}
 
 
                             </div>

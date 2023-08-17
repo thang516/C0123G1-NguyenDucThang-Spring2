@@ -176,27 +176,27 @@ public class ProductController {
     }
 
 
-    @PostMapping("/create-manager")
-    public ResponseEntity<?> createProductManager(@Validated @RequestBody ProductDTO productDTO , BindingResult bindingResult){
-
-        if (bindingResult.hasErrors()) {
-            Map<String, String> list = new HashMap<>();
-
-            String[] fieldsToCheck = {"nameProduct", "price", "description", "stockQuantity"};
-
-            for (String field : fieldsToCheck) {
-                @Nullable
-                FieldError fieldError = bindingResult.getFieldError(field);
-                if (fieldError != null) {
-                    list.put(field, fieldError.getDefaultMessage());
-                }
-            }
-            return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
-        }
-        productService.createProduct(productDTO);
-        return new ResponseEntity<>( HttpStatus.OK);
-    }
-
+//    @PostMapping("/create-manager")
+//    public ResponseEntity<?> createProductManager(@Validated @RequestBody ProductDTO productDTO , BindingResult bindingResult){
+//
+//        if (bindingResult.hasErrors()) {
+//            Map<String, String> list = new HashMap<>();
+//
+//            String[] fieldsToCheck = {"nameProduct", "price", "description", "stockQuantity"};
+//
+//            for (String field : fieldsToCheck) {
+//                @Nullable
+//                FieldError fieldError = bindingResult.getFieldError(field);
+//                if (fieldError != null) {
+//                    list.put(field, fieldError.getDefaultMessage());
+//                }
+//            }
+//            return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
+//        }
+//        productService.createProduct(productDTO);
+//        return new ResponseEntity<>( HttpStatus.OK);
+//    }
+//
 
 
 
