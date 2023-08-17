@@ -1,5 +1,25 @@
 import axios from "axios";
 
+export async function getColorFilter() {
+    try{
+        const  result = await axios.get(`http://localhost:8080/api/type/color`)
+        return  result.data
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+
+export async function getAllType() {
+    try{
+        const  result = await axios.get(`http://localhost:8080/api/type`)
+        return  result.data
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+
 export async function getColor(nameProduct) {
     try{
         const  result = await axios.get(`http://localhost:8080/api/products/color/${nameProduct}`)
@@ -75,7 +95,7 @@ export async function deleteById(id,productId) {
 
 }
 
-export async function addToCart(products, amount) {
+export const  addToCart=async (products, amount) =>{
     const token = localStorage.getItem('token')
 
     const newValue = {
@@ -90,22 +110,30 @@ export async function addToCart(products, amount) {
             const result = await axios.post(`http://localhost:8080/api/shopping/create/${id}/${amount}` ,"",
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        "Authorization": `Bearer ${token}`,
                     }
                 })
             return result.data
         } catch (error) {
-            console.log(error)
-        }
+            return  error
+
+       }
     }else {
-        const res = await axios.post("http://localhost:8080/api/shopping", newValue,
-            {withCredentials: true})
+        try {
+            const res = await axios.post("http://localhost:8080/api/shopping", newValue,
+                {withCredentials: true})
+            return res;
+
+        }catch (e) {
+            return e;
+        }
+
     }
 
 }
 
 
-export async function calculate(id, index,productId) {
+export const   calculate = async (id, index,productId)   =>{
 
     const token = localStorage.getItem('token')
 
@@ -119,11 +147,17 @@ export async function calculate(id, index,productId) {
                 })
             return result.data
         } catch (error) {
-            console.log(error)
+           return error;
         }
     }else {
-        const res = await axios.patch(`http://localhost:8080/api/shopping/${index}/${productId}`, "",
-            {withCredentials: true})
+        try {
+            const res = await axios.patch(`http://localhost:8080/api/shopping/${index}/${productId}`, "",
+                {withCredentials: true})
+            return res;
+        }catch (e) {
+            return e;
+        }
+
     }
 
 

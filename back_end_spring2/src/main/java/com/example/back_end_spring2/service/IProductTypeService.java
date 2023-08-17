@@ -8,4 +8,7 @@ public interface IProductTypeService {
 
 
     List<ProductType> findProductType();
+
+    List<ProductType> findAllType();
+
 }

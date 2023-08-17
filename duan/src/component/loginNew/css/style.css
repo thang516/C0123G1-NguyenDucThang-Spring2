@@ -201,7 +201,7 @@ body {
   font-weight: 400;
   font-family: Poppins; }
 
-.container {
+.containerss {
   width: 900px;
   background: #fff;
   margin: 0 auto;
@@ -517,11 +517,11 @@ label.valid {
   margin-top: 10px; }
 
 @media screen and (max-width: 1200px) {
-  .container {
+  .containerss {
     width: calc( 100% - 30px);
     max-width: 100%; } }
 @media screen and (min-width: 1024px) {
-  .container {
+  .containerss {
     max-width: 1200px; } }
 @media screen and (max-width: 768px) {
   .signup-content, .signin-content {

@@ -1,35 +1,45 @@
 import React, {useEffect, useState} from "react";
 import "../css/cards.scss"
-import {CardItem} from "./CardItem/CardItem";
 import * as service from "../service/ProductService";
 import sweat from "sweetalert2";
 import {useFashion} from "../contexts/FashionContext";
-
-
+import "../component/CardItem/CardItem.scss"
+import Paypal from "./Paypal"
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { PayPalButton } from "react-paypal-button-v2";
 export function Cards() {
 
     const {quantityCard, setQuantityCard} = useFashion();
     const username = localStorage.getItem('username');
     const [shopping, setShopping] = useState([]);
-    const [totalPrice,setTotalPrice] = useState();
+    const [totalPrice, setTotalPrice] = useState();
+    const [checkout, setCheckout] = useState(false);
     const getAllShopping = async () => {
         const res = await service.getAllShopping(username);
         setShopping(res)
-        const total = res.reduce((sum, current) => {
-            return sum + current.amount
-        },0);
+        const total = res.length;
         setQuantityCard(total);
 
         setTotalPrice(0);
-        await  res.map( async(v,index) => {
-            await setTotalPrice( prev => prev + v.price)
+        await res.map(async (v, index) => {
+            await setTotalPrice(prev => prev + v.price)
         })
 
     }
 
-    const calculate = async (id,index,productId) => {
-        await  service.calculate(id,index,productId);
-        getAllShopping();
+    const calculate = async (id, index, productId) => {
+
+
+           const  res = await service.calculate(id, index, productId);
+            getAllShopping();
+        if(res?.response?.status === 400){
+            toast.error(`The product you purchased is out of stock`)
+        }
+
+
+
+
     }
 
     useEffect(() => {
@@ -37,14 +47,8 @@ export function Cards() {
     }, [])
 
 
-
-    // useEffect(() => {
-    //     const sum = list.reduce((sum, current) => (sum + current.quantity), 0);
-    //     setQuantity(sum)
-    // }, [list]);
-
-    const deleteById = async (id,productId) => {
-        await  service.deleteById(id,productId)
+    const deleteById = async (id, productId) => {
+        await service.deleteById(id, productId)
         sweat.fire({
             icon: "success",
             title: "SUCCESSFULLY",
@@ -53,25 +57,16 @@ export function Cards() {
         getAllShopping()
     }
 
-    // const setAmountCart = async (val,id,amounts) => {
-    //     if(amounts > 1 || val == 1 ){
-    //         await  service.updateAmountCart(val,id);
-    //
-    //     }
-    //     getAllShopping();
-    //
-    // }
 
-
-    function deleteShopping(id,nameProduct,productId) {
+    function deleteShopping(id, nameProduct, productId) {
         sweat.fire({
             icon: "warning",
             title: `Do you want to delete ${nameProduct} ?`,
             showCancelButton: true,
             confirmButtonText: "OK"
         }).then(async (isDelete) => {
-            if(isDelete.isConfirmed){
-                deleteById(id,productId)
+            if (isDelete.isConfirmed) {
+                deleteById(id, productId)
             }
         })
     }
@@ -100,7 +95,9 @@ export function Cards() {
                                 <div className={'card-item-right'}>
                                     <div className={'title'}>
                                         <p>{s.products.nameProduct}{s.id}</p>
-                                        <button onClick={() => deleteShopping(s.id,s.products.nameProduct,s.products.id)}><i className="fa-sharp fa-light fa-x fa-lg"></i></button>
+                                        <button
+                                            onClick={() => deleteShopping(s.id, s.products.nameProduct, s.products.id)}>
+                                            <i className="fa-sharp fa-light fa-x fa-lg"></i></button>
                                     </div>
 
 
@@ -108,21 +105,14 @@ export function Cards() {
                                         <div className="detail">
                                             <span>Color: {s.products.colors.nameColor}</span>
 
-                                            {/*<span>Ref. H0009481 01LCW | H0008671J37</span>*/}
                                         </div>
-                                        {/*<div className={'box'}>*/}
-                                        {/*    <button disabled={currentQuantity === 1} type="button" className="minus"*/}
-                                        {/*            onClick={() => handlePlusMinus(-1)}><span>-</span></button>*/}
-                                        {/*    <span>{currentQuantity}</span>*/}
-                                        {/*    <button type="button" value="+" className="plus" onClick={() => handlePlusMinus(1)}>*/}
-                                        {/*        <span>+</span></button>*/}
-                                        {/*</div>*/}
-
                                         <div className={'box'}>
                                             <button disabled={s.amount === 1} type="button" className="minus"
-                                                     onClick={() => calculate(s.id,0,s.products.id)}><span>-</span></button>
+                                                    onClick={() => calculate(s.id, 0, s.products.id)}><span>-</span>
+                                            </button>
                                             <span>{s.amount}</span>
-                                            <button type="button" value="+" className="plus"  onClick={() => calculate(s.id,1,s.products.id)}>
+                                            <button type="button" value="+" className="plus"
+                                                    onClick={() => calculate(s.id, 1, s.products.id)}>
                                                 <span>+</span></button>
                                         </div>
                                         <div className={'price'}>
@@ -137,15 +127,6 @@ export function Cards() {
                         ))
                     }
 
-
-                    {/*<div className={'calculator first'}>*/}
-                    {/*    <div className={'title'}>*/}
-                    {/*        Subtual*/}
-                    {/*    </div>*/}
-                    {/*    <div>*/}
-                    {/*        $*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
 
                     <div className={'calculator first'}>
                         <div className={'description'}>
@@ -163,19 +144,21 @@ export function Cards() {
                         <span>-</span>
                     </div>
 
-                    <div  className={'calculator'}>
+                    <div className={'calculator'}>
                         <span>TOTAL</span>
                         <span>${totalPrice}</span>
                     </div>
-             <div style={{    height:" 10px",
-                 width: "100%",
-                 background: "#f6f1eb"}}>
+                    <div style={{
+                        height: " 10px",
+                        width: "100%",
+                        background: "#f6f1eb"
+                    }}>
 
-             </div>
-                    <div style={{textAlign: "center", justifyContent: "center", alignItems: "center",height:"5rem"}}>
-                        {/*<div>*/}
-                        <button style={{width: "15rem",backgroundColor:"#444444",margin:"20px"}} className="btn btn-dark">CheckOut</button>
-                        {/*</div>*/}
+                    </div>
+                    <div style={{textAlign: "center", justifyContent: "center", alignItems: "center", height: "5rem"}}>
+                        <button style={{width: "15rem", backgroundColor: "#444444", margin: "20px"}}
+                                className="btn btn-dark">CheckOut
+                        </button>
                     </div>
                 </div>
 
@@ -224,6 +207,32 @@ export function Cards() {
                         </div>
 
                         <div className={'payments'}>
+
+                            <PayPalButton
+                                amount="0.01"
+                                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                onSuccess={(details, data) => {
+                                    alert("Transaction completed by " + details.payer.name.given_name);
+
+
+
+                                    return fetch("/paypal-transaction-complete", {
+                                        method: "post",
+                                        body: JSON.stringify({
+                                            orderID: data.orderID
+                                        })
+                                    });
+                                }}
+                            />
+
+                            {/*{*/}
+                            {/*    checkout ? (*/}
+                            {/*        <Paypal/>*/}
+                            {/*    ) : (*/}
+                            {/*        <button onClick={() => setCheckout(true)}>Checkout</button>*/}
+                            {/*    )}*/}
+
+
                             <div>
                                 <i className="fa-brands fa-cc-visa  fa-2xl"/>
                             </div>

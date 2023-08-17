@@ -10,6 +10,7 @@ import com.example.back_end_spring2.model.Products;
 import com.example.back_end_spring2.service.IImageService;
 import com.example.back_end_spring2.service.IProductService;
 import com.example.back_end_spring2.service.IProductTypeService;
+import com.sun.istack.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,11 +18,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -32,8 +38,7 @@ public class ProductController {
     private IImageService iImageService;
     @Autowired
     private IProductService productService ;
-    @Autowired
-    private IProductTypeService productTypeService ;
+
 
     @GetMapping("")
     public ResponseEntity<Page<IProductDTO>> getAll (@RequestParam(value = "page",defaultValue = "0") Integer page,
@@ -171,9 +176,26 @@ public class ProductController {
     }
 
 
+    @PostMapping("/create-manager")
+    public ResponseEntity<?> createProductManager(@Validated @RequestBody ProductDTO productDTO , BindingResult bindingResult){
 
+        if (bindingResult.hasErrors()) {
+            Map<String, String> list = new HashMap<>();
 
+            String[] fieldsToCheck = {"nameProduct", "price", "description", "stockQuantity"};
 
+            for (String field : fieldsToCheck) {
+                @Nullable
+                FieldError fieldError = bindingResult.getFieldError(field);
+                if (fieldError != null) {
+                    list.put(field, fieldError.getDefaultMessage());
+                }
+            }
+            return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
+        }
+        productService.createProduct(productDTO);
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
 
 
 

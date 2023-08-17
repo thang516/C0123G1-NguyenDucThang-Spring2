@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { ChakraProvider } from '@chakra-ui/react'
 import {Detail} from "./component/Detail";
@@ -10,11 +9,11 @@ import {Cards} from "./component/Cards";
 import {List} from "./component/List";
 import {Header} from "./component/Header";
 import {Footer} from "./component/Footer";
-import {Login} from "./component/login/Login";
+// import {Login} from "./component/login/Login";
 import {CustomerList} from "./component/CustomerList";
 import FashionProvider from "./contexts/FashionContext";
 import {ListManager} from "./component/ListManager";
-// import {LoginNew} from "./component/loginNew/LoginNew";
+import {LoginNew} from "./component/loginNew/LoginNew";
 
 function App() {
     return (
@@ -25,9 +24,9 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/cards" element={<Cards/>}/>
                     <Route path="/list" element={<List/>}/>
-                    <Route path="/login" element={<Login/>}/>
+                    {/*<Route path="/login" element={<Login/>}/>*/}
                     <Route path="/detail/:id" element={<Detail/>}/>
-                    {/*<Route path="/test" element={<LoginNew/>}/>*/}
+                    <Route path="/login" element={<LoginNew/>}/>
                     <Route path="/detail" element={<Detail/>}/>
                     <Route path="/nav/manager" element={<CustomerList/>}/>
                     <Route path="/nav/manager/list" element={<ListManager/>}/>

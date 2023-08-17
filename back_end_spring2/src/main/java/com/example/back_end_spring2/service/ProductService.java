@@ -73,5 +73,15 @@ public class ProductService implements IProductService{
         return productss ;
     }
 
+    @Override
+    public void createProduct(ProductDTO productDTO) {
+        Products products = new Products();
+        BeanUtils.copyProperties(productDTO,products);
+
+
+        productRepository.createProductManager(products.getNameProduct(),products.getPrice(),products.getDescription(),
+                products.getStockQuantity(),products.getProductType().getId(),products.getImg());
+    }
+
 
 }

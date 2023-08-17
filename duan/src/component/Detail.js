@@ -24,6 +24,7 @@ export function Detail() {
     const [product, setProduct] = useState();
     const [productNew, setProductNew] = useState();
 
+    const [productSetColor , setProductSetColor] = useState();
     const [productColor, setProductColor] = useState();
 
 
@@ -40,20 +41,26 @@ export function Detail() {
     };
 
     const [descriptions, setDescription] = useState([]);
-    const [currentColor, setCurrentColor] = useState(0);
+
     const [img, setImg] = useState([]);
     const [imgSel, setImgSel] = useState('');
     // const [imgMain,setImgMain] =useState();
     const param = useParams();
 
-    const addToCart = async (products, amount) => {
-        try {
-            await service.addToCart(products, amount).then(() => setQuantityCard(prev => prev + 1))
-            toast.success(` This item has been added to the cart `)
 
-        } catch (e) {
-            toast.error(e);
-        }
+    const addToCart = async (products, amount) => {
+
+           const res = await service.addToCart(productSetColor, amount)
+               // .then(() => setQuantityCard(prev => prev + 1));
+            if(res?.response?.status === 400){
+                toast.error(`The product you purchased is out of stock`)
+            }else {
+                toast.success(` This item has been added to the cart `)
+
+            }
+
+
+
 
 
     }
@@ -80,6 +87,7 @@ export function Detail() {
     const colorInProduct = async (nameProduct) => {
         const res = await service.getColor(nameProduct);
         setProductColor(res)
+        console.log(productColor)
     }
 
     useEffect(() => {
@@ -125,24 +133,24 @@ export function Detail() {
                     </div>
 
                     <div className='main-content'>
-                        <div className='description'>
-                            <h4>The story behind</h4>
-                            <p>Bath linen is
-                                making its
-                                comeback this
-                                season! Philippe Mouquet originally came up with the "Stairs" design for a tie
-                                motif
-                                in
-                                the
-                                Spring-Summer
-                                2010 collection. The design showcases adjoining Hs, climbing upwards like
-                                stairs.
-                                Featured
-                                in
-                                various
-                                different sizes, the design introduces two new colorways: Griotte and
-                                Safran.</p>
-                        </div>
+                        {/*<div className='description'>*/}
+                        {/*    <h4>The story behind</h4>*/}
+                        {/*    <p>Bath linen is*/}
+                        {/*        making its*/}
+                        {/*        comeback this*/}
+                        {/*        season! Philippe Mouquet originally came up with the "Stairs" design for a tie*/}
+                        {/*        motif*/}
+                        {/*        in*/}
+                        {/*        the*/}
+                        {/*        Spring-Summer*/}
+                        {/*        2010 collection. The design showcases adjoining Hs, climbing upwards like*/}
+                        {/*        stairs.*/}
+                        {/*        Featured*/}
+                        {/*        in*/}
+                        {/*        various*/}
+                        {/*        different sizes, the design introduces two new colorways: Griotte and*/}
+                        {/*        Safran.</p>*/}
+                        {/*</div>*/}
                         <div>
                         </div>
 
@@ -206,15 +214,17 @@ export function Detail() {
 
 
                                 {
+
                                     productColor && productColor
+
                                         .filter((cl, index, self) => self.findIndex(c => c.id === cl.id) === index).map((cl,index) => (
                                             <div key={index} className={`choose-color `}>
 
                                                 <button onClick={() => {
                                                     const abc = productColor.filter((item) => item.id == cl.id)
-                                                    console.log(abc)
                                                     setImg(abc)
                                                     setImgSel(abc[0].imgURL)
+                                                    setProductSetColor(abc[0])
                                                 }}
                                                         style={{
                                                             backgroundColor: colors[cl.colorName],

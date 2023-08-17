@@ -2,7 +2,7 @@
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
-.footer {
+.footer-f {
     font-size: 14px;
     background-color: whitesmoke;
     padding: 50px 0;
@@ -10,52 +10,53 @@
     margin-top: 2rem;
 }
 
-.footer .icon {
+.footer-f .icon {
     margin-right: 15px;
     font-size: 24px;
     line-height: 0;
 }
 
-.footer h4 {
+.footer-f h4 {
     font-size: 20px;
     font-weight: bold;
     position: relative;
-    padding-bottom: 5px;
+    /*padding-bottom: 5px;*/
     color: rgba(50, 45, 45, 0.7);
+    padding-top: 10px;
 }
 
-.footer .footer-links {
+.footer-f .footer-links {
     margin-bottom: 30px;
 }
 
-.footer .footer-links ul {
+.footer-f .footer-links ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.footer .footer-links ul li {
+.footer-f .footer-links ul li {
     padding: 10px 0;
     display: flex;
     align-items: center;
 }
 
-.footer .footer-links ul li:first-child {
+.footer-f .footer-links ul li:first-child {
     padding-top: 0;
 }
 
-.footer .footer-links ul a {
+.footer-f .footer-links ul a {
     color: rgba(50, 45, 45, 0.7);
     transition: 0.3s;
     display: inline-block;
     line-height: 1;
 }
 
-.footer .footer-links ul a:hover {
+.footer-f .footer-links ul a:hover {
     color: rgba(50, 45, 45, 0.7);
 }
 
-.footer .social-links a {
+.footer-f .social-links a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,23 +70,23 @@
     transition: 0.3s;
 }
 
-.footer .social-links a:hover {
+.footer-f .social-links a:hover {
     color: rgba(50, 45, 45, 0.7);
     border-color: #fff;
 }
 
-.footer .copyright {
+.footer-f .copyright {
     text-align: center;
     padding-top: 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.footer .credits {
+.footer-f .credits {
     padding-top: 4px;
     text-align: center;
     font-size: 13px;
 }
 
-.footer .credits a {
+.footer-f .credits a {
     color: #fff;
 }

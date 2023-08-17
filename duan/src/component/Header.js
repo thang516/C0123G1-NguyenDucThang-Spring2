@@ -148,9 +148,9 @@ export function Header() {
                                         )
                                     }
                                 </li>
-                                <li  style={{display:"flex",gap:"5px"}} className={'responsive-cart'}>
+                                <li onClick={() => navigate('/cards')}  style={{display:"flex",gap:"5px"}} className={'responsive-cart'}>
 
-                                    <div>
+                                     <div>
                                         <i className="fa-sharp fa-solid fa-bag-shopping" />
                                         {quantityCard > 0 && <sup>{quantityCard}</sup>}
                                     </div>

@@ -50,7 +50,7 @@ public class UsersController {
 
             return ResponseEntity.ok(new JwtResponse(token, principal.getUsername(), authority != null ? authority.getAuthority() : null));
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Đăng nhập thất bại");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fail to login");
         }
 //        Users users = usersService.findByUsername(authenticationRequest.getUsername());
 //        final UserDetails userDetails = usersService.loadUserByUsername(authenticationRequest.getUsername());

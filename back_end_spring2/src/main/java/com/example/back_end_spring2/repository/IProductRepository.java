@@ -134,4 +134,5 @@ public interface IProductRepository extends JpaRepository<Products, Integer> {
     Page<IProductDTO> findAllProductByOther(Pageable pageable, @Param("nameProduct") String nameProduct, @Param("typeProduct") String typeProduct);
 
 
+    void createProductManager(String nameProduct, Double price, String description, Integer stockQuantity, Integer id, String img);
 }

@@ -62,11 +62,16 @@ public class ShoppingController {
                 cardsList = (List<ShoppingCards>) session.getAttribute("cart");
                 for (int i = 0; i < cardsList.size(); i++) {
                     if (cardsList.get(i).getProducts().getId() == id) {
+
+
                         if (index == 0) {
                             cardsList.get(i).setPrice(cardsList.get(i).getProducts().getPrice() * (cardsList.get(i).getAmount() - 1));
                             cardsList.get(i).setAmount(cardsList.get(i).getAmount() - 1);
 
                         } else {
+                            if (cardsList.get(i).getAmount() + 1 > cardsList.get(i).getProducts().getStockQuantity()) {
+                                return new ResponseEntity<>("The product you purchased is out of stock", HttpStatus.BAD_REQUEST);
+                            }
                             cardsList.get(i).setPrice(cardsList.get(i).getProducts().getPrice() * (cardsList.get(i).getAmount() + 1));
                             cardsList.get(i).setAmount(cardsList.get(i).getAmount() + 1);
 
@@ -79,7 +84,10 @@ public class ShoppingController {
             }
 
 
-            shoppingService.setCart(index, id);
+         ResponseEntity<?>  set =  shoppingService.setCart(index, id);
+            if(set.getStatusCode()== HttpStatus.BAD_REQUEST){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -97,7 +105,11 @@ public class ShoppingController {
         try {
             Products products = productService.getProduct(id);
             Customers customers = customerService.getCustomer(username);
-            shoppingService.createCart(customers, products, amount);
+
+           ResponseEntity<?> cart = shoppingService.createCart(customers, products, amount);
+           if(cart.getStatusCode() == HttpStatus.BAD_REQUEST){
+               return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+           }
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -120,15 +132,22 @@ public class ShoppingController {
         HttpSession session = httpServletRequest.getSession();
         if (session.getAttribute("cart") != null) {
             cardsList = (List<ShoppingCards>) session.getAttribute("cart");
+
             int count = 0;
+
             for (int i = 0; i < cardsList.size(); i++) {
+
                 if (shoppingCards.getProducts().getId() == cardsList.get(i).getProducts().getId()) {
+                    if(cardsList.get(i).getProducts().getStockQuantity()<shoppingCards.getAmount() + cardsList.get(i).getAmount() ){
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    }
                     cardsList.get(i).setAmount(cardsList.get(i).getAmount() + shoppingCards.getAmount());
                     cardsList.get(i).setPrice(cardsList.get(i).getPrice() + shoppingCards.getProducts().getPrice());
                     count++;
                 }
             }
             if (count == 0) {
+
                 shoppingCards.setPrice(shoppingCards.getProducts().getPrice() * shoppingCards.getAmount());
                 cardsList.add(shoppingCards);
             }
@@ -165,7 +184,6 @@ public class ShoppingController {
 
         return new ResponseEntity<>(httpSession.getAttribute("cart"), HttpStatus.OK);
     }
-
 
 
 }

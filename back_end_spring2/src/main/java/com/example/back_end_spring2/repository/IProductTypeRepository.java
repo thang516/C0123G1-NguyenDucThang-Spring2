@@ -11,4 +11,7 @@ public interface IProductTypeRepository extends JpaRepository<ProductType,Intege
     @Query(value = "SELECT pt.*,p.name_product,p.price,p.img FROM product_type pt INNER JOIN products p on pt.id = p.product_type_id\n" +
             "WHERE pt.id = 4 LIMIT 4",nativeQuery = true)
     List<ProductType> getAll();
+
+     @Query(value ="SELECT *  FROM product_type" ,nativeQuery = true)
+    List<ProductType> findAllType();
 }

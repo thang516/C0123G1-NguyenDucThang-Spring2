@@ -9,13 +9,15 @@ import * as service from "../service/ProductService"
 import {getAll} from "../service/ProductService";
 import {Link} from "react-router-dom";
 import {FormattedNumber} from "react-intl";
-
+import {log10} from "chart.js/helpers";
 
 
 export function List() {
 
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [productTypes, setTypeProducts] = useState([]);
+    const [colorFilter, setColorFilter] = useState([]);
     const [page, setPage] = useState(0);
 
     const [sortBy, setSortBy] = useState('highToLow');
@@ -26,20 +28,32 @@ export function List() {
 
     const getAllProducts = async () => {
         const res = await service.getAll(page, sortBy, price, color, typeProduct, nameProduct);
-            setProducts([...products, ...res.content])
+        setProducts([...products, ...res.content])
     }
 
 
+    useEffect(() => {
+        const getType = async () => {
+            const res = await service.getAllType();
+            setTypeProducts(res)
+        }
+        getType();
+        const getColor = async () => {
+            const res = await service.getColorFilter();
+            setColorFilter(res)
+        }
+        getType();
+        getColor();
+    }, [])
 
 
     useEffect(() => {
-        const getAllProduct= async () => {
+        const getAllProduct = async () => {
             const res = await service.getAll(page, sortBy, price, color, typeProduct, nameProduct);
             setProducts(res.content)
         }
         getAllProduct();
-    }, [sortBy,price,color,typeProduct])
-
+    }, [sortBy, price, color, typeProduct])
 
 
     useEffect(() => {
@@ -50,16 +64,22 @@ export function List() {
     if (!products) {
         return null;
     }
+    if (!productTypes) {
+        return null;
+    }
 
     const paginate = (page) => {
         setPage(page)
     }
 
+    console.log(colorFilter)
 
     return (
         <>
 
             <div className={'toggle-header'}>
+
+
                 <div className={'menu'}>
                     <div className="dropdown">
                         <button
@@ -71,131 +91,110 @@ export function List() {
                             Type Product
                         </button>
                         <ul className="dropdown-menu dropdown-menu-light ">
-                            <li>
-
-
-                                <span onClick={() => setTypeProduct('Bath and beach')} className="dropdown-item active" >
-                                    Bath and beach
+                            {
+                                productTypes && productTypes.map((p) => {
+                                    return (
+                                        <li key={p.id}>
+                                    <span onClick={() => setTypeProduct(p.nameType)}
+                                          className={`dropdown-item ${typeProduct === p.nameType ? 'active' : ''}`}>
+                                    {p.nameType}
                                 </span>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-
-                            <li>
-                                <span onClick={() => setTypeProduct('Blankets and pillows')} className="dropdown-item" >
-                                    Blankets and pillows
-                                </span>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-
-                            <li>
-                                <span  onClick={() => setTypeProduct('Eclectic clock')}  className="dropdown-item" >
-                                    Eclectic clock
-                                </span>
-                            </li>
-
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <span  onClick={() => setTypeProduct('Hats and gloves')}  className="dropdown-item" >
-                                    Hats and gloves
-                                </span>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-
-                            <li>
-                                <span  onClick={() => setTypeProduct('Ties, bow ties and pocket squares')} className="dropdown-item" >
-                                    Ties, bow ties and pocket squares
-                                </span>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-
-                            <li>
-                                <span  onClick={() => setTypeProduct('Silk scarves')} className="dropdown-item" >
-                                    Silk scarves
-                                </span>
-                            </li>
+                                            <hr className="dropdown-divider"/>
+                                        </li>
+                                    )
+                                })
+                            }
                         </ul>
                     </div>
+
+
                     <div className="dropdown">
                         <button
-                            style={{backgroundColor: "white", border: "none"}}  className=" dropdown-toggle"  type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"   >
+                            style={{backgroundColor: "white", border: "none"}} className=" dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             Color
                         </button>
                         <ul className="dropdown-menu dropdown-menu-light">
 
-                            <li>
-                                <a onClick={() => setColor('black')}  className="dropdown-item active" >
-                                    Black
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <a  onClick={() => setColor('blue')}  className="dropdown-item" >
-                                   Blue
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <a  onClick={() => setColor('orange')} className="dropdown-item" >
-                                    Orange
-                                </a>
-                            </li>
 
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <a  onClick={() => setColor('pink')}  className="dropdown-item" >
-                                    Pink
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <a  onClick={() => setColor('purple')} className="dropdown-item" >
-                                    Purple
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <a  onClick={() => setColor('yellow')} className="dropdown-item" >
-                                    Yellow
-                                </a>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <a  onClick={() => setColor('white')} className="dropdown-item" >
-                                   White
-                                </a>
-                            </li>
 
-                            <li>
-                                <hr className="dropdown-divider"/>
-                            </li>
-                            <li>
-                                <a onClick={() => setColor('red')} className="dropdown-item" >
-                                    Red
-                                </a>
-                            </li>
+
+                            {
+                                colorFilter && colorFilter.map((pr,index) => (
+
+                                   <li key={index}>
+                                        <span onClick={() => setColor(pr.nameColor)} className={`dropdown-item ${color === pr.nameColor ? 'active' : ''}`}>
+                                            {pr.nameColor}
+                                        </span>
+                                   </li>
+                                ))
+                            }
+
+
+                            {/*<li>*/}
+                            {/*    <a onClick={() => setColor('black')} className="dropdown-item active">*/}
+                            {/*        Black*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <hr className="dropdown-divider"/>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <a onClick={() => setColor('blue')} className="dropdown-item">*/}
+                            {/*        Blue*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <hr className="dropdown-divider"/>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <a onClick={() => setColor('orange')} className="dropdown-item">*/}
+                            {/*        Orange*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
+
+                            {/*<li>*/}
+                            {/*    <hr className="dropdown-divider"/>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <a onClick={() => setColor('pink')} className="dropdown-item">*/}
+                            {/*        Pink*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <hr className="dropdown-divider"/>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <a onClick={() => setColor('purple')} className="dropdown-item">*/}
+                            {/*        Purple*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <hr className="dropdown-divider"/>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <a onClick={() => setColor('yellow')} className="dropdown-item">*/}
+                            {/*        Yellow*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <hr className="dropdown-divider"/>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <a onClick={() => setColor('white')} className="dropdown-item">*/}
+                            {/*        White*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
+
+                            {/*<li>*/}
+                            {/*    <hr className="dropdown-divider"/>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <a onClick={() => setColor('red')} className="dropdown-item">*/}
+                            {/*        Red*/}
+                            {/*    </a>*/}
+                            {/*</li>*/}
                         </ul>
                     </div>
                     <div className="dropdown">
@@ -215,7 +214,7 @@ export function List() {
                                 <hr className="dropdown-divider"/>
                             </li>
                             <li>
-                                <a onClick={() => setPrice('500-1000')} className="dropdown-item" >
+                                <a onClick={() => setPrice('500-1000')} className="dropdown-item">
                                     500$-1000$
                                 </a>
                             </li>
@@ -223,7 +222,7 @@ export function List() {
                                 <hr className="dropdown-divider"/>
                             </li>
                             <li>
-                                <a onClick={() => setPrice('1001')} className="dropdown-item" >
+                                <a onClick={() => setPrice('1001')} className="dropdown-item">
                                     1000$
                                 </a>
                             </li>
@@ -260,7 +259,7 @@ export function List() {
                         </button>
                         <ul className="dropdown-menu dropdown-menu-light">
                             <li>
-                                <span onClick={() => setSortBy('lowToHigh')} className="dropdown-item active" >
+                                <span onClick={() => setSortBy('lowToHigh')} className="dropdown-item active">
                                     Low To High
                                 </span>
                             </li>
@@ -268,7 +267,7 @@ export function List() {
                                 <hr className="dropdown-divider"/>
                             </li>
                             <li>
-                                <span onClick={() => setSortBy('highToLow')} className="dropdown-item" >
+                                <span onClick={() => setSortBy('highToLow')} className="dropdown-item">
                                     High To Low
                                 </span>
                             </li>
@@ -341,7 +340,13 @@ export function List() {
             </div>
             <div style={{textAlign: "center"}}>
                 <button onClick={() => setPage(prevState => prevState + 1)}
-                        style={{backgroundColor: "whiteSmoke", fontSize: "20px",    border: "1px solid", width: "95%",margin: "20px 0px"}}>Load more
+                        style={{
+                            backgroundColor: "whiteSmoke",
+                            fontSize: "20px",
+                            border: "1px solid",
+                            width: "95%",
+                            margin: "20px 0px"
+                        }}>Load more
                 </button>
             </div>
 

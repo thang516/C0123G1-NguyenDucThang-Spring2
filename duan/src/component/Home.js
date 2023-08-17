@@ -177,15 +177,15 @@ export function Home() {
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>WATCHES</div>
+                        <div style={{ paddingTop: "0.5rem" }}>Blankets and pillows</div>
                     </div>
                     <div className="card" style={{ width: "100%", border: "none" }}>
                         <img
-                            src="https://assets.hermes.com/is/image/hermesedito/P_11_CH2_MFASHJEW_BRACELET_077242FP02?fit=wrap%2C0&wid=360"
+                            src="https://assets.hermes.com/is/image/hermesproduct/cheval-talaria-blanket--103690M%2002-flat-wm-1-0-0-800-800_g.jpg"
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>FASHION JEWELRY</div>
+                        <div style={{ paddingTop: "0.5rem" }}>SILK OFFICE</div>
                     </div>
                     <div className="card" style={{ width: "100%", border: "none" }}>
                         <img
@@ -355,42 +355,6 @@ export function Home() {
 
 
 
-                        {/*<div style={{ width: "90%" }}>*/}
-                        {/*    <img*/}
-                        {/*        src="https://assets.hermes.com/is/image/hermesproduct/231031N+FV_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
-                        {/*        className="card-img-top"*/}
-                        {/*        alt="..."*/}
-                        {/*    />*/}
-                        {/*    <div>Arizona hat</div>*/}
-                        {/*    <div>$870</div>*/}
-                        {/*</div>*/}
-                        {/*<div style={{ width: "90%" }}>*/}
-                        {/*    <img*/}
-                        {/*        src="https://assets.hermes.com/is/image/hermesproduct/079065CAAA_set?a=a&size=3000,3000&extend=300,300,300,300&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
-                        {/*        className="card-img-top"*/}
-                        {/*        alt="..."*/}
-                        {/*    />*/}
-                        {/*    <div>Orange Bag charm</div>*/}
-                        {/*    <div>$480</div>*/}
-                        {/*</div>*/}
-                        {/*<div style={{ width: "90%" }}>*/}
-                        {/*    <img*/}
-                        {/*        src="https://assets.hermes.com/is/image/hermesproduct/400210M+03_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
-                        {/*        className="card-img-top"*/}
-                        {/*        alt="..."*/}
-                        {/*    />*/}
-                        {/*    <div>Oseraie Color round tray</div>*/}
-                        {/*    <div>$2,475</div>*/}
-                        {/*</div>*/}
-                        {/*<div style={{ width: "90%" }}>*/}
-                        {/*    <img*/}
-                        {/*        src="https://assets.hermes.com/is/image/hermesproduct/046031P_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
-                        {/*        className="card-img-top"*/}
-                        {/*        alt="..."*/}
-                        {/*    />*/}
-                        {/*    <div>Soleil d’Hermès mug n°1</div>*/}
-                        {/*    <div>$210</div>*/}
-                        {/*</div>*/}
                     </div>
                 </div>
 

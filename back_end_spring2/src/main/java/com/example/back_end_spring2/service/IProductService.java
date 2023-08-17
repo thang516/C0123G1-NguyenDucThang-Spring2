@@ -32,4 +32,5 @@ public interface IProductService {
 
     Page<IProductDTO> findAllProductByOther(Pageable pageable , String typeProduct, String nameProduct);
 
+    void createProduct(ProductDTO productDTO);
 }
