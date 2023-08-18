@@ -48,17 +48,17 @@ export function Detail() {
     const param = useParams();
 
 
-    const addToCart = async (products,amount) => {
-
-        products = {
-            ...products ,
+    const addToCart = async (product,amount) => {
+        const value  = {
+            ...product,
+            img: imgSel,
             colors : {
                 id:productSetColor.idColor,
                 nameColor: productSetColor.colorName
             }
         }
 
-           const res = await service.addToCart(products, amount)
+           const res = await service.addToCart(value, amount)
                // .then(() => setQuantityCard(prev => prev + 1));
             if(res?.response?.status === 400){
                 toast.error(`The product you purchased is out of stock`)
@@ -66,9 +66,8 @@ export function Detail() {
                 toast.success(` This item has been added to the cart `)
 
             }
-
-
-
+        console.log('product, ', product)
+            console.log(productSetColor)
     }
 
 
@@ -109,9 +108,9 @@ export function Detail() {
     }
 
     const handleAddCard = () => {
-        addToCart(product, 1);
+        addToCart(productSetColor, 1);
     }
-
+    console.log('productColor',productColor)
 
     return (
         <>
@@ -231,12 +230,14 @@ export function Detail() {
                                                     setImg(abc)
                                                     setImgSel(abc[0].imgURL)
                                                     setProductSetColor(abc[0])
-
+                                                    console.log(abc[0].idColor)
+                                                    // ${cl.id === p.nameType ? 'active' : ''}
                                                 }}
                                                         style={{
                                                             backgroundColor: colors[cl.colorName],
                                                             height: "2.5rem",
                                                             width: "2.5rem",
+                                                            borderBottom :"5px solid "
                                                         }}
                                                     // onClick={() => colorInProduct(product.nameProduct)}
                                                 />

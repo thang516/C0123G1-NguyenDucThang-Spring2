@@ -9,16 +9,7 @@ import * as service from "../service/ProductService"
 // import {getAll} from "../service/ProductService";
 import {Link} from "react-router-dom";
 import {FormattedNumber} from "react-intl";
-// import {log10} from "chart.js/helpers";
-
-import {
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-} from '@chakra-ui/react'
-import Box from "@mui/material/Box";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import {Field, Formik, Form} from "formik";
 
 export function List() {
@@ -89,53 +80,32 @@ export function List() {
             <div className={'toggle-header'}>
 
 
-                {/*<div style={{height:"25%",width:"25%",margin:"50px 0px"}}>*/}
-                {/*    <Accordion defaultIndex={[0]} allowMultiple>*/}
-                {/*        <AccordionItem>*/}
-                {/*            <h2>*/}
-                {/*                <AccordionButton>*/}
-                {/*                    <Box as="span" flex='1' textAlign='left'>*/}
-                {/*                        Section 1 title*/}
-                {/*                    </Box>*/}
-                {/*                    <AccordionIcon />*/}
-                {/*                </AccordionButton>*/}
-                {/*            </h2>*/}
-                {/*            <AccordionPanel pb={4}>*/}
-                {/*                Color*/}
-                {/*            </AccordionPanel>*/}
-
-                {/*        </AccordionItem>*/}
-
-                {/*     */}
-                {/*    </Accordion>*/}
-                {/*</div>*/}
-
                 <div className={'menu'}>
-                    <div className="dropdown">
-                        <button
-                            style={{backgroundColor: "white", border: "none"}}
-                            className=" dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Type Product
-                        </button>
-                        <ul className="dropdown-menu dropdown-menu-light ">
-                            {
-                                productTypes && productTypes.map((p) => {
-                                    return (
-                                        <li key={p.id}>
-                                    <span onClick={() => setTypeProduct(p.nameType)}
-                                          className={`dropdown-item ${typeProduct === p.nameType ? 'active' : ''}`}>
-                                    {p.nameType}
-                                </span>
-                                            <hr className="dropdown-divider"/>
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
-                    </div>
+                    {/*<div className="dropdown">*/}
+                    {/*    <button*/}
+                    {/*        style={{backgroundColor: "white", border: "none"}}*/}
+                    {/*        className=" dropdown-toggle"*/}
+                    {/*        type="button"*/}
+                    {/*        data-bs-toggle="dropdown"*/}
+                    {/*        aria-expanded="false">*/}
+                    {/*        Type Product*/}
+                    {/*    </button>*/}
+                    {/*    <ul className="dropdown-menu dropdown-menu-light ">*/}
+                    {/*        {*/}
+                    {/*            productTypes && productTypes.map((p) => {*/}
+                    {/*                return (*/}
+                    {/*                    <li key={p.id}>*/}
+                    {/*                <span onClick={() => setTypeProduct(p.nameType)}*/}
+                    {/*                      className={`dropdown-item ${typeProduct === p.nameType ? 'active' : ''}`}>*/}
+                    {/*                {p.nameType}*/}
+                    {/*            </span>*/}
+
+                    {/*                    </li>*/}
+                    {/*                )*/}
+                    {/*            })*/}
+                    {/*        }*/}
+                    {/*    </ul>*/}
+                    {/*</div>*/}
 
 
                     <div className="dropdown">
@@ -177,7 +147,7 @@ export function List() {
                                 </span>
                             </li>
                             <li>
-                                <hr className="dropdown-divider"/>
+
                             </li>
                             <li>
                                 <a onClick={() => setPrice('500-1000')} className="dropdown-item">
@@ -185,7 +155,7 @@ export function List() {
                                 </a>
                             </li>
                             <li>
-                                <hr className="dropdown-divider"/>
+
                             </li>
                             <li>
                                 <a onClick={() => setPrice('1001')} className="dropdown-item">
@@ -197,6 +167,29 @@ export function List() {
                         </ul>
                     </div>
                 </div>
+
+
+                {/*<div style={{height:"25%",width:"25%",margin:"50px 0px"}}>*/}
+                {/*    <Accordion defaultIndex={[0]} allowMultiple>*/}
+                {/*        <AccordionItem>*/}
+                {/*            <h2>*/}
+                {/*                <AccordionButton>*/}
+                {/*                    <Box as="span" flex='1' textAlign='left'>*/}
+                {/*                        Section 1 title*/}
+                {/*                    </Box>*/}
+                {/*                    <AccordionIcon />*/}
+                {/*                </AccordionButton>*/}
+                {/*            </h2>*/}
+                {/*            <AccordionPanel pb={4}>*/}
+                {/*                Color*/}
+                {/*            </AccordionPanel>*/}
+
+                {/*        </AccordionItem>*/}
+
+
+                {/*    </Accordion>*/}
+                {/*</div>*/}
+
                 <div className="dropdown">
                     <button
                         style={{backgroundColor: "white", border: "none"}}
@@ -211,7 +204,7 @@ export function List() {
                                 </span>
                         </li>
                         <li>
-                            <hr className="dropdown-divider"/>
+
                         </li>
                         <li>
                                 <span onClick={() => setSortBy('highToLow')} className="dropdown-item">
@@ -222,44 +215,121 @@ export function List() {
                     </ul>
                 </div>
             </div>
-            <div>
 
-                <Formik initialValues={{
-                    nameProduct: ""
-                }}
-                        onSubmit={(values) => {
+                {/*<Formik initialValues={{*/}
+                {/*    nameProduct: ""*/}
+                {/*}}*/}
+                {/*        onSubmit={(values) => {*/}
 
-                            const search = async () => {
-                                const res = await service.getAll(page, typeProduct, values.nameProduct)
-                                setProducts(() => res.content)
-                                setNameProduct(() => values.nameProduct)
-                            }
+                {/*            const search = async () => {*/}
+                {/*                const res = await service.getAll(page, typeProduct, values.nameProduct)*/}
+                {/*                setProducts(() => res.content)*/}
+                {/*                setNameProduct(() => values.nameProduct)*/}
+                {/*            }*/}
 
-                            search();
-                        }}>
+                {/*            search();*/}
+                {/*        }}>*/}
 
-                    <Form className="d-flex"
-                          style={{marginTop: "20px", marginBottom: "20px", justifyContent: "flex-end"}}>
-                        <Field
-                            style={{backgroundColor: "white", width: " 20vw", marginRight: "20px"}}
-                            className="form-control" type="text" placeholder="Search by name product"
-                            name='nameProduct'/>
-                        {/*<button className="btn btn-secondary my-2 my-sm-0"*/}
-                        {/*        type="submit"*/}
-                        {/*        style={{backgroundColor: "black", marginRight: "20px"}}>*/}
-                        {/*    Search*/}
-                        {/*</button>*/}
-                        <button type="submit">
-                            <i className="fa-sharp fa-solid fa-magnifying-glass"/>
-                        </button>
-                        <button className="btn btn-secondary my-2 my-sm-0" style={{backgroundColor: "black"}}
-                        >
-                            Back
-                        </button>
-                    </Form>
+                {/*    <Form className="d-flex"*/}
+                {/*          style={{marginTop: "20px", marginBottom: "20px", justifyContent: "flex-end"}}>*/}
+                {/*        <Field*/}
+                {/*            style={{backgroundColor: "white", width: " 20vw", marginRight: "20px"}}*/}
+                {/*            className="form-control" type="text" placeholder="Search by name product"*/}
+                {/*            name='nameProduct'/>*/}
+                {/*        /!*<button className="btn btn-secondary my-2 my-sm-0"*!/*/}
+                {/*        /!*        type="submit"*!/*/}
+                {/*        /!*        style={{backgroundColor: "black", marginRight: "20px"}}>*!/*/}
+                {/*        /!*    Search*!/*/}
+                {/*        /!*</button>*!/*/}
+                {/*        <button type="submit">*/}
+                {/*            <i className="fa-sharp fa-solid fa-magnifying-glass"/>*/}
+                {/*        </button>*/}
+                {/*        /!*<button className="btn btn-secondary my-2 my-sm-0" style={{backgroundColor: "black"}}*!/*/}
+                {/*        /!*>*!/*/}
+                {/*        /!*    Back*!/*/}
+                {/*        /!*</button>*!/*/}
+                {/*    </Form>*/}
 
-                </Formik>
-            </div>
+                {/*</Formik>*/}
+
+
+
+            <Tabs size='md' variant='enclosed'>
+                <TabList>
+                    <Tab>One</Tab>
+                    <Tab>Two</Tab>
+                    <Tab>Trew</Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
+                        <div className="dropdown">
+                            <button
+                                style={{backgroundColor: "white", border: "none"}}
+                                className=" dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Type Product
+                            </button>
+                            <ul className="dropdown-menu dropdown-menu-light ">
+                                {
+                                    productTypes && productTypes.map((p) => {
+                                        return (
+                                            <li key={p.id}>
+                                    <span onClick={() => setTypeProduct(p.nameType)}
+                                          className={`dropdown-item ${typeProduct === p.nameType ? 'active' : ''}`}>
+                                    {p.nameType}
+                                </span>
+
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>
+                        </div>
+                    </TabPanel>
+                    <TabPanel>
+                        <p>two!</p>
+                    </TabPanel>
+                    <TabPanel>
+                        <Formik initialValues={{
+                            nameProduct: ""
+                        }}
+                                onSubmit={(values) => {
+
+                                    const search = async () => {
+                                        const res = await service.getAll(page, typeProduct, values.nameProduct)
+                                        setProducts(() => res.content)
+                                        setNameProduct(() => values.nameProduct)
+                                    }
+
+                                    search();
+                                }}>
+
+                            <Form className="d-flex"
+                                  style={{marginTop: "20px", marginBottom: "20px", justifyContent: "flex-end"}}>
+                                <Field
+                                    style={{backgroundColor: "white", width: " 20vw", marginRight: "20px"}}
+                                    className="form-control" type="text" placeholder="Search by name product"
+                                    name='nameProduct'/>
+                                {/*<button className="btn btn-secondary my-2 my-sm-0"*/}
+                                {/*        type="submit"*/}
+                                {/*        style={{backgroundColor: "black", marginRight: "20px"}}>*/}
+                                {/*    Search*/}
+                                {/*</button>*/}
+                                <button type="submit">
+                                    <i className="fa-sharp fa-solid fa-magnifying-glass"/>
+                                </button>
+                                {/*<button className="btn btn-secondary my-2 my-sm-0" style={{backgroundColor: "black"}}*/}
+                                {/*>*/}
+                                {/*    Back*/}
+                                {/*</button>*/}
+                            </Form>
+
+                        </Formik>
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
 
 
 

@@ -95,15 +95,15 @@ export async function deleteById(id,productId) {
 
 }
 
-export const  addToCart=async (products, amount) =>{
+export const  addToCart=async (product, amount) =>{
     const token = localStorage.getItem('token')
 
     const newValue = {
-        products : products,
+        products : product,
         amount :amount
     }
 
-    const id = products.id;
+    const id = product.id;
 
     if(token!== null){
         try {
