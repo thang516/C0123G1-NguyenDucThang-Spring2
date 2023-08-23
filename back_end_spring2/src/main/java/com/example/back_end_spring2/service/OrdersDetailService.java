@@ -10,7 +10,12 @@ import java.util.List;
 @Service
 public class OrdersDetailService implements IOrdersDetailService{
 
+    @Autowired
+    private IOrdersDetailRepository ordersDetailRepository;
 
 
-
+    @Override
+    public List<OrderDetail> findById(Integer id) {
+        return ordersDetailRepository.getOD(id);
+    }
 }

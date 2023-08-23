@@ -85,5 +85,20 @@ public class ShoppingService implements IShoppingService {
         shoppingRepository.deleteById(id);
     }
 
+    @Override
+    public void deleteByCustomerId(Integer id) {
+        shoppingRepository.deleteByCustomerId(id);
+    }
+
+    @Override
+    public void save(ShoppingCards shoppingCards) {
+        shoppingRepository.save(shoppingCards);
+    }
+
+    @Override
+    public void deleteCustomer(Customers customers) {
+        shoppingRepository.deleteByCustomerId(customers.getId());
+    }
+
 
 }

@@ -1,16 +1,16 @@
 package com.example.back_end_spring2.controller;
 
 
+
 import com.example.back_end_spring2.DTO.IImageDTO;
 import com.example.back_end_spring2.DTO.IProductDTO;
 import com.example.back_end_spring2.DTO.ProductDTO;
 import com.example.back_end_spring2.model.Images;
-import com.example.back_end_spring2.model.ProductType;
+
 import com.example.back_end_spring2.model.Products;
 import com.example.back_end_spring2.service.IImageService;
 import com.example.back_end_spring2.service.IProductService;
-import com.example.back_end_spring2.service.IProductTypeService;
-import com.sun.istack.Nullable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,16 +18,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/products")
@@ -124,7 +120,6 @@ public class ProductController {
     }
 
 
-
     @GetMapping("/new-product")
     public ResponseEntity<List<IProductDTO>> newProduct(){
         List<IProductDTO> products = productService.findNewProduct();
@@ -133,7 +128,6 @@ public class ProductController {
         }
             return new ResponseEntity<>(products,HttpStatus.OK);
     }
-
     @GetMapping("/products")
     public ResponseEntity<List<Products>> products(){
         List<Products> products = productService.findProducts();
@@ -142,7 +136,6 @@ public class ProductController {
         }
         return new ResponseEntity<>(products,HttpStatus.OK);
     }
-
     @GetMapping("/type")
     public ResponseEntity<List<Products>> getProductType(){
         List<Products> productDTOS = productService.findProductType();
@@ -151,7 +144,6 @@ public class ProductController {
         }
         return new ResponseEntity<>(productDTOS,HttpStatus.OK);
     }
-
     @GetMapping("/color/{nameProduct}")
     public ResponseEntity<List<IImageDTO>> getColor(@PathVariable String nameProduct){
         List<IImageDTO> productDTOS = productService.findColor(nameProduct);
@@ -162,11 +154,13 @@ public class ProductController {
     }
 
 
-
     @GetMapping("/find-all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     public ResponseEntity<Page<IProductDTO>> findAllProductByRoleOther (@RequestParam(value = "page",defaultValue = "0") Integer page,
                                                      @RequestParam(value = "typeProduct",defaultValue = "") String typeProduct,
                                                      @RequestParam(value = "nameProduct",defaultValue = "") String nameProduct ){
+
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Order.asc("price")));
         Page<IProductDTO> pro = productService.findAllProductByOther(pageable, typeProduct, nameProduct);
         if(pro == null ){
@@ -175,9 +169,9 @@ public class ProductController {
         return new ResponseEntity<>(pro,HttpStatus.OK);
     }
 
-
+//
 //    @PostMapping("/create-manager")
-//    public ResponseEntity<?> createProductManager(@Validated @RequestBody ProductDTO productDTO , BindingResult bindingResult){
+//    public ResponseEntity<?> createProductManager(@Validated @RequestBody CreateDTO productDTO , BindingResult bindingResult){
 //
 //        if (bindingResult.hasErrors()) {
 //            Map<String, String> list = new HashMap<>();
@@ -196,8 +190,6 @@ public class ProductController {
 //        productService.createProduct(productDTO);
 //        return new ResponseEntity<>( HttpStatus.OK);
 //    }
-//
-
 
 
 }

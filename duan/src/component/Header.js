@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import "../css/header.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useNavigate} from "react-router";
-import {SideBar} from "./SideBar";
+// import {SideBar} from "./SideBar";
 import { Link, NavLink } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -60,9 +60,9 @@ export function Header() {
             <header id="header" className="header d-flex align-items-center">
                 <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
                     <div className="col-md-4">
-                        <SideBar/>
-                            {/*<input style={{border :"1px solid black"}} type="text"/>*/}
-                            {/*<button><i className="fa-sharp fa-solid fa-magnifying-glass fa-lg"></i></button>*/}
+                    {/*    <SideBar/>*/}
+                    {/*        /!*<input style={{border :"1px solid black"}} type="text"/>*!/*/}
+                    {/*        /!*<button><i className="fa-sharp fa-solid fa-magnifying-glass fa-lg"></i></button>*!/*/}
                     </div>
                     <div className="col-md-4 d-flex justify-content-center">
                         <a onClick={() => navigate("/")} className="logo d-flex align-items-center">
@@ -83,25 +83,30 @@ export function Header() {
                         <nav style={{justifyContent:"end"}} id="navbar" className="navbar">
                             <ul>
                                 <li>
+                                    <NavLink to={'/list'} onClick={ () => mobileNavToggle()}>Product</NavLink>
                                 </li>
                                 <li>
-                                    <a className="active" onClick={() => navigate("/")}>
-                                        Home Page
-                                    </a>
+                                    <NavLink  to={'/'} onClick={() => {
+
+                                        mobileNavToggle();
+                                    }}>
+                                        Home
+                                    </NavLink>
                                 </li>
-                                <li>
-                                    <a href="blog.html">
-                                        News
-                                    </a>
-                                </li>
+                                {/*<li>*/}
+                                {/*    <a href="blog.html">*/}
+                                {/*        News*/}
+                                {/*    </a>*/}
+                                {/*</li>*/}
                                 <li>
                                     {isLogin ?
                                         (
                                             <>
                                             <div className="dropdown">
                                                 <button
+                                                    className={'btn-user'}
                                                     style={{backgroundColor: "white",color:"black !importance",display:"flex",}}
-                                                    className=" "     aria-expanded="false"
+                                                    aria-expanded="false"
                                                     type="button"  >
                                                     <div style={{backgroundColor:"whiteSmoke",height:"35px",width:"35px",borderRadius:"50px"}}>
                                                         <i className="fa-regular fa-circle-user fa-xl"></i>
@@ -116,10 +121,30 @@ export function Header() {
                                                             {username}
                                                         </a>
                                                     </li>
+
                                                     <li>
                                                         {
-                                                           currentRole == "ADMIN" ?
-                                                               (  <Link to="/nav/manager" className="dropdown-item "
+                                                           token ?
+                                                                (  <Link to="/information"
+                                                                         style={{ color: "black",fontSize:"18px",gap:"16px"}}>
+                                                                    <i  style={{fontSize:"20px"}} className="fa-solid fa-info"></i> Information user</Link>)
+                                                                : ''
+                                                        }
+                                                    </li>
+
+                                                    <li>
+                                                        {
+                                                            token ?
+                                                                (  <Link to="/history"
+                                                                         style={{ color: "black",fontSize:"18px",gap:"16px"}}>
+                                                                    <i   style={{fontSize:"20px"}}  className="fa-solid fa-list"></i>Transaction history</Link>)
+                                                                : ''
+                                                        }
+                                                    </li>
+                                                        <li>
+                                                        {
+                                                           currentRole == "ROLE_ADMIN" ?
+                                                               (  <Link to="/nav/manager/list" className="dropdown-item "
                                                                         style={{ color: "black",fontSize:"18px",gap:"16px"}}><i
                                                                    style={{fontSize:"16px"}}     className="fa-solid fa-list-check"/>Manage store</Link>)
                                                            : ''
@@ -141,14 +166,19 @@ export function Header() {
                                         :
                                         (
                                             <>
-                                                <Link to="/login" className='font-a-header'>
+                                                <Link to="/login" className='font-a-header' onClick={mobileNavToggle}>
                                                     <i style={{fontSize:"20px"}} className="fa-solid fa-user fa-2xl"/>Login</Link>
 
                                             </>
                                         )
                                     }
                                 </li>
-                                <li onClick={() => navigate('/cards')}  style={{display:"flex",gap:"5px"}} className={'responsive-cart'}>
+                                <li
+                                    onClick={() => {
+                                    navigate('/cards')
+                                    mobileNavToggle();
+                                }}
+                                    style={{display:"flex",gap:"5px"}} className={'responsive-cart'}>
 
                                      <div>
                                         <i className="fa-sharp fa-solid fa-bag-shopping" />

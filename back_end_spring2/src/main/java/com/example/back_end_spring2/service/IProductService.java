@@ -1,5 +1,6 @@
 package com.example.back_end_spring2.service;
 
+import com.example.back_end_spring2.DTO.CreateDTO;
 import com.example.back_end_spring2.DTO.IImageDTO;
 import com.example.back_end_spring2.DTO.IProductDTO;
 import com.example.back_end_spring2.DTO.ProductDTO;
@@ -32,5 +33,5 @@ public interface IProductService {
 
     Page<IProductDTO> findAllProductByOther(Pageable pageable , String typeProduct, String nameProduct);
 
-//    void createProduct(ProductDTO productDTO);
+//    void createProduct(CreateDTO productDTO);
 }

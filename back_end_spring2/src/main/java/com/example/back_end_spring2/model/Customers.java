@@ -38,7 +38,24 @@ public class Customers {
     @Column(columnDefinition = "BIT DEFAULT 0", updatable = true)
     private boolean isDelete;
 
+    @Column(columnDefinition = "TEXT")
+    private String image ;
+
+
     public Customers() {
+    }
+
+    public Customers(Integer id, String name, String address, String phone, Users users, String email, LocalDateTime createDate, LocalDateTime updateTime, boolean isDelete, String image) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.users = users;
+        this.email = email;
+        this.createDate = createDate;
+        this.updateTime = updateTime;
+        this.isDelete = isDelete;
+        this.image = image;
     }
 
     public Customers(Integer id, String name, String address, String phone, Users users, String email, LocalDateTime createDate, LocalDateTime updateTime, boolean isDelete) {
@@ -134,5 +151,13 @@ public class Customers {
 
     public void setDelete(boolean delete) {
         isDelete = delete;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

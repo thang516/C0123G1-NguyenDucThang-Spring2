@@ -16,9 +16,11 @@ import {
 import {useNavigate, useParams} from "react-router";
 import {useFashion} from "../contexts/FashionContext";
 import {FormattedNumber} from "react-intl";
+import {Link} from "react-router-dom";
 
 
 export function Detail() {
+
     const {setQuantityCard} = useFashion();
     const navigate = useNavigate();
     const [product, setProduct] = useState();
@@ -66,8 +68,7 @@ export function Detail() {
                 toast.success(` This item has been added to the cart `)
 
             }
-        console.log('product, ', product)
-            console.log(productSetColor)
+
     }
 
 
@@ -80,13 +81,14 @@ export function Detail() {
 
     const detailProduct = async () => {
         const res = await service.detailProduct(param.id);
-        setProduct(res[0].product);
-        // setImgMain(res[0].imgURL);
-        setImg(res);
-        setImgSel(res[0].imgURL)
-
-        await setDescription(res[0].product.description.split("."))
-        colorInProduct(res[0].product.nameProduct);
+        if(res && res[0]){
+            setProduct(res[0].product);
+            // setImgMain(res[0].imgURL);
+            setImg(res);
+            setImgSel(res[0].imgURL)
+            await setDescription(res[0].product.description.split("."))
+            colorInProduct(res[0].product.nameProduct);
+        }
     }
 
     const colorInProduct = async (nameProduct) => {
@@ -94,10 +96,26 @@ export function Detail() {
         setProductColor(res)
 
     }
+    const displayDetailNew = async (id) => {
+        try {
+            const res = await service.detailProduct(id);
+            setProduct(res[0].product);
+            setImg(res);
+            setImgSel(res[0].imgURL)
+
+            await setDescription(res[0].product.description.split("."))
+            colorInProduct(res[0].product.nameProduct);
+        }catch (e) {
+            return e;
+        }
+
+    }
 
     useEffect(() => {
         detailProduct();
         getProductNew();
+        // displayDetailNew()
+
     }, [])
 
     if (!product) {
@@ -110,7 +128,10 @@ export function Detail() {
     const handleAddCard = () => {
         addToCart(productSetColor, 1);
     }
-    console.log('productColor',productColor)
+    console.log(productSetColor)
+
+
+
 
     return (
         <>
@@ -169,19 +190,21 @@ export function Detail() {
                                     <div key={p.id} style={{display: "flex", marginTop: " 5rem", gap: "1rem"}}>
                                         <div className="card"
                                              style={{width: "100%", border: "none", backgroundColor: " #f6f1eb"}}>
-                                            <img
-                                                src={p.images}
-                                                className="card-img-top" alt="..."/>
+                                            <Link onClick={() => displayDetailNew(p.id)} >
+                                                <img
+                                                    src={p.images}
+                                                    className="card-img-top" />
+
                                             <div style={{paddingTop: "0.5rem"}}>
                                                 {p.nameProduct}
                                             </div>
-                                            <div>{p.price}</div>
 
-                                            <FormattedNumber
+                                            $<FormattedNumber
                                                 value={p?.price}
                                                 currency="USD"
                                                 minimumFractionDigits={0}>
                                             </FormattedNumber>
+                                            </Link>
 
                                         </div>
                                     </div>
@@ -221,7 +244,6 @@ export function Detail() {
                                 {
 
                                     productColor && productColor
-
                                         .filter((cl, index, self) => self.findIndex(c => c.id === cl.id) === index).map((cl,index) => (
                                             <div key={index} className={`choose-color `}>
 
@@ -230,14 +252,14 @@ export function Detail() {
                                                     setImg(abc)
                                                     setImgSel(abc[0].imgURL)
                                                     setProductSetColor(abc[0])
-                                                    console.log(abc[0].idColor)
+
                                                     // ${cl.id === p.nameType ? 'active' : ''}
                                                 }}
                                                         style={{
                                                             backgroundColor: colors[cl.colorName],
                                                             height: "2.5rem",
                                                             width: "2.5rem",
-                                                            borderBottom :"5px solid "
+                                                            borderBottom : `${productSetColor?.idColor == cl.idColor ? "5px solid" : ''}`
                                                         }}
                                                     // onClick={() => colorInProduct(product.nameProduct)}
                                                 />

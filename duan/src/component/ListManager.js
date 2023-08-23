@@ -14,20 +14,30 @@ export function ListManager() {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(0);
-    const [color, setColor] = useState('');
+
     const [typeProduct, setTypeProduct] = useState('');
     const [nameProduct, setNameProduct] = useState('');
 
     const getAllProducts = async () => {
-        const res = await service.getAll(page, typeProduct, nameProduct);
-        setProducts([...products, ...res.content])
+        try {
+            const res = await service.getAll(page, typeProduct, nameProduct);
+            setProducts([...products, ...res.data?.content])
+        }catch (e) {
+            navigate("/")
+        }
+
     }
-    console.log(products)
+
 
     useEffect(() => {
         const getAllProduct = async () => {
-            const res = await service.getAll(page, typeProduct, nameProduct);
-            setProducts(res.content)
+            try {
+                const res = await service.getAll(page, typeProduct, nameProduct);
+                setProducts(res.data?.content)
+            }catch (e) {
+                navigate("/")
+            }
+
         }
         getAllProduct();
     }, [])

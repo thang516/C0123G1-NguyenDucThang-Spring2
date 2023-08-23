@@ -1,5 +1,6 @@
 package com.example.back_end_spring2.service;
 
+import com.example.back_end_spring2.DTO.CreateDTO;
 import com.example.back_end_spring2.DTO.IImageDTO;
 import com.example.back_end_spring2.DTO.IProductDTO;
 import com.example.back_end_spring2.DTO.ProductDTO;
@@ -74,15 +75,15 @@ public class ProductService implements IProductService{
     }
 
 
-//
+
 //    @Override
-//    public void createProduct(ProductDTO productDTO) {
+//    public void createProduct(CreateDTO productDTO) {
 //        Products products = new Products();
 //        BeanUtils.copyProperties(productDTO,products);
 //
 //
 //        productRepository.createProductManager(products.getNameProduct(),products.getPrice(),products.getDescription(),
-//                products.getStockQuantity(),products.getProductType().getId(),products.getImg());
+//                products.getStockQuantity(),products.getProductType().getId(),products.getColors().getId(),products.getSizes().getId(),products.getImg());
 //    }
 
 

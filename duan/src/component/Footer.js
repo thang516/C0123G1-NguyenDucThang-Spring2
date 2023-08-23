@@ -40,7 +40,6 @@ export function Footer() {
                                 <h4>Orders</h4>
                                 <p>Returns &amp; exchange</p>
                                 <p>Collect in store</p>
-                                <p>Collect in store</p>
                                 <p>Payment</p>
                                 <p>Shipping</p>
                             </div>

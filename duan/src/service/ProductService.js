@@ -1,5 +1,69 @@
 import axios from "axios";
 
+export async function detailCustomer() {
+    const token = localStorage.getItem('token')
+
+
+    if (token != null) {
+        const res = await axios.get(`http://localhost:8080/api/customers/detail`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        return res
+    }
+}
+
+export async function getOrderDetail(id) {
+    const token = localStorage.getItem('token')
+
+    try{
+        const  result = await axios.get(`http://localhost:8080/api/orders/history/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            )
+        return  result.data
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+
+export async function createHistory() {
+
+    const token = localStorage.getItem('token')
+
+    try{
+        await axios.post(`http://localhost:8080/api/orders/add-orders`,"",
+        {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        })
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+
+export async function getAllHistory() {
+    const token = localStorage.getItem('token')
+
+        const  result = await axios.get(`http://localhost:8080/api/orders`,
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                }
+            })
+        return  result
+
+}
+
+
 export async function getColorFilter() {
     try{
         const  result = await axios.get(`http://localhost:8080/api/type/color`)
@@ -100,7 +164,8 @@ export const  addToCart=async (product, amount) =>{
 
     const newValue = {
         products : product,
-        amount :amount
+        amount :amount,
+        price : product.price
     }
 
     const id = product.id;

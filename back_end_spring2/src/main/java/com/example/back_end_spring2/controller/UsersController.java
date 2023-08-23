@@ -2,9 +2,13 @@ package com.example.back_end_spring2.controller;
 
 import com.example.back_end_spring2.config.JwtTokenUtil;
 import com.example.back_end_spring2.config.JwtUserDetails;
+import com.example.back_end_spring2.model.Customers;
+import com.example.back_end_spring2.model.ShoppingCards;
 import com.example.back_end_spring2.model.Users;
 import com.example.back_end_spring2.reponse.JwtRequest;
 import com.example.back_end_spring2.reponse.JwtResponse;
+import com.example.back_end_spring2.service.ICustomerService;
+import com.example.back_end_spring2.service.IShoppingService;
 import com.example.back_end_spring2.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +21,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:3000"}, allowedHeaders = "*", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/user")
 public class UsersController {
@@ -29,6 +37,10 @@ public class UsersController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private IShoppingService shoppingService;
+    @Autowired
+    private ICustomerService customerService ;
 
     class ErrorInfo {
         private String error;
@@ -38,7 +50,7 @@ public class UsersController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> loginAuthentication(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> loginAuthentication(@RequestBody JwtRequest authenticationRequest, HttpServletRequest httpServletRequest) throws Exception {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
@@ -47,7 +59,23 @@ public class UsersController {
             JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
             GrantedAuthority authority = principal.getAuthorities().stream().findFirst().orElse(null);
             final String token = jwtTokenUtil.generateToken(principal.getUsername());
+            HttpSession httpSession = httpServletRequest.getSession();
 
+        if( httpSession.getAttribute("cart") != null){
+                List<ShoppingCards> shoppingCards = new ArrayList<>();
+                Customers customers = customerService.getCustomer(principal.getUsername());
+                try {
+                    shoppingService.deleteCustomer(customers);
+                }catch (Exception e){
+                   throw  e ;
+                }
+
+                shoppingCards = (List<ShoppingCards>) httpSession.getAttribute("cart");
+                for (int i = 0; i < shoppingCards.size(); i++) {
+                    shoppingService.createCart(customers,shoppingCards.get(i).getProducts(),shoppingCards.get(i).getAmount());
+                }
+                httpSession.removeAttribute("cart");
+            }
             return ResponseEntity.ok(new JwtResponse(token, principal.getUsername(), authority != null ? authority.getAuthority() : null));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fail to login");
@@ -81,4 +109,8 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đổi mật khẩu thất bại!!");
         }
     }
+
+
+
+
 }

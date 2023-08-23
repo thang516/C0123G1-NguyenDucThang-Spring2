@@ -6,11 +6,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import {RightCircleTwoTone} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import * as service from "../service/ProductService"
+
 // import {getAll} from "../service/ProductService";
 import {Link} from "react-router-dom";
 import {FormattedNumber} from "react-intl";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import {Field, Formik, Form} from "formik";
+// import {Select} from '@chakra-ui/react'
+import {
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon,
+} from '@chakra-ui/react'
+import Box from "@mui/material/Box";
+
 
 export function List() {
 
@@ -50,7 +60,10 @@ export function List() {
     useEffect(() => {
         const getAllProduct = async () => {
             const res = await service.getAll(page, sortBy, price, color, typeProduct, nameProduct);
-            setProducts(res.content)
+            if(res){
+                setProducts(res.content)
+            }
+
         }
         getAllProduct();
     }, [sortBy, price, color, typeProduct, nameProduct])
@@ -81,43 +94,44 @@ export function List() {
 
 
                 <div className={'menu'}>
-                    {/*<div className="dropdown">*/}
-                    {/*    <button*/}
-                    {/*        style={{backgroundColor: "white", border: "none"}}*/}
-                    {/*        className=" dropdown-toggle"*/}
-                    {/*        type="button"*/}
-                    {/*        data-bs-toggle="dropdown"*/}
-                    {/*        aria-expanded="false">*/}
-                    {/*        Type Product*/}
-                    {/*    </button>*/}
-                    {/*    <ul className="dropdown-menu dropdown-menu-light ">*/}
-                    {/*        {*/}
-                    {/*            productTypes && productTypes.map((p) => {*/}
-                    {/*                return (*/}
-                    {/*                    <li key={p.id}>*/}
-                    {/*                <span onClick={() => setTypeProduct(p.nameType)}*/}
-                    {/*                      className={`dropdown-item ${typeProduct === p.nameType ? 'active' : ''}`}>*/}
-                    {/*                {p.nameType}*/}
-                    {/*            </span>*/}
 
-                    {/*                    </li>*/}
-                    {/*                )*/}
-                    {/*            })*/}
-                    {/*        }*/}
-                    {/*    </ul>*/}
-                    {/*</div>*/}
+                    <div className="dropdown">
+                        <button
+                            style={{border: "none"}} className=" dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Type Product
+                        </button>
+                        <ul className="dropdown-menu dropdown-menu-light">
+                            <li><span className={`dropdown-item ${typeProduct === '' ? 'active' : ''}`}  onClick={() => setTypeProduct('')} >All</span></li>
+                            {
+                                productTypes && productTypes.map((p) => (
+
+                                    <li key={p.id}>
+                                <span onClick={() => setTypeProduct(p.nameType)}
+                                      className={`dropdown-item ${typeProduct === p.nameType ? 'active' : ''}`}>
+                                {p.nameType}
+                                </span>
+                                    </li>
+                                ))
+
+                            }
+
+
+                        </ul>
+                    </div>
 
 
                     <div className="dropdown">
                         <button
-                            style={{backgroundColor: "white", border: "none"}} className=" dropdown-toggle"
+                            style={{border: "none"}} className=" dropdown-toggle"
                             type="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Color
                         </button>
                         <ul className="dropdown-menu dropdown-menu-light">
 
-
+                            <li><span className={`dropdown-item ${color === '' ? 'active' : ''}`}  onClick={() => setColor('')} >All</span></li>
                             {
                                 colorFilter && colorFilter.map((pr, index) => (
 
@@ -133,9 +147,11 @@ export function List() {
 
                         </ul>
                     </div>
+
+
                     <div className="dropdown">
                         <button
-                            style={{backgroundColor: "white", border: "none"}}
+                            style={{border: "none"}}
                             className=" dropdown-toggle"
                             type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Price
@@ -169,30 +185,9 @@ export function List() {
                 </div>
 
 
-                {/*<div style={{height:"25%",width:"25%",margin:"50px 0px"}}>*/}
-                {/*    <Accordion defaultIndex={[0]} allowMultiple>*/}
-                {/*        <AccordionItem>*/}
-                {/*            <h2>*/}
-                {/*                <AccordionButton>*/}
-                {/*                    <Box as="span" flex='1' textAlign='left'>*/}
-                {/*                        Section 1 title*/}
-                {/*                    </Box>*/}
-                {/*                    <AccordionIcon />*/}
-                {/*                </AccordionButton>*/}
-                {/*            </h2>*/}
-                {/*            <AccordionPanel pb={4}>*/}
-                {/*                Color*/}
-                {/*            </AccordionPanel>*/}
-
-                {/*        </AccordionItem>*/}
-
-
-                {/*    </Accordion>*/}
-                {/*</div>*/}
-
                 <div className="dropdown">
                     <button
-                        style={{backgroundColor: "white", border: "none"}}
+                        style={{border: "none"}}
                         className=" dropdown-toggle"
                         type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Sort
@@ -216,82 +211,19 @@ export function List() {
                 </div>
             </div>
 
-                {/*<Formik initialValues={{*/}
-                {/*    nameProduct: ""*/}
-                {/*}}*/}
-                {/*        onSubmit={(values) => {*/}
 
-                {/*            const search = async () => {*/}
-                {/*                const res = await service.getAll(page, typeProduct, values.nameProduct)*/}
-                {/*                setProducts(() => res.content)*/}
-                {/*                setNameProduct(() => values.nameProduct)*/}
-                {/*            }*/}
+            <Accordion defaultIndex={[0]} allowMultiple>
+                <AccordionItem>
+                    <h2>
+                        <AccordionButton style={{padding: "7px 36px"}}>
+                            <Box as="span" flex='1' textAlign='left'>
+                                Search
+                            </Box>
+                            <AccordionIcon/>
+                        </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
 
-                {/*            search();*/}
-                {/*        }}>*/}
-
-                {/*    <Form className="d-flex"*/}
-                {/*          style={{marginTop: "20px", marginBottom: "20px", justifyContent: "flex-end"}}>*/}
-                {/*        <Field*/}
-                {/*            style={{backgroundColor: "white", width: " 20vw", marginRight: "20px"}}*/}
-                {/*            className="form-control" type="text" placeholder="Search by name product"*/}
-                {/*            name='nameProduct'/>*/}
-                {/*        /!*<button className="btn btn-secondary my-2 my-sm-0"*!/*/}
-                {/*        /!*        type="submit"*!/*/}
-                {/*        /!*        style={{backgroundColor: "black", marginRight: "20px"}}>*!/*/}
-                {/*        /!*    Search*!/*/}
-                {/*        /!*</button>*!/*/}
-                {/*        <button type="submit">*/}
-                {/*            <i className="fa-sharp fa-solid fa-magnifying-glass"/>*/}
-                {/*        </button>*/}
-                {/*        /!*<button className="btn btn-secondary my-2 my-sm-0" style={{backgroundColor: "black"}}*!/*/}
-                {/*        /!*>*!/*/}
-                {/*        /!*    Back*!/*/}
-                {/*        /!*</button>*!/*/}
-                {/*    </Form>*/}
-
-                {/*</Formik>*/}
-
-
-
-            <Tabs size='md' variant='enclosed'>
-                <TabList>
-                    <Tab>One</Tab>
-                    <Tab>Two</Tab>
-                    <Tab>Trew</Tab>
-                </TabList>
-                <TabPanels>
-                    <TabPanel>
-                        <div className="dropdown">
-                            <button
-                                style={{backgroundColor: "white", border: "none"}}
-                                className=" dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Type Product
-                            </button>
-                            <ul className="dropdown-menu dropdown-menu-light ">
-                                {
-                                    productTypes && productTypes.map((p) => {
-                                        return (
-                                            <li key={p.id}>
-                                    <span onClick={() => setTypeProduct(p.nameType)}
-                                          className={`dropdown-item ${typeProduct === p.nameType ? 'active' : ''}`}>
-                                    {p.nameType}
-                                </span>
-
-                                            </li>
-                                        )
-                                    })
-                                }
-                            </ul>
-                        </div>
-                    </TabPanel>
-                    <TabPanel>
-                        <p>two!</p>
-                    </TabPanel>
-                    <TabPanel>
                         <Formik initialValues={{
                             nameProduct: ""
                         }}
@@ -309,7 +241,7 @@ export function List() {
                             <Form className="d-flex"
                                   style={{marginTop: "20px", marginBottom: "20px", justifyContent: "flex-end"}}>
                                 <Field
-                                    style={{backgroundColor: "white", width: " 20vw", marginRight: "20px"}}
+                                    style={{backgroundColor: "white", width: " 30%", marginRight: "20px"}}
                                     className="form-control" type="text" placeholder="Search by name product"
                                     name='nameProduct'/>
                                 {/*<button className="btn btn-secondary my-2 my-sm-0"*/}
@@ -327,54 +259,50 @@ export function List() {
                             </Form>
 
                         </Formik>
-                    </TabPanel>
-                </TabPanels>
-            </Tabs>
-
-
+                    </AccordionPanel>
+                </AccordionItem>
+            </Accordion>
 
 
             <div className="carousel-containers">
 
 
                 {products?.length === 0 && nameProduct !== "" ? (
-                            <div>
-                                <h4 className={"text-danger"}>
-                                    No products found
-                                </h4>
-                            </div>
+                        <div>
+                            <h4 className={"text-danger"}>
+                                No products found
+                            </h4>
+                        </div>
                     ) :
                     (
 
-                            products && products.map((p, index) => (
+                        products && products.map((p, index) => (
 
-                                <div key={p.id} className="card">
+                            <div key={p.id} className="card">
 
-                                    <div className="card-img-top">
-                                        <Link to={`/detail/${p.id}/`}>
-                                            <img src={p.images}/>
+                                <div className="card-img-top">
+                                    <Link to={`/detail/${p.id}/`}>
+                                        <img src={p.images}/>
 
-                                        </Link>
-                                    </div>
-                                    <div className="card-body">
-                                        <p className="card-text">
-                                            {p.nameProduct}
-                                        </p>
-                                        <p>$
-                                            <FormattedNumber
-                                                value={p?.price}
-                                                currency="USD"
-                                                minimumFractionDigits={0}>
-                                            </FormattedNumber>
-
-                                        </p>
-                                    </div>
+                                    </Link>
                                 </div>
-                            ))
+                                <div className="card-body">
+                                    <p className="card-text">
+                                        {p.nameProduct}
+                                    </p>
+                                    <p>$
+                                        <FormattedNumber
+                                            value={p?.price}
+                                            currency="USD"
+                                            minimumFractionDigits={0}>
+                                        </FormattedNumber>
+
+                                    </p>
+                                </div>
+                            </div>
+                        ))
                     )}
             </div>
-
-
 
 
             <div style={{textAlign: "center"}}>

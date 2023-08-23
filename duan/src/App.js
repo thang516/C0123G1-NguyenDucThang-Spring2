@@ -14,6 +14,8 @@ import {CustomerList} from "./component/CustomerList";
 import FashionProvider from "./contexts/FashionContext";
 import {ListManager} from "./component/ListManager";
 import {LoginNew} from "./component/loginNew/LoginNew";
+import {OrderList} from "./component/order_and_orderDetail/OrderList";
+import {InformationPerson} from "./component/InformationPerson";
 
 function App() {
     return (
@@ -28,6 +30,8 @@ function App() {
                     <Route path="/detail/:id" element={<Detail/>}/>
                     <Route path="/login" element={<LoginNew/>}/>
                     <Route path="/detail" element={<Detail/>}/>
+                    <Route path="/information" element={<InformationPerson/>}/>
+                    <Route path="/history" element={<OrderList/>}/>
                     <Route path="/nav/manager" element={<CustomerList/>}/>
                     <Route path="/nav/manager/list" element={<ListManager/>}/>
                 </Routes>

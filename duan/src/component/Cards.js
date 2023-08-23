@@ -3,17 +3,23 @@ import "../css/cards.scss"
 import * as service from "../service/ProductService";
 import sweat from "sweetalert2";
 import {useFashion} from "../contexts/FashionContext";
-import "../component/CardItem/CardItem.scss"
+import "./cardItem/CardItem.scss"
 import {ToastContainer, toast} from 'react-toastify';
+import swal from 'sweetalert';
 import 'react-toastify/dist/ReactToastify.css';
 import { PayPalButton } from "react-paypal-button-v2";
+import {useNavigate} from "react-router";
+import {FormattedNumber} from "react-intl";
 export function Cards() {
 
     const {quantityCard, setQuantityCard} = useFashion();
     const username = localStorage.getItem('username');
+    const token = localStorage.getItem('token')
     const [shopping, setShopping] = useState([]);
     const [totalPrice, setTotalPrice] = useState();
+    const [history,setHistory] = useState();
     const [checkout, setCheckout] = useState(false);
+    const navigate = useNavigate();
     const getAllShopping = async () => {
         const res = await service.getAllShopping(username);
         setShopping(res)
@@ -21,10 +27,14 @@ export function Cards() {
         setQuantityCard(total);
 
         setTotalPrice(0);
+        if(!res) return;
         await res.map(async (v, index) => {
             await setTotalPrice(prev => prev + v.price)
         })
         console.log(res)
+    }
+    const historyOrder = async  () => {
+        await service.createHistory();
     }
 
     const calculate = async (id, index, productId,idColor) => {
@@ -43,6 +53,7 @@ export function Cards() {
 
     useEffect(() => {
         getAllShopping();
+
     }, [])
 
 
@@ -60,7 +71,7 @@ export function Cards() {
     function deleteShopping(id, nameProduct, productId) {
         sweat.fire({
             icon: "warning",
-            title: `Do you want to delete ${nameProduct} ?`,
+            title: `Do you want to delete " ${nameProduct} " ?`,
             showCancelButton: true,
             confirmButtonText: "OK"
         }).then(async (isDelete) => {
@@ -96,7 +107,7 @@ export function Cards() {
                                         <p>{s.products.nameProduct}</p>
                                         <button
                                             onClick={() => deleteShopping(s.id, s.products.nameProduct, s.products.id)}>
-                                            <i className="fa-sharp fa-light fa-x fa-lg"></i></button>
+                                            <i style={{color :"red"}} className="fa-sharp fa-light fa-x fa-lg"></i></button>
                                     </div>
 
 
@@ -115,7 +126,14 @@ export function Cards() {
                                                 <span>+</span></button>
                                         </div>
                                         <div className={'price'}>
-                                            <span>${s.price}</span>
+                                            <span>
+                                                     $
+                                <FormattedNumber
+                                    value= {s.price}
+                                    currency="USD"
+                                    minimumFractionDigits={0}>
+                                </FormattedNumber>
+                                                </span>
                                         </div>
                                     </div>
 
@@ -145,7 +163,14 @@ export function Cards() {
 
                     <div className={'calculator'}>
                         <span>TOTAL</span>
-                        <span>${totalPrice}</span>
+                        <span>
+                             $
+                                <FormattedNumber
+                                    value= {totalPrice}
+                                    currency="USD"
+                                    minimumFractionDigits={0}>
+                                </FormattedNumber>
+                            </span>
                     </div>
                     <div style={{
                         height: " 10px",
@@ -154,11 +179,11 @@ export function Cards() {
                     }}>
 
                     </div>
-                    <div style={{textAlign: "center", justifyContent: "center", alignItems: "center", height: "5rem"}}>
-                        <button style={{width: "15rem", backgroundColor: "#444444", margin: "20px"}}
-                                className="btn btn-dark">CheckOut
-                        </button>
-                    </div>
+                    {/*<div style={{textAlign: "center", justifyContent: "center", alignItems: "center", height: "5rem"}}>*/}
+                    {/*    <button style={{width: "15rem", backgroundColor: "#444444", margin: "20px"}}*/}
+                    {/*            className="btn btn-dark">CheckOut*/}
+                    {/*    </button>*/}
+                    {/*</div>*/}
                 </div>
 
                 <div className={'card-right'}>
@@ -205,16 +230,18 @@ export function Cards() {
                             </div>
                         </div>
 
-                        <div className={'payments'}>
-
-                            <div>
-
+                        <div className={'payments'} onClick={() => {
+                            if(!token){
+                                swal("Warning", "You need to login to pay!!!", "warning");
+                            }
+                        }}>
+                            <div style={{pointerEvents: token ? 'auto' : 'none'}} >
                                 <PayPalButton
                                     amount={totalPrice}
                                     // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
                                     onSuccess={(details, data) => {
-                                        alert("Transaction completed by " + details.payer.name.given_name);
-
+                                        // alert("Transaction completed by " + details.payer.name.given_name);
+                                        historyOrder();
 
 
                                         return fetch("/paypal-transaction-complete", {
@@ -225,56 +252,30 @@ export function Cards() {
                                         });
                                     }}
                                 />
-                                <table align="center">
-                                    <tbody>
-                                    <tr>
-                                        <td align="center"/>
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
-                                            <a
-                                                href="https://www.paypal.com/vn/webapps/mpp/paypal-popup"
-                                                title="How PayPal Works"
-                                                onClick="javascript:window.open('https://www.paypal.com/vn/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"
-                                            >
-                                                <img
-                                                    src="https://www.paypalobjects.com/marketing/web/vn/manage-my-paypal-account/PP-AcceptanceMarkTray-NoDiscover-243x40-optimised.png"
-                                                    alt="Khay đánh dấu chấp nhận PayPal | Lớn"
-                                                />
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+
+
+                                {/*<table align="center">*/}
+                                {/*    <tbody>*/}
+                                {/*    <tr>*/}
+                                {/*        <td align="center"/>*/}
+                                {/*    </tr>*/}
+                                {/*    <tr>*/}
+                                {/*        <td align="center">*/}
+                                {/*            <a*/}
+                                {/*                href="https://www.paypal.com/vn/webapps/mpp/paypal-popup"*/}
+                                {/*                title="How PayPal Works"*/}
+                                {/*                onClick="javascript:window.open('https://www.paypal.com/vn/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"*/}
+                                {/*            >*/}
+                                {/*                <img*/}
+                                {/*                    src="https://www.paypalobjects.com/marketing/web/vn/manage-my-paypal-account/PP-AcceptanceMarkTray-NoDiscover-243x40-optimised.png"*/}
+                                {/*                    alt="Khay đánh dấu chấp nhận PayPal | Lớn"*/}
+                                {/*                />*/}
+                                {/*            </a>*/}
+                                {/*        </td>*/}
+                                {/*    </tr>*/}
+                                {/*    </tbody>*/}
+                                {/*</table>*/}
                             </div>
-
-
-
-
-                            {/*<div>*/}
-                            {/*    <i className="fa-brands fa-cc-visa  fa-2xl"/>*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <i className="fa-brands fa-cc-discover  fa-2xl"/>*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <i className="fa-brands fa-cc-diners-club  fa-2xl"/>*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <i className="fa-brands fa-cc-jcb fa-2xl"/>*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <i className="fa-brands fa-cc-amex fa-2xl"/>*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <i className="fa-sharp fa-solid fa-money-bill fa-2xl"/>*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <i className="fa-brands fa-pied-piper-pp fa-2xl"/>*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <i className="fa-brands fa-cc-mastercard fa-2xl"/>*/}
-                            {/*</div>*/}
 
                         </div>
                     </div>

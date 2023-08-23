@@ -6,14 +6,14 @@ import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 import React from "react";
 import {useNavigate} from "react-router";
-
 export function LoginNew() {
     const navigate = useNavigate();
+
     return (
         <>
 
             <div className="main">
-                {/*/!* Sign up form *!/*/}
+                {/* Sign up form*/}
                 {/*<section className="signup">*/}
                 {/*    <div className="container">*/}
                 {/*        <div className="signup-content">*/}
@@ -43,6 +43,28 @@ export function LoginNew() {
                 {/*                        />*/}
                 {/*                    </div>*/}
                 {/*                    <div className="form-group">*/}
+                {/*                        <label >*/}
+                {/*                            <i className="fa-solid fa-user-plus"></i>*/}
+                {/*                        </label>*/}
+                {/*                        <input*/}
+                {/*                            type="text"*/}
+                {/*                            name="username"*/}
+
+                {/*                            placeholder="Username"*/}
+                {/*                        />*/}
+                {/*                    </div>*/}
+                {/*                    <div className="form-group">*/}
+                {/*                        <label >*/}
+                {/*                            <i className="fa-solid fa-phone-volume"></i>*/}
+                {/*                        </label>*/}
+                {/*                        <input*/}
+                {/*                            type="number"*/}
+                {/*                            name="phone"*/}
+
+                {/*                            placeholder="Phone"*/}
+                {/*                        />*/}
+                {/*                    </div>*/}
+                {/*                    <div className="form-group">*/}
                 {/*                        <label htmlFor="pass">*/}
                 {/*                            <i className="zmdi zmdi-lock"/>*/}
                 {/*                        </label>*/}
@@ -53,6 +75,8 @@ export function LoginNew() {
                 {/*                            placeholder="Password"*/}
                 {/*                        />*/}
                 {/*                    </div>*/}
+
+
                 {/*                    <div className="form-group">*/}
                 {/*                        <label>*/}
                 {/*                            <i className="zmdi zmdi-lock-outline"/>*/}
@@ -106,14 +130,13 @@ export function LoginNew() {
                 {/*        </div>*/}
                 {/*    </div>*/}
                 {/*</section>*/}
-                {/* Sing in  Form */}
+                {/*/!* Sing in  Form *!/*/}
                 <section className="sign-in">
                     <div className="containerss">
                         <div className="signin-content">
                             <div className="signin-image">
                                 <figure>
                                     <img
-                                        // https://kenh14cdn.com/203336854389633024/2022/10/28/photo-2-1666955381296926775038.jpg
 
                                         src="https://colorlib.com/etc/regform/colorlib-regform-7/images/signin-image.jpg"
                                         alt="sing up image"
@@ -140,16 +163,17 @@ export function LoginNew() {
 
                                             try {
                                                 const response = await
-                                                    axios.post("http://localhost:8080/api/user/authenticate", values);
+                                                    axios.post("http://localhost:8080/api/user/authenticate", values ,{withCredentials: true});
 
                                                 if (response.data.token) {
                                                     localStorage.setItem("token", response.data.token);
                                                     localStorage.setItem("username", response.data.username);
                                                     localStorage.setItem("role", response.data.role);
                                                 }
-                                                // Đăng nhập thành công, chuyển hướng hoặc thực hiện hành động khác
+
                                                 navigate("/");
                                                 toast.success(`Login successfully !!!`)
+
                                             } catch (e) {
                                                 // Xử lý lỗi đăng nhập
                                                 toast.error(e.response.data);

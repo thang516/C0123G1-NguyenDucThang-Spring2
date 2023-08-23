@@ -1,8 +1,8 @@
 package com.example.back_end_spring2.controller;
 
 import com.example.back_end_spring2.DTO.CustomerDTO;
+import com.example.back_end_spring2.config.JwtTokenUtil;
 import com.example.back_end_spring2.model.Customers;
-import com.example.back_end_spring2.model.Users;
 import com.example.back_end_spring2.service.ICustomerService;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
@@ -19,6 +19,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +31,9 @@ public class CustomerController {
 
     @Autowired
     private ICustomerService customerService;
-
-
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Page<Customers>> getAll(@RequestParam(value = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 3, Sort.by(Sort.Order.asc("name")));
 
@@ -75,6 +75,20 @@ public class CustomerController {
     }
 
 
+    @GetMapping("/detail")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    public ResponseEntity<Customers> detailCustomer(HttpServletRequest httpServletRequest) {
+
+        String header = httpServletRequest.getHeader("Authorization");
+        String token = header.substring(7);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+
+      Customers customers = customerService.getCus(username);
+      if (customers == null){
+          return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      }
+      return new ResponseEntity<>(customers,HttpStatus.OK);
+    }
 
 
 }

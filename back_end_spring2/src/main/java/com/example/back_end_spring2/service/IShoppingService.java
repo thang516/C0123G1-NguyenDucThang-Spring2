@@ -15,4 +15,10 @@ public interface IShoppingService {
     ResponseEntity<?> createCart(Customers customers, Products products, Integer amount);
 
     void deleteC(Integer id);
+
+    void deleteByCustomerId(Integer id);
+
+    void save(ShoppingCards shoppingCards);
+
+    void deleteCustomer(Customers customers);
 }

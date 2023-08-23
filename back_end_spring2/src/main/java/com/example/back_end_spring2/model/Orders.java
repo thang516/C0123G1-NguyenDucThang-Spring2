@@ -1,5 +1,6 @@
 package com.example.back_end_spring2.model;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -16,13 +17,14 @@ public class Orders {
     @JoinColumn
     private Customers customers;
 
-    @Column(name = "create_time" ,nullable = false,unique = true,columnDefinition = "DATETIME DEFAULT now()")
-    @CreatedDate
+    @Column(name = "create_time" ,columnDefinition = "TIMESTAMP DEFAULT now()")
+    @CreationTimestamp
     private LocalDateTime createDate;
 
     @Column(name = "total_amount")
     private Double totalAmount ;
 
+    private  String  status;
     public Orders() {
     }
 
@@ -31,6 +33,14 @@ public class Orders {
         this.customers = customers;
         this.createDate = createDate;
         this.totalAmount = totalAmount;
+    }
+
+    public Orders(Integer id, Customers customers, LocalDateTime createDate, Double totalAmount, String status) {
+        this.id = id;
+        this.customers = customers;
+        this.createDate = createDate;
+        this.totalAmount = totalAmount;
+        this.status = status;
     }
 
     public Orders(Customers customers, LocalDateTime createDate, Double totalAmount) {
@@ -69,5 +79,13 @@ public class Orders {
 
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

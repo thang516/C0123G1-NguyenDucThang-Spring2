@@ -1,5 +1,6 @@
 package com.example.back_end_spring2.model;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -23,9 +24,11 @@ public class OrderDetail {
     private Double price ;
     private Integer quantity;
 
-    @Column(name = "create_time" ,nullable = false,unique = true,columnDefinition = "DATETIME DEFAULT now()")
-    @CreatedDate
+
+    @Column(name = "create_time" ,columnDefinition = "TIMESTAMP DEFAULT now()")
+    @CreationTimestamp
     private LocalDateTime createDate;
+
 
     @Column(name = "update_time" ,nullable = false,unique = true,columnDefinition = "DATETIME DEFAULT now()")
     @CreatedDate

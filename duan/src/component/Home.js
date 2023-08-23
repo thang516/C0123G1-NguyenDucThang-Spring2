@@ -5,9 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "../css/home.css"
 import * as service from "../service/ProductService"
 import {useNavigate} from "react-router";
-import Link from "@mui/material/Link";
-import {AccordionPanel} from "@chakra-ui/react";
-import NavLink from "react-bootstrap/NavLink";
+import {FormattedNumber} from "react-intl";
 
 
 export function Home() {
@@ -73,9 +71,9 @@ export function Home() {
             </div>
             <div  style={{ textAlign: "center", paddingBottom: "2rem" }}>
                 <div className="content-p">
-                    <a style={{ color: "black" ,    textDecoration: "underline"}} href="">
+                    <span style={{ color: "black" }} >
                         Discover the collection
-                    </a>
+                    </span>
                 </div>
             </div>
             <div
@@ -116,39 +114,20 @@ export function Home() {
                                         <img src={v.img}  className="card-img-top" />
                                     </div>
                                     <div>{v.nameProduct}</div>
-                                    <div>{v.price}</div>
+                                    <div>
+                                        $
+                                        <FormattedNumber
+                                            value={v.price}
+                                            currency="USD"
+                                            minimumFractionDigits={0}>
+                                        </FormattedNumber>
+                                       </div>
                                 </div>
                             ))
                         }
 
 
-                {/*    <div style={{ width: "90%" }}>*/}
-                {/*        <img*/}
-                {/*            src="https://assets.hermes.com/is/image/hermesproduct/1062208+52_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
-                {/*            className="card-img-top"*/}
-                {/*            alt="..."*/}
-                {/*        />*/}
-                {/*        <div>  Openwork bracelet GM</div>*/}
-                {/*        <div>$370</div>*/}
-                {/*    </div>*/}
-                {/*    <div style={{ width: "90%" }}>*/}
-                {/*        <img*/}
-                {/*            src="https://assets.hermes.com/is/image/hermesproduct/1109078+92_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
-                {/*            className="card-img-top"*/}
-                {/*            alt="..."*/}
-                {/*        />*/}
-                {/*        <div>Photo album GM</div>*/}
-                {/*        <div>$1,350</div>*/}
-                {/*    </div>*/}
-                {/*    <div style={{ width: "90%" }}>*/}
-                {/*        <img*/}
-                {/*            src="https://assets.hermes.com/is/image/hermesproduct/1071338+92_set?a=a&size=3000,3000&extend=300,300,300,300&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
-                {/*            className="card-img-top"*/}
-                {/*            alt="..."*/}
-                {/*        />*/}
-                {/*        <div>Limited edition magnolia charm</div>*/}
-                {/*        <div>$570</div>*/}
-                {/*    </div>*/}
+
                 </div>
             </div>
 
@@ -169,7 +148,7 @@ export function Home() {
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>WOMEN SILK</div>
+                        <div style={{ paddingTop: "0.5rem" ,backgroundColor : " #f6f1eb"}}>WOMEN SILK</div>
                     </div>
                     <div className="card" style={{ width: "100%", border: "none" }}>
                         <img
@@ -177,7 +156,7 @@ export function Home() {
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>Blankets and pillows</div>
+                        <div style={{ paddingTop: "0.5rem" ,backgroundColor : " #f6f1eb" }}>Blankets and pillows</div>
                     </div>
                     <div className="card" style={{ width: "100%", border: "none" }}>
                         <img
@@ -185,7 +164,7 @@ export function Home() {
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>SILK OFFICE</div>
+                        <div style={{ paddingTop: "0.5rem" ,backgroundColor : " #f6f1eb" }}>SILK OFFICE</div>
                     </div>
                     <div className="card" style={{ width: "100%", border: "none" }}>
                         <img
@@ -193,7 +172,7 @@ export function Home() {
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>JEWELRY</div>
+                        <div style={{ paddingTop: "0.5rem" ,backgroundColor : " #f6f1eb"}}>JEWELRY</div>
                     </div>
                     <div className="card" style={{ width: "100%", border: "none" }}>
                         <img
@@ -201,7 +180,7 @@ export function Home() {
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>BATH AND BEACH</div>
+                        <div style={{ paddingTop: "0.5rem" ,backgroundColor : " #f6f1eb"}}>BATH AND BEACH</div>
                     </div>
                     <div className="card" style={{ width: "100%", border: "none" }}>
                         <img
@@ -209,7 +188,7 @@ export function Home() {
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>HATS</div>
+                        <div style={{ paddingTop: "0.5rem" ,backgroundColor : " #f6f1eb"}}>HATS</div>
                     </div>
                     <div className="card" style={{ width: "100%", border: "none" }}>
                         <img
@@ -217,7 +196,7 @@ export function Home() {
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>FRAGRANCES</div>
+                        <div style={{ paddingTop: "0.5rem" ,backgroundColor : " #f6f1eb"}}>FRAGRANCES</div>
                     </div>
                     <div className="card" style={{ width: "100%", border: "none" }}>
                         <img
@@ -225,7 +204,7 @@ export function Home() {
                             className="card-img-top"
                             alt="..."
                         />
-                        <div style={{ paddingTop: "0.5rem" }}>WOMEN SHOES</div>
+                        <div style={{ paddingTop: "0.5rem" ,backgroundColor : " #f6f1eb"}}>WOMEN SHOES</div>
                     </div>
                 </div>
                 <div style={{ justifyContent: "center", textAlign: "center" }}>
@@ -247,56 +226,56 @@ export function Home() {
                 <div className="img-cs"
                      style={{ textAlign: "center", display: "flex", justifyContent: "center" }} >
                     <img
-                        style={{ height: "85%", width: "79vw" }}
+                        style={{ height: "85%", width: "79vw",paddingBottom: "20px" }}
                         src="https://assets.hermes.com/is/image/hermesedito/P_169_AH22_F_Badges-1?name=P_169_AH22_F_Badges-1&end?fit=wrap,0&wid=1280"
                         alt=""
                     />
                 </div>
-                <div className="content-zem"
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(4, 1fr)",
-                        gap: "2rem",
-                        padding: "2rem 9.5rem"
-                    }}
-                >
-                    <div className="card" style={{ width: "100%", border: "none" }}>
-                        <img
-                            src="https://assets.hermes.com/is/image/hermesproduct/368101H42V_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <div style={{ paddingTop: "0.5rem" }}>"Coups de Goua'H" swim trunks</div>
-                        <div>$560</div>
-                    </div>
-                    <div className="card" style={{ width: "100%", border: "none" }}>
-                        <img
-                            src="https://assets.hermes.com/is/image/hermesproduct/231051N+02_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <div style={{ paddingTop: "0.5rem" }}>Fred Look at Mi bucket hat</div>
-                        <div>$415</div>
-                    </div>
-                    <div className="card" style={{ width: "100%", border: "none" }}>
-                        <img
-                            src="https://assets.hermes.com/is/image/hermesproduct/221824ZH45_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <div style={{ paddingTop: "0.5rem" }}>Izmir sandal</div>
-                        <div>$740</div>
-                    </div>
-                    <div className="card" style={{ width: "100%", border: "none" }}>
-                        <img
-                            src="https://assets.hermes.com/is/image/hermesproduct/703203FK01_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <div style={{ paddingTop: "0.5rem" }}>Clic HH So Black bracelet</div>
-                        <div>$740</div>
-                    </div>
-                </div>
+                {/*<div className="content-zem"*/}
+                {/*    style={{*/}
+                {/*        display: "grid",*/}
+                {/*        gridTemplateColumns: "repeat(4, 1fr)",*/}
+                {/*        gap: "2rem",*/}
+                {/*        padding: "2rem 9.5rem"*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    <div className="card" style={{ width: "100%", border: "none" ,backgroundColor : " #f6f1eb" }}>*/}
+                {/*        <img*/}
+                {/*            src="https://assets.hermes.com/is/image/hermesproduct/368101H42V_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                {/*            className="card-img-top"*/}
+                {/*            alt="..."*/}
+                {/*        />*/}
+                {/*        <div style={{ paddingTop: "0.5rem"}}>"Coups de Goua'H" swim trunks</div>*/}
+                {/*        <div>$560</div>*/}
+                {/*    </div>*/}
+                {/*    <div className="card" style={{ width: "100%", border: "none" ,backgroundColor : " #f6f1eb" }}>*/}
+                {/*        <img*/}
+                {/*            src="https://assets.hermes.com/is/image/hermesproduct/231051N+02_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                {/*            className="card-img-top"*/}
+                {/*            alt="..."*/}
+                {/*        />*/}
+                {/*        <div style={{ paddingTop: "0.5rem"}}>Fred Look at Mi bucket hat</div>*/}
+                {/*        <div>$415</div>*/}
+                {/*    </div>*/}
+                {/*    <div className="card" style={{ width: "100%", border: "none" ,backgroundColor : " #f6f1eb" }}>*/}
+                {/*        <img*/}
+                {/*            src="https://assets.hermes.com/is/image/hermesproduct/221824ZH45_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                {/*            className="card-img-top"*/}
+                {/*            alt="..."*/}
+                {/*        />*/}
+                {/*        <div style={{ paddingTop: "0.5rem"}}>Izmir sandal</div>*/}
+                {/*        <div>$740</div>*/}
+                {/*    </div>*/}
+                {/*    <div className="card" style={{ width: "100%", border: "none" ,backgroundColor : " #f6f1eb" }}>*/}
+                {/*        <img*/}
+                {/*            src="https://assets.hermes.com/is/image/hermesproduct/703203FK01_set?a=a&size=3000,3000&extend=0,0,0,0&align=0,0&$product_item_grid_g$&resMode=&wid=650&hei=650"*/}
+                {/*            className="card-img-top"*/}
+                {/*            alt="..."*/}
+                {/*        />*/}
+                {/*        <div style={{ paddingTop: "0.5rem"}}>Clic HH So Black bracelet</div>*/}
+                {/*        <div>$740</div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <div style={{ justifyContent: "center", textAlign: "center" }}>
                     <h3>AN IDYLLIC GATHERING </h3>
                 </div>
@@ -348,7 +327,15 @@ export function Home() {
                                         <img src={pa.img}  className="card-img-top" />
                                     </div>
                                     <div>{pa.nameProduct}</div>
-                                    <div>${pa.price}</div>
+                                    <div>
+
+                                        $
+                                        <FormattedNumber
+                                            value={pa.price}
+                                            currency="USD"
+                                            minimumFractionDigits={0}>
+                                        </FormattedNumber>
+                                        </div>
                                 </div>
                             ))
                         }

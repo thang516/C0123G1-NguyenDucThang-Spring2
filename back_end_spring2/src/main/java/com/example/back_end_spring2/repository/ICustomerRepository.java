@@ -29,4 +29,7 @@ public interface ICustomerRepository extends JpaRepository<Customers,Integer> {
     @Query(value = "SELECT c.* FROM customers c\n" +
             "    INNER  JOIN users u on c.users_id = u.id WHERE u.username = :username AND c.is_delete = false",nativeQuery = true)
     Customers getCustomersByUser(@Param("username") String username);
+    @Query(value = "SELECT c.* FROM customers c\n" +
+            "    INNER  JOIN users u on c.users_id = u.id WHERE u.username = :username AND c.is_delete = false",nativeQuery = true)
+    Customers getCustomer(@Param("username") String username);
 }

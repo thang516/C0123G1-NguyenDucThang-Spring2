@@ -3,10 +3,12 @@ package com.example.back_end_spring2.repository;
 
 import com.example.back_end_spring2.model.ShoppingCards;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -18,4 +20,11 @@ public interface IShoppingRepository extends JpaRepository<ShoppingCards,Integer
 
     @Query(value = "SELECT sp.* FROM shopping_cards sp  INNER  JOIN customers c on sp.customers_id = c.id WHERE sp.customers_id = :id",nativeQuery = true)
     List<ShoppingCards> findAllByCustomers(@Param("id") Integer id);
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM  shopping_cards where customers_id = :id",nativeQuery = true)
+    void deleteByCustomerId(@Param("id") Integer id);
+
 }

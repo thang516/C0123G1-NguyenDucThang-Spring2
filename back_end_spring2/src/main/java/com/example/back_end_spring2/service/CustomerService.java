@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService implements ICustomerService{
 
@@ -35,5 +37,15 @@ public class CustomerService implements ICustomerService{
         Customers customers = new Customers();
         BeanUtils.copyProperties(customerDTO,customers);
         customerRepository.saveProduct(customers.getName(),customers.getAddress(),customers.getPhone(),customers.getUsers().getId(),customers.getEmail());
+    }
+
+    @Override
+    public  Customers findById(Integer id) {
+        return customerRepository.findById(id).get();
+    }
+
+    @Override
+    public Customers getCus(String username) {
+        return customerRepository.getCustomer(username);
     }
 }

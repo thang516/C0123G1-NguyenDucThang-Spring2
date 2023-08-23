@@ -21,45 +21,50 @@ public class OrdersService implements IOrdersService {
     private IOrdersRepository iOrdersRepository;
     @Autowired
     private IOrdersDetailRepository repository;
+
     @Override
-    public List<Orders> getAll() {
-        return iOrdersRepository.findAll();
+    public List<Orders> getAll(Integer id) {
+        return iOrdersRepository.findAllHistory(id);
     }
 
     @Override
     public ResponseEntity<?> save(List<ShoppingCards> shoppingCards) {
-        boolean check = false ;
-        for (int i = 0; i <shoppingCards.size() ; i++) {
-            if(shoppingCards.get(i).getAmount() > shoppingCards.get(i).getProducts().getStockQuantity()){
-                 check = true;
+        boolean check = false;
+        for (int i = 0; i < shoppingCards.size(); i++) {
+            if (shoppingCards.get(i).getAmount() > shoppingCards.get(i).getProducts().getStockQuantity()) {
+                check = true;
             }
         }
-        if(check ==true) {
-            return new ResponseEntity<>("The product you purchased is out of stock",HttpStatus.BAD_REQUEST);
+        if (check == true) {
+            return new ResponseEntity<>("The product you purchased is out of stock", HttpStatus.BAD_REQUEST);
         }
 
-      try{
-          Orders orders = new Orders();
-          orders.setCustomers(shoppingCards.get(0).getCustomers());
-          iOrdersRepository.save(orders);
-
-          for (int i = 0; i < shoppingCards.size(); i++) {
-              OrderDetail orderDetail = new OrderDetail();
-                 orderDetail.setOrders(orders);
+        try {
+            Orders orders = new Orders();
+            orders.setCustomers(shoppingCards.get(0).getCustomers());
+            iOrdersRepository.save(orders);
+            Double totalPrice = 0.0;
+            for (int i = 0; i < shoppingCards.size(); i++) {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setOrders(orders);
                 orderDetail.setProducts(shoppingCards.get(i).getProducts());
                 orderDetail.setPrice(shoppingCards.get(i).getPrice());
                 orderDetail.setQuantity(shoppingCards.get(i).getAmount());
-              orderDetail.getProducts().setStockQuantity( orderDetail.getProducts().getStockQuantity()-shoppingCards.get(i).getAmount());
+                orderDetail.getProducts().setStockQuantity(orderDetail.getProducts().getStockQuantity() - shoppingCards.get(i).getAmount());
+                totalPrice += orderDetail.getPrice();
                 repository.save(orderDetail);
-          }
 
-
-          return new ResponseEntity<>(HttpStatus.OK);
-      }catch (Exception e){
-          return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-      }
+            }
+            orders.setTotalAmount(totalPrice);
+            iOrdersRepository.save(orders);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
     }
+
+
 
 
 }
