@@ -67,4 +67,14 @@ public class UsersService implements UserDetailsService, IUsersService {
         users.setPassword(password);
         iUserRepository.saveNewPassword(users.getId(), users.getPassword());
     }
+
+    @Override
+    public void save(Users users) {
+        iUserRepository.save(users);
+    }
+
+    @Override
+    public Users findAccount(Integer id) {
+        return iUserRepository.findById(id).get();
+    }
 }

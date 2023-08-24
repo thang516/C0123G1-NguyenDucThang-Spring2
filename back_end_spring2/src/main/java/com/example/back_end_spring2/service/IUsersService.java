@@ -10,4 +10,8 @@ public interface IUsersService {
 
     Users findById(Integer id);
     void saveNewPassword(Users users);
+
+    void save(Users users);
+
+    Users findAccount(Integer id);
 }

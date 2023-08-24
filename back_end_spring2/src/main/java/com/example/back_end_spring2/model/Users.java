@@ -36,6 +36,12 @@ public class Users {
     public Users() {
     }
 
+    public Users(String username, String password, Roles role) {
+        this.username = username;
+        this.password = password;
+        this.roles  = role;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -83,4 +89,6 @@ public class Users {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 }

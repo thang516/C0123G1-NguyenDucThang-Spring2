@@ -130,7 +130,7 @@ export function LoginNew() {
                 {/*        </div>*/}
                 {/*    </div>*/}
                 {/*</section>*/}
-                {/*/!* Sing in  Form *!/*/}
+                {/* Sing in  Form */}
                 <section className="sign-in">
                     <div className="containerss">
                         <div className="signin-content">

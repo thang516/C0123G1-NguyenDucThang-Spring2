@@ -56,7 +56,7 @@ public class CustomerController {
 
     @NotNull
     @PostMapping("/create")
-    public ResponseEntity createCustomer(@Validated CustomerDTO customerDTO , BindingResult bindingResult){
+    public ResponseEntity createCustomer(@Validated @RequestBody CustomerDTO customerDTO , BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             Map<String, String> list = new HashMap<>();
             String[] fieldsToCheck = {"name", "phone", "address", "email"};

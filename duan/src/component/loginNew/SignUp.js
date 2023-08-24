@@ -2,6 +2,7 @@ import React from "react";
 
 import "./fonts/material-icon/css/material-design-iconic-font.min.css";
 import "./css/style.css";
+import * as service from "../../service/ProductService"
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -30,104 +31,131 @@ export  function SignUp() {
                                     phone :"",
                                     password : ""
 
-                                }} onSubmit={}>
-                                        <Form method="POST" className="register-form" id="register-form">
-                                            <div className="form-group">
-                                                <label htmlFor="name">
-                                                    <i className="zmdi zmdi-account material-icons-name"/>
-                                                </label>
-                                                <Field
-                                                    type="text"
-                                                    name="name"
-                                                    id="name"
-                                                    placeholder="Your Name"
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="email">
-                                                    <i className="zmdi zmdi-email"/>
-                                                </label>
-                                                <Field
-                                                    type="email"
-                                                    name="email"
-                                                    id="email"
-                                                    placeholder="Your Email"
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <label >
-                                                    <i className="fa-solid fa-user-plus"></i>
-                                                </label>
-                                                <Field
-                                                    type="text"
-                                                    name="username"
+                                }}     validationSchema={Yup.object({
+                                    name: Yup.string().required("Please fill in all the information"),
+                                    email: Yup.string().required("Please fill in all the information"),
+                                    username: Yup.string().required("Please fill in all the information"),
+                                    phone: Yup.string().required("Please fill in all the information"),
+                                    password: Yup.string().required("Please fill in all the information"),
+                                })}
 
-                                                    placeholder="Username"
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <label >
-                                                    <i className="fa-solid fa-phone-volume"></i>
-                                                </label>
-                                                <Field
-                                                    type="number"
-                                                    name="phone"
+                                        onSubmit={(values) =>{
+                                            const  create = async () => {
+                                                await service.register(values);
+                                            }
+                                            create();
 
-                                                    placeholder="Phone"
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="pass">
-                                                    <i className="zmdi zmdi-lock"/>
-                                                </label>
-                                                <Field
-                                                    type="password"
-                                                    name="pass"
-                                                    id="pass"
-                                                    placeholder="Password"
-                                                />
-                                            </div>
+                                }}>
+
+                                    <Form   className="register-form" id="register-form">
+                                        <div className="form-group">
+                                            <label htmlFor="name">
+                                                <i className="zmdi zmdi-account material-icons-name"/>
+                                            </label>
+                                            <Field
+                                                type="text"
+                                                name="name"
+                                                id="name"
+                                                placeholder="Your Name"
+                                            />
+                                            <ErrorMessage name="name" component="span" className="form-err"/>
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="email">
+                                                <i className="zmdi zmdi-email"/>
+                                            </label>
+                                            <Field
+                                                type="email"
+                                                name="email"
+                                                id="email"
+                                                placeholder="Your Email"
+                                            />
+                                            <ErrorMessage name="name" component="span" className="form-err"/>
+
+                                        </div>
+                                        <div className="form-group">
+                                            <label >
+                                                <i className="fa-solid fa-user-plus"></i>
+                                            </label>
+                                            <Field
+                                                type="text"
+                                                name="username"
+
+                                                placeholder="Username"
+                                            />
+                                            <ErrorMessage name="name" component="span" className="form-err"/>
+
+                                        </div>
+                                        <div className="form-group">
+                                            <label >
+                                                <i className="fa-solid fa-phone-volume"></i>
+                                            </label>
+                                            <Field
+                                                type="number"
+                                                name="phone"
+
+                                                placeholder="Phone"
+                                            />
+                                            <ErrorMessage name="name" component="span" className="form-err"/>
+
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="pass">
+                                                <i className="zmdi zmdi-lock"/>
+                                            </label>
+                                            <Field
+                                                type="password"
+                                                name="pass"
+                                                id="pass"
+                                                placeholder="Password"
+                                            />
+                                            <ErrorMessage name="name" component="span" className="form-err"/>
+
+                                        </div>
 
 
-                                            <div className="form-group">
-                                                <label>
-                                                    <i className="zmdi zmdi-lock-outline"/>
-                                                </label>
-                                                <Field
-                                                    type="password"
-                                                    name="re_pass"
-                                                    id="re_pass"
-                                                    placeholder="Repeat your password"
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <Field
-                                                    type="checkbox"
-                                                    name="agree-term"
-                                                    id="agree-term"
-                                                    className="agree-term"
-                                                />
-                                                <label htmlFor="agree-term" className="label-agree-term">
+                                        <div className="form-group">
+                                            <label>
+                                                <i className="zmdi zmdi-lock-outline"/>
+                                            </label>
+                                            <Field
+                                                type="password"
+                                                name="re_pass"
+                                                id="re_pass"
+                                                placeholder="Repeat your password"
+                                            />
+                                            <ErrorMessage name="name" component="span" className="form-err"/>
+
+                                        </div>
+                                        <div className="form-group">
+                                            <Field
+                                                type="checkbox"
+                                                name="agree-term"
+                                                id="agree-term"
+                                                className="agree-term"
+                                            />
+                                            <ErrorMessage name="name" component="span" className="form-err"/>
+
+                                            <label htmlFor="agree-term" className="label-agree-term">
                 <span>
                   <span/>
                 </span>
-                                                    I agree all statements in{" "}
-                                                    <a href="#" className="term-service">
-                                                        Terms of service
-                                                    </a>
-                                                </label>
-                                            </div>
-                                            <div className="form-group form-button">
-                                                <Field
-                                                    type="submit"
-                                                    name="signup"
-                                                    id="signup"
-                                                    className="form-submit"
-                                                    defaultValue="Register"
-                                                />
-                                            </div>
-                                        </Form>
-
+                                                I agree all statements in{" "}
+                                                <a href="#" className="term-service">
+                                                    Terms of service
+                                                </a>
+                                            </label>
+                                        </div>
+                                        <div className="form-group form-button">
+                                            <Field
+                                                type="submit"
+                                                name="signup"
+                                                id="signup"
+                                                className="form-submit"
+                                                defaultValue="Register"
+                                            />
+                                        </div>
+                                    </Form>
                                 </Formik>
 
 
