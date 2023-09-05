@@ -86,6 +86,9 @@ export function Header() {
                                     <NavLink to={'/list'} onClick={ () => mobileNavToggle()}>Product</NavLink>
                                 </li>
                                 <li>
+                                    <NavLink to={'/post'} onClick={ () => mobileNavToggle()}>Magazine</NavLink>
+                                </li>
+                                <li>
                                     <NavLink  to={'/'} onClick={() => {
 
                                         mobileNavToggle();

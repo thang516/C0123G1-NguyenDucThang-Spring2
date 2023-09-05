@@ -7,6 +7,7 @@ import * as service from "../service/Manager"
 import {Link} from "react-router-dom";
 import {FormattedNumber} from "react-intl";
 import {Form,Formik,Field} from "formik";
+import sweat from "sweetalert2";
 
 
 export function ListManager() {
@@ -28,18 +29,18 @@ export function ListManager() {
 
     }
 
-
-    useEffect(() => {
-        const getAllProduct = async () => {
-            try {
-                const res = await service.getAll(page, typeProduct, nameProduct);
-                setProducts(res.data?.content)
-            }catch (e) {
-                navigate("/")
-            }
-
+    const getAllProduct = async () => {
+        try {
+            const res = await service.getAll(page, typeProduct, nameProduct);
+            setProducts(res.data?.content)
+        }catch (e) {
+            navigate("/")
         }
+
+    }
+    useEffect(() => {
         getAllProduct();
+
     }, [])
 
 
@@ -55,6 +56,33 @@ export function ListManager() {
     const paginate = (page) => {
         setPage(page)
     }
+
+
+    const deletePro = async (id, productId) => {
+        await service.deleteById(id, productId)
+        sweat.fire({
+            icon: "success",
+            title: "SUCCESSFULLY",
+            timer: "2000"
+        })
+        getAllProduct();
+    }
+
+
+    function deleteProduct(id, nameProduct) {
+        sweat.fire({
+            icon: "warning",
+            title: `Do you want to delete " ${nameProduct} " ?`,
+            showCancelButton: true,
+            confirmButtonText: "OK"
+        }).then(async (isDelete) => {
+            if (isDelete.isConfirmed) {
+                deletePro(id)
+            }
+        })
+    }
+
+
 
 
     return (
@@ -195,6 +223,16 @@ export function ListManager() {
                                     </FormattedNumber>
 
                                 </p>
+                                {/*<div>*/}
+                                {/*    <button><i style={{color : "red"}} className="fa-sharp fa-solid fa-trash fa-2xl"></i></button>*/}
+                                {/*    <button><i className="fa-sharp fa-solid fa-pen-to-square fa-2xl"></i></button>*/}
+                                {/*</div>*/}
+
+                            </div>
+                            <div style={{justifyContent: "space-evenly",display:"flex",paddingBottom:"10px"}}>
+                                <button onClick={() => deleteProduct(p.id,p.nameProduct)}  className={"btn btn-danger"}>Delete</button>
+                                <button className={"btn btn-success"}>Edit</button>
+
                             </div>
                         </div>
                     ))}

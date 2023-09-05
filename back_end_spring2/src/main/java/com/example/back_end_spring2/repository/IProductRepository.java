@@ -6,6 +6,7 @@ import com.example.back_end_spring2.DTO.IProductDTO;
 import com.example.back_end_spring2.model.Images;
 import com.example.back_end_spring2.model.ProductType;
 import com.example.back_end_spring2.model.Products;
+import com.example.back_end_spring2.model.Sizes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -132,6 +133,19 @@ public interface IProductRepository extends JpaRepository<Products, Integer> {
             "                           from images i\n" +
             "                           group by i.product_id)", nativeQuery = true)
     Page<IProductDTO> findAllProductByOther(Pageable pageable, @Param("nameProduct") String nameProduct, @Param("typeProduct") String typeProduct);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE  products p   SET p.is_delete = true WHERE p.id = :id",nativeQuery = true)
+    void deleteByIdProduct(@Param("id") Integer id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE products SET name_product = :name_product,price=:price,description=:description,stock_quantity=:stock_quantity,sizes_id=:sizes_id,product_type_id=:product_type_id\n" +
+            ", img = :img WHERE id = :id",nativeQuery = true)
+    void updateProduct(@Param("id") Integer id,@Param("name_product") String nameProduct,@Param("price") Double price,@Param("description") String description,
+                       @Param("stock_quantity") Integer stock_quantity, @Param("sizes_id") Integer sizes_id,@Param("product_type_id") Integer product_type_id
+            ,@Param("img") String img);
 
 
 //    @Query(value = "INSERT INTO   products ( name_product, price, stock_quantity,description, product_type_id,sizes_id, colors_id, img)  \n" +

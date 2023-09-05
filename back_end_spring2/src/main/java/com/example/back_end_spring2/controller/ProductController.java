@@ -8,6 +8,7 @@ import com.example.back_end_spring2.DTO.ProductDTO;
 import com.example.back_end_spring2.model.Images;
 
 import com.example.back_end_spring2.model.Products;
+import com.example.back_end_spring2.model.ShoppingCards;
 import com.example.back_end_spring2.service.IImageService;
 import com.example.back_end_spring2.service.IProductService;
 
@@ -20,9 +21,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -169,6 +175,40 @@ public class ProductController {
         return new ResponseEntity<>(pro,HttpStatus.OK);
     }
 
+//    @DeleteMapping("/delete/{id}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public ResponseEntity<List<Products>> delete(@PathVariable Integer id) {
+//        if (id == null) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        productService.deleteProduct(id);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+//
+//
+//    @PatchMapping("/detail/{id}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public ResponseEntity<?> updateProduct(@Validated @RequestBody ProductDTO productDTO, BindingResult bindingResult, @PathVariable Integer id) {
+//        if (!bindingResult.hasErrors()) {
+//                productService.updateProduct(id,productDTO);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } else {
+//            getResponseEntity(bindingResult);
+//            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+//        }
+//
+//    }
+//
+//    private void getResponseEntity(BindingResult bindingResult) {
+//        Map<String, String> map = new LinkedHashMap<>();
+//        List<FieldError> errors = bindingResult.getFieldErrors();
+//        for (FieldError error : errors) {
+//            if (!map.containsKey(error.getField())) {
+//                map.put(error.getField(), error.getDefaultMessage());
+//            }
+//        }
+//
+
 //
 //    @PostMapping("/create-manager")
 //    public ResponseEntity<?> createProductManager(@Validated @RequestBody CreateDTO productDTO , BindingResult bindingResult){
@@ -191,5 +231,5 @@ public class ProductController {
 //        return new ResponseEntity<>( HttpStatus.OK);
 //    }
 
-
+//    }
 }

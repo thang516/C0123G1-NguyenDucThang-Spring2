@@ -33,5 +33,9 @@ public interface IProductService {
 
     Page<IProductDTO> findAllProductByOther(Pageable pageable , String typeProduct, String nameProduct);
 
+    void deleteProduct(Integer id);
+
+    void updateProduct(Integer id, ProductDTO productDTO);
+
 //    void createProduct(CreateDTO productDTO);
 }

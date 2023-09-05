@@ -16,6 +16,8 @@ import {ListManager} from "./component/ListManager";
 import {LoginNew} from "./component/loginNew/LoginNew";
 import {OrderList} from "./component/order_and_orderDetail/OrderList";
 import {InformationPerson} from "./component/InformationPerson";
+import {Post} from "./Post";
+import {PostsDetail} from "./component/PostsDetail";
 
 function App() {
     return (
@@ -32,6 +34,8 @@ function App() {
                     <Route path="/detail" element={<Detail/>}/>
                     <Route path="/information" element={<InformationPerson/>}/>
                     <Route path="/history" element={<OrderList/>}/>
+                    <Route path="/post" element={<Post/>}/>
+                    <Route path="/detailPost/:id" element={<PostsDetail/>}/>
                     <Route path="/nav/manager" element={<CustomerList/>}/>
                     <Route path="/nav/manager/list" element={<ListManager/>}/>
                 </Routes>

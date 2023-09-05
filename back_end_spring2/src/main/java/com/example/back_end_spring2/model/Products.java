@@ -59,6 +59,18 @@ public class Products {
         return img;
     }
 
+    public Products(Integer id, String nameProduct, Double price, String description, Integer stockQuantity, Sizes sizes, ProductType productType, Colors colors, String img) {
+        this.id = id;
+        this.nameProduct = nameProduct;
+        this.price = price;
+        this.description = description;
+        this.stockQuantity = stockQuantity;
+        this.sizes = sizes;
+        this.productType = productType;
+        this.colors = colors;
+        this.img = img;
+    }
+
     public void setImg(String img) {
         this.img = img;
     }

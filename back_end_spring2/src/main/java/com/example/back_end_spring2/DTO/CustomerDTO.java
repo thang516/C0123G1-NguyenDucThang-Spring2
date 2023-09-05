@@ -1,8 +1,11 @@
 package com.example.back_end_spring2.DTO;
 
 import com.example.back_end_spring2.model.Users;
+import org.springframework.validation.annotation.Validated;
 
-public class CustomerDTO {
+import java.lang.annotation.Annotation;
+
+public class CustomerDTO  implements Validated {
 
         private Integer id;
 
@@ -79,6 +82,15 @@ public class CustomerDTO {
         }
 
 
+    @Override
+    public Class<?>[] value() {
+        return new Class[0];
     }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+        return null;
+    }
+}
 
 

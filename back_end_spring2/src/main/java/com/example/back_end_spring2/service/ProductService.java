@@ -74,6 +74,27 @@ public class ProductService implements IProductService{
         return productss ;
     }
 
+    @Override
+    public void deleteProduct(Integer id) {
+        productRepository.deleteByIdProduct(id);
+    }
+
+    @Override
+    public void updateProduct(Integer id, ProductDTO productDTO) {
+       Products products = new Products();
+        BeanUtils.copyProperties(productDTO,products);
+
+        productRepository.updateProduct(
+                products.getId(),
+                products.getNameProduct(),
+                products.getPrice(),
+                products.getDescription(),
+                products.getStockQuantity(),
+                products.getSizes().getId(),
+                products.getProductType().getId(),
+                products.getImg());
+    }
+
 
 
 //    @Override

@@ -43,10 +43,11 @@ const navigate = useNavigate();
     if (!history) {
         return null;
     }
-
+    console.log(history)
     return (
         <>
-            <h1 style={{textAlign: "center"}}>Transaction history</h1>
+            <h1 style={{textAlign: "center",margin:"10px"}}>Transaction history</h1>
+        <div style={{padding : "0px 70px"}}>
             <table className="table table-striped">
                 <thead>
                 <tr>
@@ -71,12 +72,12 @@ const navigate = useNavigate();
                                     currency="USD"
                                     minimumFractionDigits={0}>
                                 </FormattedNumber>
-                               </td>
+                            </td>
                             <td>
                                 {
                                     moment(h?.createDate, 'YYYY/MM/DD').format('DD/MM/YYYY')
                                 }
-                                </td>
+                            </td>
 
                             <td>Shipping</td>
                             <td>
@@ -88,21 +89,21 @@ const navigate = useNavigate();
                                 <Modal
                                     isOpen={modalIsOpen}
                                     onRequestClose={closeModal}
-                                        style={history}
+                                    style={history}
                                     contentLabel="Modal"
                                 >
                                     <section className="table__body">
                                         <table>
                                             <thead>
                                             <tr>
-                                                    <th>Stt</th>
-                                                    <th>Price</th>
-                                                    <th>Quantity</th>
-                                                    <th>Total Price</th>
-                                                    <th>Name Product</th>
-                                                    <th>Color  Product</th>
-                                                    <th>Name  Product Type</th>
-                                                    <th>Image</th>
+                                                <th>Stt</th>
+                                                <th>Total Price</th>
+                                                <th>Quantity</th>
+                                                {/*<th>Total Price</th>*/}
+                                                <th>Name Product</th>
+                                                <th>Color  Product</th>
+                                                <th>Name  Product Type</th>
+                                                <th>Image</th>
 
                                             </tr>
                                             </thead>
@@ -119,13 +120,13 @@ const navigate = useNavigate();
                                                             </FormattedNumber>
                                                         </td>
                                                         <td>{od.quantity}</td>
-                                                        <td>$
-                                                            <FormattedNumber
-                                                                value={od.orders.totalAmount}
-                                                                currency="USD"
-                                                                minimumFractionDigits={0}>
-                                                            </FormattedNumber>
-                                                        </td>
+                                                        {/*<td>$*/}
+                                                        {/*    <FormattedNumber*/}
+                                                        {/*        value={od.orders.totalAmount}*/}
+                                                        {/*        currency="USD"*/}
+                                                        {/*        minimumFractionDigits={0}>*/}
+                                                        {/*    </FormattedNumber>*/}
+                                                        {/*</td>*/}
                                                         <td>{od.products.nameProduct}</td>
                                                         <td>{od.products.colors.nameColor}</td>
                                                         <td>{od.products.productType.nameType}</td>
@@ -148,6 +149,7 @@ const navigate = useNavigate();
                 }
                 </tbody>
             </table>
+        </div>
 
         </>
     )

@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .authorizeRequests()
                 .antMatchers("/api/user/authenticate","/api/products","/api/products/{id}","/api/products/detail/{id}","/api/products/detail/new-product",
                         "/api/products/products","/api/products/type","/api/products/color/{nameProduct}","/api/type/**","/api/shopping/{index}/{id}/{idColor}",
-                        "/api/shopping","/api/shopping/list-session","/api/shopping/remove/{idP}").permitAll()
+                        "/api/shopping","/api/shopping/list-session","/api/shopping/remove/{idP}","/api/posts","/detailPosts/{id}").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
