@@ -66,8 +66,10 @@ public class OrdersController {
             LocalDate redeemDate = LocalDate.now();
             String name = customers.getName();
             String product = null;
+            Double price = 0.0;
             for (int i = 0; i < shoppingCards.size(); i++) {
                  product = shoppingCards.get(i).getProducts().getNameProduct();
+                 price = shoppingCards.get(i).getPrice();
                 break;
             }
             String to = customers.getEmail();
@@ -76,9 +78,12 @@ public class OrdersController {
             String subject = "Thank you for shopping at ZeusAccessory";
             String body = "Hello " + name + ",\n" +
                     "\n" +
-                    "We send this email to confirm that you have just paid " + product + " on the day " + redeemDate +"\n" +
+                    "We send this email to confirm that you have just paid " +  product + " on the day " + redeemDate +"\n" +
+                    "With price is" + ""   + price + "USD"+
                     "\n" +
                     "We would like to thank you for trusting and using our services.\n" +
+                    "Best regards and see you soon.\n"+
+                    "\n" +
                     "\n" +
                     "\n" +
                     "\n" +
@@ -87,10 +92,9 @@ public class OrdersController {
                     "Name :zeus accessory\n" +
                     "Mobile : 0782391943\n" +
                     "Email : accessoryzeus@gmail.com\n" +
-                    "Address :\u200B2\u200B80\u200B \u200BTrần Hưng Đạo\u200B streets, \u200BSơn Trà\u200B District, Da Nang";
+                    "Address :\u200B2\u200B80\u200B \u200BTran Hung Dao\u200B streets, \u200BSon Tra\u200B District, Da Nang";
 
             emailService.sendMail(to, subject, body);
-
 
 
 

@@ -40,13 +40,11 @@ export function ListManager() {
     }
     useEffect(() => {
         getAllProduct();
-
     }, [])
 
 
     useEffect(() => {
         getAllProducts();
-
     }, [page])
 
     if (!products) {
@@ -165,7 +163,7 @@ export function ListManager() {
                                     console.log(values.nameProduct)
                                     const search = async () => {
                                         const res = await service.getAll(page,typeProduct,values.nameProduct)
-                                        setProducts(()=> res.content)
+                                        setProducts(()=> res.data.content)
                                         setNameProduct(()=> values.nameProduct)
                                     }
 

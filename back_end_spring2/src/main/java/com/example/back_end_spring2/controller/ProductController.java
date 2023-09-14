@@ -172,6 +172,7 @@ public class ProductController {
         if(pro == null ){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        System.out.println(pro.toString());
         return new ResponseEntity<>(pro,HttpStatus.OK);
     }
 

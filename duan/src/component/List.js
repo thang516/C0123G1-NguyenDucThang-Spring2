@@ -306,6 +306,7 @@ export function List() {
 
 
             <div style={{textAlign: "center"}}>
+                
                 <button onClick={() => setPage(prevState => prevState + 1)}
                         style={{
                             backgroundColor: "whiteSmoke",
